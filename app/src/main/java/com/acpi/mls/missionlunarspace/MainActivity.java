@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-    //Test 2
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
