@@ -1,5 +1,6 @@
 package com.acpi.mls.missionlunarspace;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-
+/*
     private TextView mTextMessage;
 
     @Override
@@ -53,5 +54,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    */
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+
+    public void goActivityEtu(View view) {
+        Intent intent = new Intent(this,EtudiantActivity.class);
+        startActivity(intent);
+    }
+
+    public void goActivityProf(View view) {
+        Intent intent = new Intent(this, EnseignantActivity.class);
+        startActivity(intent);
     }
 }
