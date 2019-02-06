@@ -135,6 +135,9 @@ public class DAOEnseignant extends DAO {
             case "Aller a lancer partie":
                 monEnseignant.allerALancerPartie(result[0]);
                 break;
+            case "indicationPartieDemarree":
+                monEnseignant.indiquerPartieDemaree();
+                break;
         }
     }
 }

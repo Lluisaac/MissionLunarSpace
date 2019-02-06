@@ -165,8 +165,12 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DAOEnseignant(EnseignantActivity.this).execute("DemarrerPartie", "", numClasse);
+                new DAOEnseignant(EnseignantActivity.this).execute("DemarrerPartie", "indicationPartieDemarree", numClasse);
             }
         });
+    }
+
+    public void indiquerPartieDemaree() {
+        setContentView(R.layout.activity_partie_demaree);
     }
 }
