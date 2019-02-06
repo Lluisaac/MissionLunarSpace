@@ -16,12 +16,10 @@ import com.acpi.mls.missionlunarspace.DAO.DAO;
 import com.acpi.mls.missionlunarspace.DAO.DAOEnseignant;
 
 public class EnseignantActivity extends AppCompatActivity {
-    private static EnseignantActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        instance = this;
         setContentView(R.layout.activity_enseignant);
 
         Button buttonOk = (Button) findViewById(R.id.buttonConfirmationLoginProf);
@@ -30,7 +28,7 @@ public class EnseignantActivity extends AppCompatActivity {
                 switch(view.getId())
                 {
                     case R.id.buttonConfirmationLoginProf:
-                        new DAOEnseignant().execute("getMdpProf", "EnseignantActivity.validerMDP");
+                        new DAOEnseignant(EnseignantActivity.this).execute("getMdpProf", "EnseignantActivity.validerMDP");
                         break;
                 }
             }
@@ -118,11 +116,11 @@ public class EnseignantActivity extends AppCompatActivity {
                 switch (view.getId()) {
                     case R.id.buttonCreationGroupe:
                         if (nomClasse.getText().toString().equals("") || annee.getText().toString().equals("") || nbPersonnes.getText().toString().equals("")) {
-                            Toast.makeText(instance, "Veuillez rentrer tous les champs", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EnseignantActivity.this, "Veuillez rentrer tous les champs", Toast.LENGTH_SHORT).show();
                         } else if (nb < 5 || nb > 36) {
-                            Toast.makeText(instance, "Veuillez rentrer une quantité d'élèves valides (entre 5 et 36)", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EnseignantActivity.this, "Veuillez rentrer une quantité d'élèves valides (entre 5 et 36)", Toast.LENGTH_SHORT).show();
                         } else if (!isGroupeValide) {
-                            Toast.makeText(instance, "Veuillez selectionner un groupe valide", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EnseignantActivity.this, "Veuillez selectionner un groupe valide", Toast.LENGTH_SHORT).show();
                         } else {
                             int num = Integer.parseInt(((RadioButton) findViewById(groupe.getCheckedRadioButtonId())).getText().toString());
                             creerGroupe(nomClasse.getText().toString(), annee.getText().toString(), nbPersonnes.getText().toString(), num + "");
@@ -135,20 +133,20 @@ public class EnseignantActivity extends AppCompatActivity {
     }
 
     public void creerGroupe(String classe, String annee, String nbPersonnes, String nbGroupes) {
-        new DAOEnseignant().execute("createClasse", "", classe, annee, nbPersonnes, nbGroupes);
+        new DAOEnseignant(this).execute("createClasse", "", classe, annee, nbPersonnes, nbGroupes);
     }
 
-    public static void validerMDP(String mdp) {
-        EditText edit = (EditText) instance.findViewById(R.id.mdpProf);
+    public void validerMDP(String mdp) {
+        EditText edit = (EditText) findViewById(R.id.mdpProf);
         if (edit != null) {
             String entre = edit.getText().toString();
             entre = entre == null ? "" : entre;
             if (entre.equals(mdp)) {
-                instance.setContentView(R.layout.activity_enseignant_config_groupe);
-                instance.faireElementsCreationGroupe();
+                setContentView(R.layout.activity_enseignant_config_groupe);
+                faireElementsCreationGroupe();
             } else {
-                Toast.makeText(instance, "Mot de passe éronné", Toast.LENGTH_SHORT).show();
-                ((EditText) instance.findViewById(R.id.mdpProf)).setText("");
+                Toast.makeText(this, "Mot de passe éronné", Toast.LENGTH_SHORT).show();
+                ((EditText) findViewById(R.id.mdpProf)).setText("");
             }
         }
     }

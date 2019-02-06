@@ -9,6 +9,13 @@ import java.sql.Statement;
 
 public class DAOEnseignant extends DAO {
 
+
+    private final EnseignantActivity monEnseignant;
+
+    public DAOEnseignant(EnseignantActivity ea) {
+        this.monEnseignant = ea;
+    }
+
     public String getMdpProf() {
         try {
             Statement st = cn.createStatement();
@@ -24,17 +31,21 @@ public class DAOEnseignant extends DAO {
         }
     }
 
-    public int createClasse(String nom, int annee) {
+    public void createClasse(String nom, int annee) {
         try {
-            PreparedStatement pst = cn.prepareStatement("SELECT id, nomClasse, anneeClasse FROM Classes");
-            ResultSet rs = pst.executeQuery();
+            Statement st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery("SELECT id, nomClasse, anneeClasse FROM Classes");
             rs.last();
-            System.out.println(rs.getInt(1));
-            return 0;
+            int nb = rs.getInt(1);
+            rs.moveToInsertRow();
+            rs.updateInt(1, nb + 1);
+            rs.updateString(2, nom);
+            rs.updateInt(3, annee);
+            rs.insertRow();
+            //createGroupes();
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();
-            return -1;
         }
     }
 
@@ -57,7 +68,7 @@ public class DAOEnseignant extends DAO {
     protected void onPostExecute(String[] result) {
         switch (result[1]) {
             case "EnseignantActivity.validerMDP":
-                EnseignantActivity.validerMDP(result[0]);
+                monEnseignant.validerMDP(result[0]);
                 break;
         }
     }
