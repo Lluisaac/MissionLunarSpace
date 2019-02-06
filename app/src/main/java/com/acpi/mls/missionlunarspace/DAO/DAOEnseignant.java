@@ -2,6 +2,7 @@ package com.acpi.mls.missionlunarspace.DAO;
 
 import com.acpi.mls.missionlunarspace.EnseignantActivity;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,6 +24,20 @@ public class DAOEnseignant extends DAO {
         }
     }
 
+    public int createClasse(String nom, int annee) {
+        try {
+            PreparedStatement pst = cn.prepareStatement("SELECT id, nomClasse, anneeClasse FROM Classes");
+            ResultSet rs = pst.executeQuery();
+            rs.last();
+            System.out.println(rs.getInt(1));
+            return 0;
+        } catch (SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     @Override
     protected String[] doInBackground(String... strings) {
         faireCN();
@@ -30,6 +45,9 @@ public class DAOEnseignant extends DAO {
         switch (strings[0]) {
             case "getMdpProf":
                 tab[0] = getMdpProf();
+                break;
+            case "createClasse":
+                createClasse(strings[2], Integer.parseInt(strings[3]));
                 break;
         }
         return tab;

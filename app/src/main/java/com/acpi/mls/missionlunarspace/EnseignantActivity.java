@@ -123,12 +123,19 @@ public class EnseignantActivity extends AppCompatActivity {
                             Toast.makeText(instance, "Veuillez rentrer une quantité d'élèves valides (entre 5 et 36)", Toast.LENGTH_SHORT).show();
                         } else if (!isGroupeValide) {
                             Toast.makeText(instance, "Veuillez selectionner un groupe valide", Toast.LENGTH_SHORT).show();
+                        } else {
+                            int num = Integer.parseInt(((RadioButton) findViewById(groupe.getCheckedRadioButtonId())).getText().toString());
+                            creerGroupe(nomClasse.getText().toString(), annee.getText().toString(), nbPersonnes.getText().toString(), num + "");
                         }
                         break;
                 }
             }
         });
 
+    }
+
+    public void creerGroupe(String classe, String annee, String nbPersonnes, String nbGroupes) {
+        new DAOEnseignant().execute("createClasse", "", classe, annee, nbPersonnes, nbGroupes);
     }
 
     public static void validerMDP(String mdp) {
