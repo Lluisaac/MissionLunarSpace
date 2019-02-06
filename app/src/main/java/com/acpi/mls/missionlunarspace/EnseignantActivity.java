@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class EnseignantActivity extends AppCompatActivity {
+    private static EnseignantActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,19 +20,21 @@ public class EnseignantActivity extends AppCompatActivity {
                 switch(view.getId())
                 {
                     case R.id.buttonConfirmationLoginProf:
-                        DAO dao = DAO.getInstance();
-                        String mdp = dao.getMdpProf();
-                        String entre = ((EditText) findViewById(R.id.mdpProf)).getText().toString();
-                        entre = entre == null ? "" : entre;
-                        if (entre.equals(mdp)) {
-                            System.out.println("REUSSI");
-
-                        } else {
-                            System.out.println("RATE");
-                        }
+                        new DAO().execute("getMdpProf", "EnseignantActivity.validerMDP");
                         break;
                 }
             }
         });
+        instance = this;
+    }
+
+    public static void validerMDP(String mdp) {
+        String entre = ((EditText) instance.findViewById(R.id.mdpProf)).getText().toString();
+        entre = entre == null ? "" : entre;
+        if (entre.equals(mdp)) {
+            System.out.println("REUSSI");
+        } else {
+            System.out.println("RATE");
+        }
     }
 }
