@@ -150,4 +150,23 @@ public class EnseignantActivity extends AppCompatActivity {
             }
         }
     }
+
+    public void erreurALaCreation() {
+        Toast.makeText(this, "Il y a eu une erreur a la création", Toast.LENGTH_SHORT).show();
+    }
+
+    public void allerALancerPartie(String numClasse) {
+        setContentView(R.layout.activity_demarrer_partie);
+        faireElementsDemarrerPartie(numClasse);
+    }
+
+    private void faireElementsDemarrerPartie(final String numClasse) {
+        Button demarrer = (Button) findViewById(R.id.buttonDemarrerPartie);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DAOEnseignant(EnseignantActivity.this).execute("DemarrerPartie", "", numClasse);
+            }
+        });
+    }
 }
