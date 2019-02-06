@@ -30,4 +30,5 @@ dependencies {
     implementation files('src/main/res/lib/jdom.jar')
     implementation files('src/main/res/lib/classes111.jar')
     implementation files('src/main/res/lib/mysql-connector-java-3.0.17-ga-bin.jar')
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 }
