@@ -11,6 +11,8 @@ public class DAOEnseignant extends DAO {
 
 
     private EnseignantActivity monEnseignant;
+    private static int[][] tabRoles = {{1, 2, 3, 4, 5, 5, 5, 5}, {1, 2, 4, 5, 5, 5, 5, 5}, {1, 2, 5, 5, 5, 5, 5, 5}, {1, 2, 3, 5, 5, 5, 5, 5}};
+    private static String strInfoGroupes;
 
     public DAOEnseignant(EnseignantActivity ea) {
         this.monEnseignant = ea;
@@ -34,7 +36,7 @@ public class DAOEnseignant extends DAO {
     public int createClasse(String nom, int annee) {
         try {
             Statement st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery("SELECT idGroupe, nomClasse, anneeClasse FROM Classes");
+            ResultSet rs = st.executeQuery("SELECT idClasse, nomClasse, anneeClasse FROM Classes");
             rs.last();
             int nb = rs.getInt(1);
             rs.moveToInsertRow();
@@ -50,7 +52,7 @@ public class DAOEnseignant extends DAO {
         }
     }
 
-    private int createGroupes(int classe, int nbEleves, int nbGroupes) {
+    private String createGroupes(int classe, int nbEleves, int nbGroupes) {
         try {
             Statement st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = st.executeQuery("SELECT idGroupe, typeGroupe, classe FROM Groupes");
@@ -67,11 +69,11 @@ public class DAOEnseignant extends DAO {
                 rs.updateInt(3, classe);
                 rs.insertRow();
             }
-            return 0;
+            return (der + 1) + ":" + nbEleves + ":" + nbGroupes;
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();
-            return -1;
+            return null;
         }
     }
 
@@ -84,11 +86,32 @@ public class DAOEnseignant extends DAO {
             String date = rs.getString(1);
 
             st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            rs = st.executeQuery("SELECT idClasse, heureDepart FROM Classes WHERE id = " + classe);
+            rs = st.executeQuery("SELECT idClasse, heureDepart FROM Classes WHERE idClasse = " + classe);
             rs.last();
             rs.updateString(2, date);
             rs.updateRow();
         } catch (SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+        }
+    }
+
+    private void assignerJoueur(int premierIdClasse, int nbEleves, int nbGroupes) {
+        try {
+            Statement st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery("SELECT idEtudiant, groupe, role FROM Etudiants");
+            int i = 0;
+            while (i < nbEleves && rs.next()) {
+                rs.getInt(2);
+                if (rs.wasNull()) {
+                    rs.updateInt(2, premierIdClasse + (i % nbGroupes));
+                    rs.updateInt(3, tabRoles[i % nbGroupes][i / nbGroupes]);
+                    rs.updateRow();
+                    i++;
+                }
+            }
+        } catch (SQLException e) {
+
             deconnexion();
             e.printStackTrace();
         }
@@ -101,6 +124,10 @@ public class DAOEnseignant extends DAO {
         switch (strings[0]) {
             case "DemarrerPartie":
                 demarrerPartie(strings[2]);
+                int id = Integer.parseInt(strInfoGroupes.split(":")[0]);
+                int nbE = Integer.parseInt(strInfoGroupes.split(":")[1]);
+                int nbG = Integer.parseInt(strInfoGroupes.split(":")[2]);
+                assignerJoueur(id, nbE, nbG);
                 break;
             case "getMdpProf":
                 tab[0] = getMdpProf();
@@ -108,8 +135,8 @@ public class DAOEnseignant extends DAO {
             case "createClasse":
                 int num = createClasse(strings[2], Integer.parseInt(strings[3]));
                 if (num != -1) {
-                    int num2 = createGroupes(num, Integer.parseInt(strings[4]), Integer.parseInt(strings[5]));
-                    if (num2 == -1) {
+                    strInfoGroupes = createGroupes(num, Integer.parseInt(strings[4]), Integer.parseInt(strings[5]));
+                    if (strInfoGroupes == null) {
                         tab[1] = "Erreur a la création";
                     } else {
                         tab[0] = num + "";
