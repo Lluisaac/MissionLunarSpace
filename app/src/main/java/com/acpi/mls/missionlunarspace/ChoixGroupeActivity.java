@@ -18,22 +18,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String nom = (String) getIntent().getSerializableExtra("NomEtu");
-        String classe = (String) getIntent().getSerializableExtra("ClasseEtu");
-        String annee = (String) getIntent().getSerializableExtra("AnneeEtu");
-
+        this.idEtudiant = (String) getIntent().getSerializableExtra("idEtudiant");
         this.role = "";
-
-        recuperationIdEtudiant(nom, classe, annee);
-
-    }
-
-    private void recuperationIdEtudiant(String nom, String classe, String annee) {
-        new DAOChoixGroupeActivity(ChoixGroupeActivity.this).execute("getIdEtudiant", "getIdEtudiant", nom, classe, annee);
-    }
-
-    public void setIdEtudiant(String idEtudiant) {
-        this.idEtudiant = idEtudiant;
         recuperationGroupe();
     }
 
