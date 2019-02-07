@@ -34,7 +34,7 @@ public class DAOEnseignant extends DAO {
     public int createClasse(String nom, int annee) {
         try {
             Statement st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery("SELECT id, nomClasse, anneeClasse FROM Classes");
+            ResultSet rs = st.executeQuery("SELECT idGroupe, nomClasse, anneeClasse FROM Classes");
             rs.last();
             int nb = rs.getInt(1);
             rs.moveToInsertRow();
@@ -53,7 +53,7 @@ public class DAOEnseignant extends DAO {
     private int createGroupes(int classe, int nbEleves, int nbGroupes) {
         try {
             Statement st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery("SELECT id, type, classe FROM Groupes");
+            ResultSet rs = st.executeQuery("SELECT idGroupe, typeGroupe, classe FROM Groupes");
             int der;
             if (!rs.last()) {
                 der = 0;
@@ -84,7 +84,7 @@ public class DAOEnseignant extends DAO {
             String date = rs.getString(1);
 
             st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            rs = st.executeQuery("SELECT id, heureDepart FROM Classes WHERE id = " + classe);
+            rs = st.executeQuery("SELECT idClasse, heureDepart FROM Classes WHERE id = " + classe);
             rs.last();
             rs.updateString(2, date);
             rs.updateRow();
