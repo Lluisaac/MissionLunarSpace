@@ -8,10 +8,13 @@
 
     <include
         layout="@layout/liste_base"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="49dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="27dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

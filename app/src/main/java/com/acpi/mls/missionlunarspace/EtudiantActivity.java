@@ -55,8 +55,11 @@ public class EtudiantActivity extends AppCompatActivity {
     }
 
     public void existeClasse(String id) {
-        if (!id.equals(""))
+        if (!id.equals("")) {
+            //TODO Enlever la ligne pour recommencer l'ajout d'étudiant
+            //new DAOEtudiant(EtudiantActivity.this).execute("createEtudiant","",this.nomEtu);
             setContentView(R.layout.content_etudiant_attente);
+        }
         else
             Toast.makeText(this, "La classe n'existe pas.", Toast.LENGTH_SHORT).show();
     }

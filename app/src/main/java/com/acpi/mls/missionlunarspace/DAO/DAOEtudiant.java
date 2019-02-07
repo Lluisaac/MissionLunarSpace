@@ -4,6 +4,7 @@ import com.acpi.mls.missionlunarspace.EtudiantActivity;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class DAOEtudiant extends DAO {
@@ -21,6 +22,9 @@ public class DAOEtudiant extends DAO {
         switch (strings[0]) {
             case "getIdClasse":
                 tab[0] = getIdClasse(strings[2], strings[3]);
+                break;
+            case "createEtudiant" :
+                createEtudiant(strings[2]);
                 break;
         }
         return tab;
@@ -54,6 +58,18 @@ public class DAOEtudiant extends DAO {
             deconnexion();
             e.printStackTrace();
             return null;
+        }
+    }
+
+    private void createEtudiant(String nom){
+        try {
+            PreparedStatement preparedStatement = cn.prepareStatement("INSERT INTO Etudiants (nomEtudiant) VALUES (?)");
+            preparedStatement.setString(1,nom);
+            preparedStatement.executeUpdate();
+        } catch (
+                SQLException e) {
+            deconnexion();
+            e.printStackTrace();
         }
     }
 }
