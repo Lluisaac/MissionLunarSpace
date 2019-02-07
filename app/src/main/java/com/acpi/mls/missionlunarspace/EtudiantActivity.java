@@ -13,6 +13,7 @@ public class EtudiantActivity extends AppCompatActivity {
 
     private String nomEtu;
     private String classeEtu;
+    private String anneeEtu;
 
 
     @Override
@@ -34,6 +35,7 @@ public class EtudiantActivity extends AppCompatActivity {
         if (verifText(nom, classe, annee)) {
             this.nomEtu = nom;
             this.classeEtu = classe;
+            this.anneeEtu = annee;
             new DAOEtudiant(EtudiantActivity.this).execute("getIdClasse","existClasse",this.classeEtu,annee);
         } else {
             Toast.makeText(this, "Vous devez renseigner tous les champs !", Toast.LENGTH_SHORT).show();
@@ -45,6 +47,7 @@ public class EtudiantActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("NomEtu", nomEtu);
         bundle.putString("ClasseEtu", classeEtu);
+        bundle.putString("AnneeEtu",anneeEtu);
 
         intent.putExtras(bundle);
         startActivity(intent);
@@ -58,6 +61,7 @@ public class EtudiantActivity extends AppCompatActivity {
         if (!id.equals("")) {
             //TODO Enlever la ligne pour recommencer l'ajout d'étudiant
             //new DAOEtudiant(EtudiantActivity.this).execute("createEtudiant","",this.nomEtu);
+
             setContentView(R.layout.content_etudiant_attente);
         }
         else
