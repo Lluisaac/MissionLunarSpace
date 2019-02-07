@@ -21,6 +21,18 @@ public class Timer {
 
     private long mTimeLeftInMillis;
 
+    public Timer(TextView tv, long timeLeft){
+        this.setmTextViewCountDown(tv);
+        this.setmTimeLeftInMillis(timeLeft);
+
+    }
+
+    public Timer(TextView tv, Button btn, long timeLeft){
+        this.setmTextViewCountDown(tv);
+        this.setmButtonStart(btn);
+        this.setmTimeLeftInMillis(timeLeft);
+
+    }
 
     public TextView getmTextViewCountDown() {
         return mTextViewCountDown;
@@ -62,13 +74,6 @@ public class Timer {
         this.mTimeLeftInMillis = mTimeLeftInMillis;
     }
 
-    public Timer(TextView tv, Button btn, long timeLeft){
-        this.setmTextViewCountDown(tv);
-        this.setmButtonStart(btn);
-        this.setmTimeLeftInMillis(timeLeft);
-
-    }
-
     public void startTimer() {
         setmCountDownTimer(new CountDownTimer(getmTimeLeftInMillis(), 1000) {
             @Override
@@ -101,7 +106,6 @@ public class Timer {
         int seconds = (int) (getmTimeLeftInMillis() / 1000) % 60;
 
         String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
-
         getmTextViewCountDown().setText(timeLeftFormatted);
     }
 

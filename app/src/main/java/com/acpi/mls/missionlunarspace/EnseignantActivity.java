@@ -10,10 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acpi.mls.missionlunarspace.DAO.DAO;
 import com.acpi.mls.missionlunarspace.DAO.DAOEnseignant;
+
+import org.w3c.dom.Text;
 
 public class EnseignantActivity extends AppCompatActivity {
 
@@ -172,5 +175,6 @@ public class EnseignantActivity extends AppCompatActivity {
 
     public void indiquerPartieDemaree() {
         setContentView(R.layout.activity_partie_demaree);
+        new Timer((TextView) findViewById(R.id.timer), 50000000L).startTimer();
     }
 }
