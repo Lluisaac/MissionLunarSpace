@@ -1,4 +1,4 @@
-package com.acpi.mls.missionlunarspace.choixObjets;
+package com.acpi.mls.missionlunarspace.immobile;
 
 public class MyObject {
     private String text;

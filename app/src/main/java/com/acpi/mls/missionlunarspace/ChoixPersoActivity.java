@@ -4,21 +4,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 
-import com.acpi.mls.missionlunarspace.R;
-import com.acpi.mls.missionlunarspace.choixObjets.MyAdapter;
-import com.acpi.mls.missionlunarspace.choixObjets.MyObject;
+import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
+import com.acpi.mls.missionlunarspace.immobile.MyObject;
+import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
+import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChoixPersoActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewImmobile;
+    private RecyclerView recyclerViewMobile;
+
+
     private List<MyObject> object = new ArrayList<>();
+    private ArrayList<String> objectMobile = new ArrayList<String>();
 
     private String nom;
     private String classe;
@@ -34,15 +37,36 @@ public class ChoixPersoActivity extends AppCompatActivity {
 
 
         ajouterObjets();
-        recyclerView = (RecyclerView) findViewById(R.id.recycled_view_objetBase);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyAdapter(object));
+        creerListeImmobile();
+        creerListeMobile();
+
 
     }
 
-    private void ajouterObjets(){
-        for (int i = 0 ; i < listObjets.length ; ++i) {
+    private void creerListeMobile() {
+
+        recyclerViewMobile = (RecyclerView) findViewById(R.id.recycled_view_mobile);
+
+        recyclerViewMobile.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(objectMobile);
+        ItemTouchHelper.Callback callback = new ItemMoveCallback(mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerViewMobile);
+
+        recyclerViewMobile.setAdapter(mAdapter);
+    }
+
+    private void creerListeImmobile() {
+        recyclerViewImmobile = (RecyclerView) findViewById(R.id.recycled_view_objetBase);
+        recyclerViewImmobile.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewImmobile.setAdapter(new MyAdapter(object));
+    }
+
+    private void ajouterObjets() {
+        for (int i = 0; i < listObjets.length; ++i) {
             object.add(new MyObject(listObjets[i]));
+            objectMobile.add(listObjets[i]);
         }
+
     }
 }

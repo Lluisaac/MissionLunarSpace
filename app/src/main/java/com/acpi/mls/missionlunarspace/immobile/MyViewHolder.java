@@ -1,4 +1,4 @@
-package com.acpi.mls.missionlunarspace.choixObjets;
+package com.acpi.mls.missionlunarspace.immobile;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
