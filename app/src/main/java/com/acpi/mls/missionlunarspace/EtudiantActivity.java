@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.acpi.mls.missionlunarspace.DAO.DAOEtudiant;
+
 public class EtudiantActivity extends AppCompatActivity {
 
     private String nomEtu;
@@ -20,33 +22,45 @@ public class EtudiantActivity extends AppCompatActivity {
     }
 
     public void onClikButtonContinuer(View view) throws InterruptedException {
-        EditText etuNom  = findViewById (R.id.textViewNomEtu);
+        EditText etuNom = findViewById(R.id.textViewNomEtu);
         String nom = etuNom.getText().toString();
 
-        EditText etuClasse = findViewById(R.id.textViewClasseEtu) ;
+        EditText etuClasse = findViewById(R.id.textViewClasseEtu);
         String classe = etuClasse.getText().toString();
 
-        if(verifText(nom,classe)) {
+        EditText etuAnnee = findViewById(R.id.textViewAnneeEtu);
+        String annee = etuAnnee.getText().toString();
+
+        if (verifText(nom, classe, annee)) {
             this.nomEtu = nom;
             this.classeEtu = classe;
-            setContentView(R.layout.content_etudiant_attente);
-        }else {
+            new DAOEtudiant(EtudiantActivity.this).execute("getIdClasse","existClasse",this.classeEtu,annee);
+        } else {
             Toast.makeText(this, "Vous devez renseigner tous les champs !", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void onCLickTempo(View view)
-    {
-        Intent intent = new Intent(this,ChoixPersoActivity.class);
+    public void onCLickTempo(View view) {
+        Intent intent = new Intent(this, ChoixPersoActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("NomEtu", nomEtu);
-        bundle.putString("ClasseEtu",classeEtu);
+        bundle.putString("ClasseEtu", classeEtu);
 
         intent.putExtras(bundle);
         startActivity(intent);
     }
 
-    private boolean verifText(String nom, String classe) {
-        return !classe.equals("") && !nom.equals("");
+    private boolean verifText(String nom, String classe, String annee) {
+        return !classe.equals("") && !nom.equals("") && !annee.equals("");
+    }
+
+    public void existeClasse(String id) {
+        if (!id.equals("")) {
+            //TODO Enlever la ligne pour recommencer l'ajout d'étudiant
+            //new DAOEtudiant(EtudiantActivity.this).execute("createEtudiant","",this.nomEtu);
+            setContentView(R.layout.content_etudiant_attente);
+        }
+        else
+            Toast.makeText(this, "La classe n'existe pas.", Toast.LENGTH_SHORT).show();
     }
 }

@@ -5,22 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EtudiantActivity">
-
+    <!--TODO enlever le text par défault-->
     <Button
         android:id="@+id/button_continuer_etu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:onClick="onClikButtonContinuer"
         android:text="Continuer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewClasseEtu"
-        app:layout_constraintVertical_bias="0.84" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAnneeEtu" />
 
     <TextView
         android:id="@+id/textViewTitre"
@@ -41,12 +40,26 @@
         android:layout_width="521dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/nom"
+        android:text="Emma"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitre" />
+
+    <EditText
+        android:id="@+id/textViewAnneeEtu"
+        android:layout_width="521dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        android:hint="Année"
+        android:text="2019"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewClasseEtu" />
 
     <EditText
         android:id="@+id/textViewClasseEtu"
@@ -56,6 +69,7 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/classe"
+        android:text="S4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNomEtu"
