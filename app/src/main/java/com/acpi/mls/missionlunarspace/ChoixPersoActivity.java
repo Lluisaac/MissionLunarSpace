@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.immobile.MyObject;
@@ -82,5 +83,9 @@ public class ChoixPersoActivity extends AppCompatActivity {
 
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    public void continuerChoixGroupe(View view) {
+        passageGroupe();
     }
 }

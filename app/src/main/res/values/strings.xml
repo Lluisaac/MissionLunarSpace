@@ -7,4 +7,5 @@
     <string name="etudiants">Etudiants</string>
     <string name="nom">Nom</string>
     <string name="classe">Classe</string>
+    <string name="button">Button</string>
 </resources>
