@@ -41,7 +41,7 @@ public class DAOEtudiant extends DAO {
 
     private String getIdClasse(String nomClasse, String anneeClasse) {
         try {
-            PreparedStatement pst = cn.prepareStatement("SELECT COUNT(id) AS 'NbId' FROM Classes WHERE nomClasse = ? AND anneeClasse = ?;");
+            PreparedStatement pst = cn.prepareStatement("SELECT COUNT(idClasse) AS 'NbId' FROM Classes WHERE nomClasse = ? AND anneeClasse = ?;");
             pst.setString(1, nomClasse);
             pst.setString(2, anneeClasse);
             ResultSet rs = pst.executeQuery();
