@@ -36,7 +36,7 @@ public class DAOEnseignant extends DAO {
     public int createClasse(String nom, int annee) {
         try {
             Statement st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery("SELECT idClasse, nomClasse, anneeClasse FROM Classes");
+            ResultSet rs = st.executeQuery("SELECT idClasse, nomClasse, anneeClasse FROM Classes ORDER BY idClasse");
             rs.last();
             int nb = rs.getInt(1);
             rs.moveToInsertRow();

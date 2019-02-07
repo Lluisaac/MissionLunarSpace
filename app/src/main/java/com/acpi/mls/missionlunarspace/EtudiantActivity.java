@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.acpi.mls.missionlunarspace.DAO.DAOCheckPartieDemarree;
 import com.acpi.mls.missionlunarspace.DAO.DAOEtudiant;
 
 public class EtudiantActivity extends AppCompatActivity {
@@ -63,6 +65,10 @@ public class EtudiantActivity extends AppCompatActivity {
             //new DAOEtudiant(EtudiantActivity.this).execute("createEtudiant","",this.nomEtu);
 
             setContentView(R.layout.content_etudiant_attente);
+            Button boutonSuiveAttente = (Button) findViewById(R.id.buttonTempoAttente);
+            //TODO changer par boutonSuiveAttente.setVisibility(View.INVISIBLE);
+            boutonSuiveAttente.setVisibility(View.VISIBLE);
+            new DAOCheckPartieDemarree(boutonSuiveAttente, Integer.parseInt(id)).execute();
         }
         else
             Toast.makeText(this, "La classe n'existe pas.", Toast.LENGTH_SHORT).show();

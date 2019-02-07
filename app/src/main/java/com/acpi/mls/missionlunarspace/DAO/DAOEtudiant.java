@@ -1,4 +1,5 @@
 package com.acpi.mls.missionlunarspace.DAO;
+
 import com.acpi.mls.missionlunarspace.EtudiantActivity;
 
 import java.sql.PreparedStatement;
@@ -23,7 +24,7 @@ public class DAOEtudiant extends DAO {
             case "getIdClasse":
                 tab[0] = getIdClasse(strings[2], strings[3]);
                 break;
-            case "createEtudiant" :
+            case "createEtudiant":
                 createEtudiant(strings[2]);
                 break;
         }
@@ -41,16 +42,15 @@ public class DAOEtudiant extends DAO {
 
     private String getIdClasse(String nomClasse, String anneeClasse) {
         try {
-            PreparedStatement pst = cn.prepareStatement("SELECT COUNT(idClasse) AS 'NbId' FROM Classes WHERE nomClasse = ? AND anneeClasse = ?;");
+            PreparedStatement pst = cn.prepareStatement("SELECT idClasse AS 'NbId' FROM Classes WHERE nomClasse = ? AND anneeClasse = ?;");
             pst.setString(1, nomClasse);
             pst.setString(2, anneeClasse);
             ResultSet rs = pst.executeQuery();
 
             String id = "";
-            rs.next();
-            if ( rs.getInt("NbId") > 0)
-                id = "exist";
-
+            if (rs.next()) {
+                id = rs.getInt("NbId") + "";
+            }
             return id;
 
         } catch (
@@ -61,10 +61,10 @@ public class DAOEtudiant extends DAO {
         }
     }
 
-    private void createEtudiant(String nom){
+    private void createEtudiant(String nom) {
         try {
             PreparedStatement preparedStatement = cn.prepareStatement("INSERT INTO Etudiants (nomEtudiant) VALUES (?)");
-            preparedStatement.setString(1,nom);
+            preparedStatement.setString(1, nom);
             preparedStatement.executeUpdate();
         } catch (
                 SQLException e) {
