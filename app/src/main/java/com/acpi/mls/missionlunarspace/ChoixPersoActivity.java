@@ -3,11 +3,15 @@ package com.acpi.mls.missionlunarspace;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.acpi.mls.missionlunarspace.DAO.DAOChoixGroupeActivity;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.immobile.MyObject;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
@@ -23,7 +27,7 @@ public class ChoixPersoActivity extends AppCompatActivity {
 
 
     private List<MyObject> object = new ArrayList<>();
-    private ArrayList<String> objectMobile = new ArrayList<String>();
+    private ArrayList<String> objectMobile = new ArrayList<>();
 
     private String nom;
     private String classe;
@@ -39,12 +43,9 @@ public class ChoixPersoActivity extends AppCompatActivity {
         this.classe = (String) getIntent().getSerializableExtra("ClasseEtu");
         this.annee = (String) getIntent().getSerializableExtra("AnneeEtu");
 
-
         ajouterObjets();
         creerListeImmobile();
         creerListeMobile();
-
-
     }
 
     private void creerListeMobile() {
@@ -85,7 +86,16 @@ public class ChoixPersoActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void saveClassement(){
+        RecyclerViewAdapter recyclerViewAdapter = (RecyclerViewAdapter) this.recyclerViewMobile.getAdapter();
+        ArrayList<String> data = recyclerViewAdapter.getData();
+        for(int i = 0 ; i < 15 ; i++) {
+
+        }
+    }
+
     public void continuerChoixGroupe(View view) {
-        passageGroupe();
+        saveClassement();
+       // passageGroupe();
     }
 }
