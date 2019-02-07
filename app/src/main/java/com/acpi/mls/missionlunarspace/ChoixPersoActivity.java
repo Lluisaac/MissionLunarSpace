@@ -12,12 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.DAOChoixGroupeActivity;
+import com.acpi.mls.missionlunarspace.DAO.DAOChoixPersoActivity;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.immobile.MyObject;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChoixPersoActivity extends AppCompatActivity {
@@ -32,6 +34,8 @@ public class ChoixPersoActivity extends AppCompatActivity {
     private String nom;
     private String classe;
     private String annee;
+    private String idEtudiant;
+
     public static final String[] listObjets = {"1 boîte d’allumettes", "2 kg d’aliments concentrés", "50 mètres de corde en nylon", "1 parachute en soie", "1 appareil de chauffage fonctionnant à énergie solaire", "2 pistolets de calibre 45", "1 caisse de lait en poudre", "2 réservoirs de 50 kg d’oxygène chacun", "1 carte céleste des constellations lunaires", "1 canot de sauvetage auto-gonflable", "1 compas magnétique (boussole)", "25 litres d’eau", "1 trousse médicale et seringues hypodermiques", "1 ensemble de signaux lumineux fonctionnant à énergie solaire", "1 émetteur-récepteur fonctionnant à énergie solaire (fréquence moyenne)"};
 
 
@@ -42,11 +46,17 @@ public class ChoixPersoActivity extends AppCompatActivity {
         this.nom = (String) getIntent().getSerializableExtra("NomEtu");
         this.classe = (String) getIntent().getSerializableExtra("ClasseEtu");
         this.annee = (String) getIntent().getSerializableExtra("AnneeEtu");
+        new DAOChoixPersoActivity(ChoixPersoActivity.this).execute("getIdEtudiant", "getIdEtudiant", this.nom, this.classe, this.annee);
+    }
 
+
+    public void setIdEtudiant(String s) {
+        this.idEtudiant = s;
         ajouterObjets();
         creerListeImmobile();
         creerListeMobile();
     }
+
 
     private void creerListeMobile() {
 
@@ -72,30 +82,32 @@ public class ChoixPersoActivity extends AppCompatActivity {
             object.add(new MyObject(listObjets[i]));
             objectMobile.add(listObjets[i]);
         }
-
     }
 
-    private void passageGroupe(){
+    private void passageGroupe() {
         Intent intent = new Intent(this, ChoixGroupeActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("NomEtu", nom);
-        bundle.putString("ClasseEtu", classe);
-        bundle.putString("AnneeEtu",annee);
-
+        bundle.putString("idEtudiant", this.idEtudiant);
         intent.putExtras(bundle);
         startActivity(intent);
     }
 
-    private void saveClassement(){
+    private void saveClassement() {
         RecyclerViewAdapter recyclerViewAdapter = (RecyclerViewAdapter) this.recyclerViewMobile.getAdapter();
         ArrayList<String> data = recyclerViewAdapter.getData();
-        for(int i = 0 ; i < 15 ; i++) {
 
+        ArrayList<String> monArrayList = new ArrayList<String>(Arrays.asList(listObjets));
+
+        for (int i = 1; i <= 15; i++) {
+            int idObjet = 1 + monArrayList.indexOf(data.get(i - 1));
+            new DAOChoixPersoActivity(ChoixPersoActivity.this).execute("saveClassementObjet", "", this.idEtudiant, idObjet + "", "" + i);
         }
     }
 
+
     public void continuerChoixGroupe(View view) {
         saveClassement();
-       // passageGroupe();
+        passageGroupe();
     }
+
 }
