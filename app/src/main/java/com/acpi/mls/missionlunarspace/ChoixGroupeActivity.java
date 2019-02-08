@@ -63,8 +63,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             }
         }
     }
-    private int cpt;
 
+    private int cpt;
     //Recuperation du classement personel dans la BDD
     private void setRechercheClassementPerso() {
         cpt = 1;
@@ -142,6 +142,4 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewVrac.setAdapter(new MyAdapter(vrac));
 
     }
-
-
 }
