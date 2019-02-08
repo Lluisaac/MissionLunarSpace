@@ -1,17 +1,22 @@
 package com.acpi.mls.missionlunarspace;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.DAOChoixGroupeActivity;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.immobile.MyObject;
+import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
+import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChoixGroupeActivity extends AppCompatActivity {
@@ -51,20 +56,21 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     //Click sur le bouton continuer
     public void continuerRole(View view) {
         if (!this.role.equals("")) {
-            //if (this.role.equals("Capitaine"))
-            //setContentView(R.layout.page_capitaine);
+            if (this.role.equals("Capitaine")) {
+                setContentView(R.layout.page_capitaine);
+            }
+            if (this.role.equals("Technicien"))
+                setContentView(R.layout.page_technicien);
 
-            //if (this.role.equals("Technicien"))
-            //setContentView(R.layout.page_technicien);
-
-            if(this.role.equals("Astronaute")||this.role.equals("Expert")||this.role.equals("Saboteur")) {
-                setRechercheClassementPerso();
+            if (this.role.equals("Astronaute") || this.role.equals("Expert") || this.role.equals("Saboteur")) {
                 setContentView(R.layout.page_astronaute_expert_saboteur);
             }
+            setRechercheClassementPerso();
         }
     }
 
     private int cpt;
+
     //Recuperation du classement personel dans la BDD
     private void setRechercheClassementPerso() {
         cpt = 1;
@@ -85,16 +91,13 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     private void creerListeImmobile() {
         crerListeClassementPerso();
 
-        ArrayList<MyObject> vrac = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            vrac.add(new MyObject(ChoixPersoActivity.listObjets[i]));
-        }
+        if (this.role.equals("Capitaine"))
+            creerListMobile();
+        else
+            creerListeChoixGroupe();
 
-        RecyclerView recyclerViewGroupe = (RecyclerView) findViewById(R.id.recyclerViewObjetGroupe);
-        recyclerViewGroupe.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewGroupe.setAdapter(new MyAdapter(vrac));
 
-        if(this.role.equals("Astronaute"))
+        if (this.role.equals("Astronaute") || this.role.equals("Capitaine") || this.role.equals("Technicien"))
             creerListRandom();
         else
             creerListeOrdonnee();
@@ -106,18 +109,27 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewImmobile.setAdapter(new MyAdapter(classementPerso));
     }
 
+    private void creerListeChoixGroupe() {
+        ArrayList<MyObject> vrac = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            vrac.add(new MyObject(ChoixPersoActivity.listObjets[i]));
+        }
+        RecyclerView recyclerViewGroupe = (RecyclerView) findViewById(R.id.recyclerViewObjetGroupe);
+        recyclerViewGroupe.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewGroupe.setAdapter(new MyAdapter(vrac));
+    }
+
 
     private void creerListeOrdonnee() {
-        String[] agest = {"Réservoir d’oxygène","Réservoir d’eau","Carte céleste","Aliments concentrés","Émetteur-récepteur","Corde en nylon","Trousse médicale","Parachute en soie","Canot de sauvetage","Signaux lumineux","Pistolets de calibre 45","Lait en poudre","Appareil de chauffage","Compas Magnétique","Boîte d’allumettes"};
+        String[] agest = {"Réservoir d’oxygène", "Réservoir d’eau", "Carte céleste", "Aliments concentrés", "Émetteur-récepteur", "Corde en nylon", "Trousse médicale", "Parachute en soie", "Canot de sauvetage", "Signaux lumineux", "Pistolets de calibre 45", "Lait en poudre", "Appareil de chauffage", "Compas Magnétique", "Boîte d’allumettes"};
 
         ArrayList<MyObject> listOrdonnee = new ArrayList<>();
 
-        if(this.role.equals("Expert"))
-        {
+        if (this.role.equals("Expert")) {
             for (int i = 0; i < 15; i++) {
                 listOrdonnee.add(new MyObject(agest[i]));
             }
-        }else{
+        } else {
             for (int i = 14; i >= 0; i--) {
                 listOrdonnee.add(new MyObject(agest[i]));
             }
@@ -141,5 +153,28 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewVrac.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewVrac.setAdapter(new MyAdapter(vrac));
 
+    }
+
+    private void creerListMobile() {
+        ArrayList<String> monArrayList = new ArrayList<String>(Arrays.asList(ChoixPersoActivity.listObjets));
+
+        RecyclerView recyclerViewMobile = (RecyclerView) findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
+
+        recyclerViewMobile.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(monArrayList);
+        ItemTouchHelper.Callback callback = new ItemMoveCallback(mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerViewMobile);
+
+        recyclerViewMobile.setAdapter(mAdapter);
+    }
+
+    public void passageChoixClasse(){
+        Intent intent = new Intent(this, ChoixClasseActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("idEtudiant", this.idEtudiant);
+        bundle.putString("typeGroupe",this.typeGroupe);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

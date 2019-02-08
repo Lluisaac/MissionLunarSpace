@@ -94,4 +94,15 @@ public class DAOChoixGroupeActivity extends DAO {
             return null;
         }
     }
+
+
+    //------------------------------------------------------PREMIERE  PHASE------------------------------------------------------//
+                                                    /*Choix avec tous les objets */
+                                             /*On enleve les 5 premier objets du classement*/
+    //------------------------------------------------------DEUXIEME  PHASE------------------------------------------------------//
+                                                     /*On enleve les 5 suivants*/
+    //------------------------------------------------------TROISIEME PHASE------------------------------------------------------//
+                                                    /*On enleve les 5 suivants*/
+    //------------------------------------------------------QUATRIEME PHASE------------------------------------------------------//
+            /*Affichage de tous les objets dans l'ordre enregistré et possibilité de faire maximum trois changement*/
 }
