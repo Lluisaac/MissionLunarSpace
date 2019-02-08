@@ -40,7 +40,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         this.typeGroupe = typeGroupe;
         TextView textView = findViewById(R.id.textView_AffichageGroupe);
         textView.setText("VOUS ÊTES DANS LE GROUPE " + this.typeGroupe);
-
         new DAOChoixGroupeActivity(this).execute("getRoleEtudiant", "getRoleEtudiant", this.idEtudiant);
     }
 
@@ -48,6 +47,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         this.role = nomRole;
     }
 
+
+    //Click sur le bouton continuer
     public void continuerRole(View view) {
         if (!this.role.equals("")) {
             //if (this.role.equals("Capitaine"))
@@ -64,18 +65,25 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
     private int cpt;
 
+    //Recuperation du classement personel dans la BDD
     private void setRechercheClassementPerso() {
         cpt = 1;
         new DAOChoixGroupeActivity(ChoixGroupeActivity.this).execute("getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
     }
 
+    public void setClassement(String objet) {
+        if (cpt < 15) {
+            classementPerso.add(new MyObject(objet));
+            cpt++;
+            new DAOChoixGroupeActivity(ChoixGroupeActivity.this).execute("getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
+        } else {
+            creerListeImmobile();
+        }
+    }
+
+    //Remplissage des listes des objets
     private void creerListeImmobile() {
         crerListeClassementPerso();
-        if(this.role.equals("Astronaute"))
-            creerListRandom();
-        else
-            creerListeOrdonnee();
-
 
         ArrayList<MyObject> vrac = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
@@ -86,6 +94,10 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewGroupe.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewGroupe.setAdapter(new MyAdapter(vrac));
 
+        if(this.role.equals("Astronaute"))
+            creerListRandom();
+        else
+            creerListeOrdonnee();
     }
 
     private void crerListeClassementPerso() {
@@ -117,28 +129,19 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
 
     private void creerListRandom() {
+        String[] randomOrdre = {"Boîte d’allumettes", "Aliments concentrés", "Corde en nylon", "Parachute en soie", "Appareil de chauffage", "Pistolets de calibre 45", "Lait en poudre", "Réservoirs d’oxygène", "Carte céleste", "Canot de sauvetage", "Compas magnétique", "Réservoir d’eau", "Trousse médicale", "Signaux lumineux", "Émetteur-récepteur"};
 
         ArrayList<MyObject> vrac = new ArrayList<>();
 
         for (int i = 0; i < 15; i++) {
-            vrac.add(new MyObject(ChoixPersoActivity.listObjets[i]));
+            vrac.add(new MyObject(randomOrdre[i]));
         }
 
         RecyclerView recyclerViewVrac = (RecyclerView) findViewById(R.id.recyclerViewObjetVrac);
         recyclerViewVrac.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewVrac.setAdapter(new MyAdapter(vrac));
 
-
-
     }
 
-    public void setClassement(String objet) {
-        if (cpt < 15) {
-            classementPerso.add(new MyObject(objet));
-            cpt++;
-            new DAOChoixGroupeActivity(ChoixGroupeActivity.this).execute("getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
-        } else {
-            creerListeImmobile();
-        }
-    }
+
 }

@@ -84,14 +84,6 @@ public class ChoixPersoActivity extends AppCompatActivity {
         }
     }
 
-    private void passageGroupe() {
-        Intent intent = new Intent(this, ChoixGroupeActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("idEtudiant", this.idEtudiant);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
     private void saveClassement() {
         RecyclerViewAdapter recyclerViewAdapter = (RecyclerViewAdapter) this.recyclerViewMobile.getAdapter();
         ArrayList<String> data = recyclerViewAdapter.getData();
@@ -111,4 +103,11 @@ public class ChoixPersoActivity extends AppCompatActivity {
         passageGroupe();
     }
 
+    private void passageGroupe() {
+        Intent intent = new Intent(this, ChoixGroupeActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("idEtudiant", this.idEtudiant);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 }
