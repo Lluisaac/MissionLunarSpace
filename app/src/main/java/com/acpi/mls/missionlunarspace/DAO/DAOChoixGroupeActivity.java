@@ -92,7 +92,6 @@ public class DAOChoixGroupeActivity extends DAO {
             e.printStackTrace();
             return null;
         }
-
     }
 
 
