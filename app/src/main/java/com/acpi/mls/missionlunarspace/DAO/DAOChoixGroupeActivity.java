@@ -6,6 +6,7 @@ import com.acpi.mls.missionlunarspace.ChoixGroupeActivity;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DAOChoixGroupeActivity extends DAO {
     private ChoixGroupeActivity monChoixGroupeActivity;
@@ -93,6 +94,4 @@ public class DAOChoixGroupeActivity extends DAO {
             return null;
         }
     }
-
-
 }
