@@ -25,6 +25,9 @@ public class DAOChoixGroupeActivity extends DAO {
             case "getRoleEtudiant":
                 tab[0] = getRoleEtudiant(strings[2]);
                 break;
+            case "getClassementEtudiant":
+                tab[0] = getClassementEtudiant(strings[2], strings[3]);
+                break;
         }
         return tab;
     }
@@ -37,6 +40,9 @@ public class DAOChoixGroupeActivity extends DAO {
                 break;
             case "getRoleEtudiant":
                 monChoixGroupeActivity.setRole(result[0]);
+                break;
+            case "getClassementEtudiant":
+                monChoixGroupeActivity.setClassement(result[0]);
                 break;
         }
     }
@@ -70,6 +76,23 @@ public class DAOChoixGroupeActivity extends DAO {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private String getClassementEtudiant(String idEtudiant, String position) {
+        try {
+            PreparedStatement pst = cn.prepareStatement("SELECT nomObjet FROM Objets O JOIN ClassementEtudiant CE ON CE.idObjet = O.idObjet WHERE CE.idEtudiant = ? AND CE.position = ?;");
+            pst.setString(1, idEtudiant);
+            pst.setString(2, position);
+            ResultSet rs = pst.executeQuery();
+            rs.next();
+            return rs.getString(1);
+        } catch (
+                SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
 
