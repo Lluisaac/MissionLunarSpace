@@ -21,19 +21,21 @@ public class DAORefreshListeGroupe extends DAO {
      * Il faut faire myDAO.execute(monIdDeGroupe) pour un bon fonctionnement
      * /!\ Cela ne va pas modifier l'affichage d'une quelconque façon
      */
-    public DAORefreshListeGroupe(ChoixGroupeActivity choixGroupeActivity, ArrayList<String> liste) {
+    public DAORefreshListeGroupe(ChoixGroupeActivity choixGroupeActivity, ArrayList<String> liste, boolean cont) {
         this.liste = liste;
         this.choixGroupeActivity = choixGroupeActivity;
+        this.continuer = cont;
     }
 
     @Override
     protected String[] doInBackground(String... strings) {
-        faireCN();
-        while (continuer) {
+        while(continuer) {
+            faireCN();
             liste.clear();
             setClassementGroupe(Integer.parseInt(strings[0]), liste);
+            publishProgress(strings[0]);
             try {
-                Thread.sleep(5000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
             }
         }
@@ -41,12 +43,8 @@ public class DAORefreshListeGroupe extends DAO {
     }
 
     @Override
-    protected void onPostExecute(String[] result) {
-        switch (result[1]) {
-            case "refresh":
-                choixGroupeActivity.refreshClassementGroupe(this.liste);
-                break;
-        }
+    protected void onProgressUpdate(String... result) {
+        choixGroupeActivity.refreshClassementGroupe(result[0]);
     }
 
     public void arreter() {
@@ -64,6 +62,12 @@ public class DAORefreshListeGroupe extends DAO {
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();
+        }
+    }
+
+    private void faireClear(ArrayList<String> liste) {
+        while (liste.size() > 0) {
+            liste.remove(0);
         }
     }
 

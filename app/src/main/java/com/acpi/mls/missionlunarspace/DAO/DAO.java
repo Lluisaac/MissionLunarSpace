@@ -11,8 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
-public abstract class DAO extends AsyncTask<String, Void, String[]> {
+public abstract class DAO extends AsyncTask<String, String, String[]> {
 	protected static Connection cn;
 
 	public DAO() {}

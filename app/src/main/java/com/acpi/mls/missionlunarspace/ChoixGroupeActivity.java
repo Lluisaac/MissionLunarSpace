@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.DAOChoixGroupeActivity;
@@ -17,6 +18,7 @@ import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class ChoixGroupeActivity extends AppCompatActivity {
 
@@ -36,7 +38,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     private final String[] randomOrdre = {"Boîte d’allumettes", "Aliments concentrés", "Corde en nylon", "Parachute en soie", "Appareil de chauffage", "Pistolets de calibre 45", "Lait en poudre", "Réservoirs d’oxygène", "Carte céleste", "Canot de sauvetage", "Compas magnétique", "Réservoir d’eau", "Trousse médicale", "Signaux lumineux", "Émetteur-récepteur"};
     private final String[] agest = {"Réservoir d’oxygène", "Réservoir d’eau", "Carte céleste", "Aliments concentrés", "Émetteur-récepteur", "Corde en nylon", "Trousse médicale", "Parachute en soie", "Canot de sauvetage", "Signaux lumineux", "Pistolets de calibre 45", "Lait en poudre", "Appareil de chauffage", "Compas Magnétique", "Boîte d’allumettes"};
 
-    private DAORefreshListeGroupe daoRefreshListeGroupe;
+    public DAORefreshListeGroupe daoRefreshListeGroupe;
 
 
     private int phase;
@@ -50,7 +52,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
         this.classementGroupe.addAll(Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15));
         this.classementCapitaine.addAll(Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15));
-        this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this,classementGroupe);
+        this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe, true);
 
         recuperationGroupe();
 
@@ -74,7 +76,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         new DAOChoixGroupeActivity(this).execute("getIdGroupeEtudiant", "getIdGroupeEtudiant", this.idEtudiant);
     }
 
-    public void setIdGroupe(String idGroupe){
+    public void setIdGroupe(String idGroupe) {
         this.idGroupe = idGroupe;
     }
 
@@ -189,8 +191,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void refreshClassementGroupe(ArrayList<String> list){
-        classementGroupe = list;
+    public void refreshClassementGroupe(String str) {
+        recyclerViewGroupe.setAdapter(new MyAdapter(this.classementGroupe));
     }
 
 /* En construction
