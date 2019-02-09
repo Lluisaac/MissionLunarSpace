@@ -8,7 +8,7 @@ import com.acpi.mls.missionlunarspace.R;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView textView;
+    protected TextView textView;
 
     public MyViewHolder(View itemView) {
         super(itemView);
@@ -16,7 +16,4 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         this.textView = (TextView) itemView.findViewById(R.id.text);
     }
 
-    public void bind(MyObject myObject) {
-        textView.setText(myObject.getText());
-    }
 }

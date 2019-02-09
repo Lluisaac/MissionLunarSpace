@@ -11,13 +11,11 @@ import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.DAOChoixGroupeActivity;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
-import com.acpi.mls.missionlunarspace.immobile.MyObject;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class ChoixGroupeActivity extends AppCompatActivity {
 
@@ -25,14 +23,28 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     private String role;
     private String idEtudiant;
 
-    private List<MyObject> classementPerso = new ArrayList<>();
-    private RecyclerView recyclerViewImmobile;
+    private ArrayList classementPerso = new ArrayList<>();
+    private RecyclerView recyclerViewClassmentPerso;
+
+
+    private ArrayList<String> classementGroupe = new ArrayList<>();
+    private RecyclerView getRecyclerViewGroupe;
+    private RecyclerView recyclerViewCapitaine;
+
+    private final String[] randomOrdre = {"Boîte d’allumettes", "Aliments concentrés", "Corde en nylon", "Parachute en soie", "Appareil de chauffage", "Pistolets de calibre 45", "Lait en poudre", "Réservoirs d’oxygène", "Carte céleste", "Canot de sauvetage", "Compas magnétique", "Réservoir d’eau", "Trousse médicale", "Signaux lumineux", "Émetteur-récepteur"};
+    private final String[] agest = {"Réservoir d’oxygène", "Réservoir d’eau", "Carte céleste", "Aliments concentrés", "Émetteur-récepteur", "Corde en nylon", "Trousse médicale", "Parachute en soie", "Canot de sauvetage", "Signaux lumineux", "Pistolets de calibre 45", "Lait en poudre", "Appareil de chauffage", "Compas Magnétique", "Boîte d’allumettes"};
+
+
+    private int phase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.idEtudiant = (String) getIntent().getSerializableExtra("idEtudiant");
+        this.classementPerso = (ArrayList) getIntent().getSerializableExtra("classementPersoEtudiant");
         this.role = "";
+
+        this.classementGroupe.addAll(Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15));
         recuperationGroupe();
     }
 
@@ -65,116 +77,103 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             if (this.role.equals("Astronaute") || this.role.equals("Expert") || this.role.equals("Saboteur")) {
                 setContentView(R.layout.page_astronaute_expert_saboteur);
             }
-            setRechercheClassementPerso();
-        }
-    }
 
-    private int cpt;
-
-    //Recuperation du classement personel dans la BDD
-    private void setRechercheClassementPerso() {
-        cpt = 1;
-        new DAOChoixGroupeActivity(ChoixGroupeActivity.this).execute("getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
-    }
-
-    public void setClassement(String objet) {
-        if (cpt < 15) {
-            classementPerso.add(new MyObject(objet));
-            cpt++;
-            new DAOChoixGroupeActivity(ChoixGroupeActivity.this).execute("getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
-        } else {
+            //setRechercheClassementPerso();
             creerListeImmobile();
         }
     }
 
+    /*
+        private int cpt;
+
+        //Recuperation du classement personel dans la BDD
+        private void setRechercheClassementPerso() {
+            cpt = 1;
+            new DAOChoixGroupeActivity(ChoixGroupeActivity.this).execute("getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
+        }
+
+        public void setClassement(String objet) {
+            if (cpt < 15) {
+                classementPerso.add(objet);
+                cpt++;
+                new DAOChoixGroupeActivity(ChoixGroupeActivity.this).execute("getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
+            } else {
+
+            }
+        }
+
+    */
     //Remplissage des listes des objets
     private void creerListeImmobile() {
         crerListeClassementPerso();
 
         if (this.role.equals("Capitaine"))
-            creerListMobile();
+            creerListCapitaine();
         else
             creerListeChoixGroupe();
 
 
-        if (this.role.equals("Astronaute") || this.role.equals("Capitaine") || this.role.equals("Technicien"))
-            creerListRandom();
-        else
-            creerListeOrdonnee();
+        ArrayList<String> strings = new ArrayList<>();
+
+        switch (this.role) {
+            case "Expert":
+                strings.addAll((Arrays.asList(agest).subList(0, 15)));
+                break;
+            case "Saboteur":
+                for (int i = 14; i >= 0; i--) {
+                    strings.add(agest[i]);
+                }
+                break;
+            default:
+                strings.addAll((Arrays.asList(randomOrdre).subList(0, 15)));
+                break;
+        }
+
+        creerListCentre(strings);
     }
 
     private void crerListeClassementPerso() {
-        recyclerViewImmobile = (RecyclerView) findViewById(R.id.recyclerView_objetPerso);
-        recyclerViewImmobile.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewImmobile.setAdapter(new MyAdapter(classementPerso));
+        recyclerViewClassmentPerso = (RecyclerView) findViewById(R.id.recyclerView_objetPerso);
+        recyclerViewClassmentPerso.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewClassmentPerso.setAdapter(new MyAdapter(classementPerso));
     }
 
     private void creerListeChoixGroupe() {
-        ArrayList<MyObject> vrac = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            vrac.add(new MyObject(ChoixPersoActivity.listObjets[i]));
-        }
-        RecyclerView recyclerViewGroupe = (RecyclerView) findViewById(R.id.recyclerViewObjetGroupe);
-        recyclerViewGroupe.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewGroupe.setAdapter(new MyAdapter(vrac));
+        getRecyclerViewGroupe = (RecyclerView) findViewById(R.id.recyclerViewObjetGroupe);
+        getRecyclerViewGroupe.setLayoutManager(new LinearLayoutManager(this));
+        getRecyclerViewGroupe.setAdapter(new MyAdapter(classementGroupe));
     }
 
-
-    private void creerListeOrdonnee() {
-        String[] agest = {"Réservoir d’oxygène", "Réservoir d’eau", "Carte céleste", "Aliments concentrés", "Émetteur-récepteur", "Corde en nylon", "Trousse médicale", "Parachute en soie", "Canot de sauvetage", "Signaux lumineux", "Pistolets de calibre 45", "Lait en poudre", "Appareil de chauffage", "Compas Magnétique", "Boîte d’allumettes"};
-
-        ArrayList<MyObject> listOrdonnee = new ArrayList<>();
-
-        if (this.role.equals("Expert")) {
-            for (int i = 0; i < 15; i++) {
-                listOrdonnee.add(new MyObject(agest[i]));
-            }
-        } else {
-            for (int i = 14; i >= 0; i--) {
-                listOrdonnee.add(new MyObject(agest[i]));
-            }
-        }
+    private void creerListCentre(ArrayList<String> list) {
 
         RecyclerView recyclerViewVrac = (RecyclerView) findViewById(R.id.recyclerViewObjetVrac);
         recyclerViewVrac.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewVrac.setAdapter(new MyAdapter(listOrdonnee));
-    }
-
-    private void creerListRandom() {
-        String[] randomOrdre = {"Boîte d’allumettes", "Aliments concentrés", "Corde en nylon", "Parachute en soie", "Appareil de chauffage", "Pistolets de calibre 45", "Lait en poudre", "Réservoirs d’oxygène", "Carte céleste", "Canot de sauvetage", "Compas magnétique", "Réservoir d’eau", "Trousse médicale", "Signaux lumineux", "Émetteur-récepteur"};
-
-        ArrayList<MyObject> vrac = new ArrayList<>();
-
-        for (int i = 0; i < 15; i++) {
-            vrac.add(new MyObject(randomOrdre[i]));
-        }
-
-        RecyclerView recyclerViewVrac = (RecyclerView) findViewById(R.id.recyclerViewObjetVrac);
-        recyclerViewVrac.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewVrac.setAdapter(new MyAdapter(vrac));
+        recyclerViewVrac.setAdapter(new MyAdapter(list));
 
     }
 
-    private void creerListMobile() {
-        ArrayList<String> monArrayList = new ArrayList<String>(Arrays.asList(ChoixPersoActivity.listObjets));
+    private void creerListCapitaine() {
+        recyclerViewCapitaine = findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
 
-        RecyclerView recyclerViewMobile = (RecyclerView) findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
-
-        recyclerViewMobile.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(monArrayList);
+        recyclerViewCapitaine.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(classementGroupe);
         ItemTouchHelper.Callback callback = new ItemMoveCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerViewMobile);
+        touchHelper.attachToRecyclerView(recyclerViewCapitaine);
 
-        recyclerViewMobile.setAdapter(mAdapter);
+        recyclerViewCapitaine.setAdapter(mAdapter);
     }
 
-    public void passageChoixClasse(){
+    public void passageChoixClasse() {
         Intent intent = new Intent(this, ChoixClasseActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("idEtudiant", this.idEtudiant);
-        bundle.putString("typeGroupe",this.typeGroupe);
+        bundle.putString("typeGroupe", this.typeGroupe);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    public void changementDePhase(View view) {
+        this.phase ++;
     }
 }

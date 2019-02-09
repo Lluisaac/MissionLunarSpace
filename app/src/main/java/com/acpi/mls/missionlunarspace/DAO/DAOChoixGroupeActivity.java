@@ -42,9 +42,9 @@ public class DAOChoixGroupeActivity extends DAO {
             case "getRoleEtudiant":
                 monChoixGroupeActivity.setRole(result[0]);
                 break;
-            case "getClassementEtudiant":
-                monChoixGroupeActivity.setClassement(result[0]);
-                break;
+            //case "getClassementEtudiant":
+               // monChoixGroupeActivity.setClassement(result[0]);
+                //break;
         }
     }
 

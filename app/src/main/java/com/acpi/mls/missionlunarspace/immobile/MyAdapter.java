@@ -11,9 +11,10 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
-    private List<MyObject> list;
+    private List<String> list;
 
-    public MyAdapter(List<MyObject> list) {
+
+    public MyAdapter(List<String> list) {
         this.list = list;
     }
 
@@ -24,8 +25,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        MyObject myObject = list.get(position);
-        holder.bind(myObject);
+        holder.textView.setText(list.get(position));
     }
 
     @Override

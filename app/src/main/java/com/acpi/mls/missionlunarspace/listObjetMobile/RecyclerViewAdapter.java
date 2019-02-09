@@ -71,13 +71,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onRowSelected(MyViewHolder myViewHolder) {
         myViewHolder.rowView.setBackgroundColor(Color.GRAY);
-
     }
 
     @Override
     public void onRowClear(MyViewHolder myViewHolder) {
         myViewHolder.rowView.setBackgroundColor(Color.WHITE);
-
     }
+
 }
 
