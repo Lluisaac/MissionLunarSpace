@@ -48,8 +48,8 @@ public class DAOEtudiant extends DAO {
             case "setIdEtu":
                 Constantes.idEtudiant = Integer.parseInt(result[0]);
                 break;
-            case "afficherRole":
-                monBoutonRole.afficherRole(result[0]);
+            case "setRole":
+                monBoutonRole.setRole(Integer.parseInt(result[0]));
                 break;
         }
     }
