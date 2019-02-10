@@ -2,6 +2,7 @@ package com.acpi.mls.missionlunarspace.DAO;
 
 import com.acpi.mls.missionlunarspace.Constantes;
 import com.acpi.mls.missionlunarspace.EtudiantActivity;
+import com.acpi.mls.missionlunarspace.BtnRoles;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,14 +12,14 @@ import java.sql.SQLException;
 public class DAOEtudiant extends DAO {
 
     private EtudiantActivity monEtudiant;
-    private BtnRoles monBoutonRoles;
+    private BtnRoles monBoutonRole;
 
     public DAOEtudiant(EtudiantActivity etudiantActivity) {
         this.monEtudiant = etudiantActivity;
     }
 
     public DAOEtudiant(BtnRoles bouton) {
-        this.monBoutonRoles = bouton;
+        this.monBoutonRole = bouton;
     }
 
     @Override
