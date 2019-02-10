@@ -50,7 +50,7 @@ public class DAOEtudiant extends DAO {
                 Constantes.idEtudiant = Integer.parseInt(result[0]);
                 break;
             case "setRole":
-                monBoutonRole.setRole(Integer.parseInt(result[0]));
+                //monBoutonRole.setRole(Integer.parseInt(result[0]));
                 break;
         }
     }
