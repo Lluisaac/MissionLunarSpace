@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btnRole"
+        android:layout_width="94dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/montrer"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="1007dp" />
+
+    <TextView
+        android:id="@+id/txtRole"
+        android:layout_width="95dp"
+        android:layout_height="19dp"
+        android:text="@string/role"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="912dp"
+        tools:layout_editor_absoluteY="18dp" />
+
+</android.support.constraint.ConstraintLayout>
