@@ -14,8 +14,6 @@ public class BtnRoles extends AppCompatActivity {
     private boolean cache;
 
 
-
-
     public Button getBtnRole() {
         return btnRole;
     }
@@ -41,27 +39,26 @@ public class BtnRoles extends AppCompatActivity {
     }
 
 
-    public BtnRoles(){
+    public BtnRoles() {
         setCache(true);
     }
+
     /**
-     *
      * @param role il faut récuperer le role de la personne à partir de la BD
      * @param btn
      */
-    public BtnRoles(TextView role, Button btn){
+    public BtnRoles(TextView role, Button btn) {
         this.setBtnRole(btn);
         this.setRole(role);
         setCache(true);
     }
 
-    public void clickBtn(){
-        if(isCache()){
+    public void clickBtn() {
+        if (isCache()) {
             setCache(false);
             role.setVisibility(View.INVISIBLE);
             btnRole.setText("Montrer");
-        }
-        else{
+        } else {
             setCache(true);
             role.setVisibility(View.VISIBLE);
             btnRole.setText("Cacher");
@@ -87,8 +84,4 @@ public class BtnRoles extends AppCompatActivity {
             }
         });
     }
-
-public class BtnRoles {
-
-    public void setRole(int i) {}
 }
