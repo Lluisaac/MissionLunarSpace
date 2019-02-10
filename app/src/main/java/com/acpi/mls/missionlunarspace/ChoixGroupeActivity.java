@@ -7,32 +7,38 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.DAOChoixGroupeActivity;
+import com.acpi.mls.missionlunarspace.DAO.DAORefreshListeGroupe;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class ChoixGroupeActivity extends AppCompatActivity {
 
     private String typeGroupe;
     private String role;
     private String idEtudiant;
+    private String idGroupe;
 
     private ArrayList classementPerso = new ArrayList<>();
-    private RecyclerView recyclerViewClassmentPerso;
 
-
+    private ArrayList<String> classementCapitaine = new ArrayList<>();
     private ArrayList<String> classementGroupe = new ArrayList<>();
-    private RecyclerView getRecyclerViewGroupe;
+    private ArrayList<String> classementGroupeP2 = new ArrayList<>();
+    private RecyclerView recyclerViewGroupe;
     private RecyclerView recyclerViewCapitaine;
 
     private final String[] randomOrdre = {"Boîte d’allumettes", "Aliments concentrés", "Corde en nylon", "Parachute en soie", "Appareil de chauffage", "Pistolets de calibre 45", "Lait en poudre", "Réservoirs d’oxygène", "Carte céleste", "Canot de sauvetage", "Compas magnétique", "Réservoir d’eau", "Trousse médicale", "Signaux lumineux", "Émetteur-récepteur"};
     private final String[] agest = {"Réservoir d’oxygène", "Réservoir d’eau", "Carte céleste", "Aliments concentrés", "Émetteur-récepteur", "Corde en nylon", "Trousse médicale", "Parachute en soie", "Canot de sauvetage", "Signaux lumineux", "Pistolets de calibre 45", "Lait en poudre", "Appareil de chauffage", "Compas Magnétique", "Boîte d’allumettes"};
+
+    public DAORefreshListeGroupe daoRefreshListeGroupe;
 
 
     private int phase;
@@ -45,7 +51,12 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         this.role = "";
 
         this.classementGroupe.addAll(Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15));
+        this.classementCapitaine.addAll(Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15));
+        this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe, true);
+
         recuperationGroupe();
+
+
     }
 
     private void recuperationGroupe() {
@@ -62,6 +73,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     public void setRole(String nomRole) {
         this.role = nomRole;
+        new DAOChoixGroupeActivity(this).execute("getIdGroupeEtudiant", "getIdGroupeEtudiant", this.idEtudiant);
+    }
+
+    public void setIdGroupe(String idGroupe) {
+        this.idGroupe = idGroupe;
     }
 
 
@@ -80,6 +96,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
             //setRechercheClassementPerso();
             creerListeImmobile();
+            this.daoRefreshListeGroupe.execute(this.idGroupe);
         }
     }
 
@@ -128,20 +145,19 @@ public class ChoixGroupeActivity extends AppCompatActivity {
                 strings.addAll((Arrays.asList(randomOrdre).subList(0, 15)));
                 break;
         }
-
         creerListCentre(strings);
     }
 
     private void crerListeClassementPerso() {
-        recyclerViewClassmentPerso = (RecyclerView) findViewById(R.id.recyclerView_objetPerso);
+        RecyclerView recyclerViewClassmentPerso = (RecyclerView) findViewById(R.id.recyclerView_objetPerso);
         recyclerViewClassmentPerso.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewClassmentPerso.setAdapter(new MyAdapter(classementPerso));
     }
 
     private void creerListeChoixGroupe() {
-        getRecyclerViewGroupe = (RecyclerView) findViewById(R.id.recyclerViewObjetGroupe);
-        getRecyclerViewGroupe.setLayoutManager(new LinearLayoutManager(this));
-        getRecyclerViewGroupe.setAdapter(new MyAdapter(classementGroupe));
+        recyclerViewGroupe = (RecyclerView) findViewById(R.id.recyclerViewObjetGroupe);
+        recyclerViewGroupe.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewGroupe.setAdapter(new MyAdapter(classementGroupe));
     }
 
     private void creerListCentre(ArrayList<String> list) {
@@ -156,7 +172,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewCapitaine = findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
 
         recyclerViewCapitaine.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(classementGroupe);
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(classementCapitaine);
         ItemTouchHelper.Callback callback = new ItemMoveCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerViewCapitaine);
@@ -165,6 +181,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
 
     public void passageChoixClasse() {
+
+        this.daoRefreshListeGroupe.arreter();
         Intent intent = new Intent(this, ChoixClasseActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("idEtudiant", this.idEtudiant);
@@ -173,7 +191,20 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void changementDePhase(View view) {
-        this.phase ++;
+    public void refreshClassementGroupe(String str) {
+        recyclerViewGroupe.setAdapter(new MyAdapter(this.classementGroupe));
     }
+
+/* En construction
+    public void modificationPhase() {
+        if (phase == 2) {
+            //this.classementGroupeP2.addAll(this.classementGroupe).
+            //recyclerViewGroupe.setAdapter(new MyAdapter(classementGroupe));
+        }
+    }*/
+/*
+    public void changementDePhase(View view) {
+        this.phase++;
+    }
+    */
 }

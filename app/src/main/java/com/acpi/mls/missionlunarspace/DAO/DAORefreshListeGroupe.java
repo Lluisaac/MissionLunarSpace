@@ -2,6 +2,7 @@ package com.acpi.mls.missionlunarspace.DAO;
 
 
 import com.acpi.mls.missionlunarspace.ChoixGroupeActivity;
+import com.acpi.mls.missionlunarspace.ChoixPersoActivity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,27 +13,38 @@ public class DAORefreshListeGroupe extends DAO {
 
     private ArrayList<String> liste;
     private boolean continuer = true;
+    private ChoixGroupeActivity choixGroupeActivity;
+
     /*
-    * Donner en paramètre l'arrayList qui doit être modifié
-    * Il faut conserver l'objet crée pour faire myDAO.arreter() quand l'utilisation est terminée
-    * Il faut faire myDAO.execute(monIdDeGroupe) pour un bon fonctionnement
-    * /!\ Cela ne va pas modifier l'affichage d'une quelconque façon
+     * Donner en paramètre l'arrayList qui doit être modifié
+     * Il faut conserver l'objet crée pour faire myDAO.arreter() quand l'utilisation est terminée
+     * Il faut faire myDAO.execute(monIdDeGroupe) pour un bon fonctionnement
+     * /!\ Cela ne va pas modifier l'affichage d'une quelconque façon
      */
-    public DAORefreshListeGroupe(ArrayList<String> liste) {
+    public DAORefreshListeGroupe(ChoixGroupeActivity choixGroupeActivity, ArrayList<String> liste, boolean cont) {
         this.liste = liste;
+        this.choixGroupeActivity = choixGroupeActivity;
+        this.continuer = cont;
     }
 
     @Override
     protected String[] doInBackground(String... strings) {
-        faireCN();
-        while (continuer) {
+        while(continuer) {
+            faireCN();
             liste.clear();
             setClassementGroupe(Integer.parseInt(strings[0]), liste);
+            publishProgress(strings[0]);
             try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {}
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+            }
         }
         return null;
+    }
+
+    @Override
+    protected void onProgressUpdate(String... result) {
+        choixGroupeActivity.refreshClassementGroupe(result[0]);
     }
 
     public void arreter() {
@@ -44,12 +56,18 @@ public class DAORefreshListeGroupe extends DAO {
             PreparedStatement pst = cn.prepareStatement("SELECT idGroupe, nomObjet, position FROM Objets ob JOIN ClassementGroupe cg ON ob.idObjet = cg.idObjet WHERE idGroupe = ? ORDER BY position");
             pst.setInt(1, idGroupe);
             ResultSet rs = pst.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 classement.add(rs.getString(2));
             }
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();
+        }
+    }
+
+    private void faireClear(ArrayList<String> liste) {
+        while (liste.size() > 0) {
+            liste.remove(0);
         }
     }
 

@@ -61,8 +61,9 @@ public class EtudiantActivity extends AppCompatActivity {
 
     public void existeClasse(String id) {
         if (!id.equals("")) {
-            //TODO Enlever la ligne pour recommencer l'ajout d'étudiant
-            //new DAOEtudiant(EtudiantActivity.this).execute("createEtudiant","",this.nomEtu);
+            //TODO Enlever la ligne pour recommencer l'ajout d'étudiant et enlever l'appel du set qui sera fait automatiquement dans le DAO
+            //new DAOEtudiant(EtudiantActivity.this).execute("createEtudiant","setIdEtu",this.nomEtu);
+            Constantes.idEtudiant = 1;
 
             setContentView(R.layout.content_etudiant_attente);
             Button boutonSuiveAttente = (Button) findViewById(R.id.buttonTempoAttente);
