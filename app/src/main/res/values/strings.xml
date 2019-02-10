@@ -8,4 +8,6 @@
     <string name="nom">Nom</string>
     <string name="classe">Classe</string>
     <string name="button">Button</string>
+    <string name="montrer">Montrer</string>
+    <string name="role">Role</string>
 </resources>
