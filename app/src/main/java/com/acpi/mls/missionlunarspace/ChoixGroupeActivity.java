@@ -7,10 +7,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.DAOChoixGroupeActivity;
+import com.acpi.mls.missionlunarspace.DAO.DAOClassementTemp;
 import com.acpi.mls.missionlunarspace.DAO.DAORefreshListeGroupe;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
@@ -18,6 +20,7 @@ import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class ChoixGroupeActivity extends AppCompatActivity {
@@ -52,7 +55,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
         this.classementGroupe.addAll(Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15));
         this.classementCapitaine.addAll(Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15));
-        this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe, true);
+
 
         recuperationGroupe();
     }
@@ -94,7 +97,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
             //setRechercheClassementPerso();
             creerListeImmobile();
-            this.daoRefreshListeGroupe.execute(this.idGroupe);
+
         }
     }
 
@@ -124,8 +127,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
         if (this.role.equals("Capitaine"))
             creerListCapitaine();
-        else
+        else {
             creerListeChoixGroupe();
+            this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe, true);
+            this.daoRefreshListeGroupe.execute(this.idGroupe);
+        }
 
 
         ArrayList<String> strings = new ArrayList<>();
@@ -180,7 +186,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     public void passageChoixClasse() {
 
-        this.daoRefreshListeGroupe.arreter();
+        if (!this.role.equals("Capitaine"))
+            this.daoRefreshListeGroupe.arreter();
         Intent intent = new Intent(this, ChoixClasseActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("idEtudiant", this.idEtudiant);
@@ -193,6 +200,17 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewGroupe.setAdapter(new MyAdapter(this.classementGroupe));
     }
 
+    public void demandeConfirmation(View view) {
+        ArrayList<String> classementTempo = new ArrayList<>();
+        for(int i = 0 ; i < 5 ; i++){
+            classementTempo.add(classementCapitaine.get(i));
+        }
+
+        //TODO enlever le commentaire pour sauvegarde le classement tempo
+        //new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo,this.phase).execute("saveClassementTemp","",this.idGroupe);
+    }
+
+
 /* En construction
     public void modificationPhase() {
         if (phase == 2) {
@@ -203,6 +221,5 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 /*
     public void changementDePhase(View view) {
         this.phase++;
-    }
     */
 }
