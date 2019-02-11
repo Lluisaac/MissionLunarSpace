@@ -8,18 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.xml.transform.Result;
+
 
 public class DAOEtudiant extends DAO {
 
     private EtudiantActivity monEtudiant;
-    private BtnRoles monBoutonRole;
 
     public DAOEtudiant(EtudiantActivity etudiantActivity) {
         this.monEtudiant = etudiantActivity;
-    }
-
-    public DAOEtudiant(BtnRoles bouton) {
-        this.monBoutonRole = bouton;
     }
 
     @Override
@@ -33,9 +30,6 @@ public class DAOEtudiant extends DAO {
             case "createEtudiant":
                 tab[0] = createEtudiant(strings[2]) + "";
                 break;
-            case "getTypeEtudiant":
-                tab[0] = getTypeEtudiant(Integer.parseInt(strings[2])) + "";
-                break;
         }
         return tab;
     }
@@ -47,10 +41,7 @@ public class DAOEtudiant extends DAO {
                 monEtudiant.existeClasse(result[0]);
                 break;
             case "setIdEtu":
-                Constantes.idEtudiant = Integer.parseInt(result[0]);
-                break;
-            case "setRole":
-                //monBoutonRole.setRole(Integer.parseInt(result[0]));
+                monEtudiant.faireNouvelEtudiant(result[0]);
                 break;
         }
     }
@@ -76,35 +67,14 @@ public class DAOEtudiant extends DAO {
         }
     }
 
-    //TODO pas ici
-    private int getTypeEtudiant(int id) {
-        try {
-            PreparedStatement pst = cn.prepareStatement("SELECT idEtudiant, role FROM Etudiants WHERE idEtudiant = ?");
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-
-            int role = -1;
-            if (rs.next()) {
-                id = rs.getInt("role");
-            }
-            return role;
-
-        } catch (
-                SQLException e) {
-            deconnexion();
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-
-    //TODO refaire
     private int createEtudiant(String nom) {
         try {
-            int id = getNextIdEtudiant();
-            PreparedStatement preparedStatement = cn.prepareStatement("INSERT INTO Etudiants (nomEtudiant) VALUES (?)");
+            int id;
+            PreparedStatement preparedStatement = cn.prepareStatement("SELECT createEtudiant(?)");
             preparedStatement.setString(1, nom);
-            preparedStatement.executeUpdate();
+            ResultSet rs = preparedStatement.executeQuery();
+            rs.next();
+            id = rs.getInt(1);
             return id;
         } catch (SQLException e) {
             deconnexion();
@@ -112,25 +82,4 @@ public class DAOEtudiant extends DAO {
             return -1;
         }
     }
-
-    //TODO Virer
-    private int getLastIdEtudiant() {
-        return getNextIdEtudiant() - 1;
-    }
-
-    //TODO virer
-    private int getNextIdEtudiant() {
-        try {
-            PreparedStatement pst = cn.prepareStatement("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'lluisi' AND TABLE_NAME = 'Etudiants'");
-            ResultSet rs = pst.executeQuery();
-            return rs.getInt(1);
-        } catch (
-                SQLException e) {
-            deconnexion();
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    //TODO faire fonction qui fait tout
 }

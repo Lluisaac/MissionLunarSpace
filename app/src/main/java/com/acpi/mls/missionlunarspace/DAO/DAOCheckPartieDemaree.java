@@ -12,12 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DAOCheckPartieDemarree extends DAO {
+public class DAOCheckPartieDemaree extends DAO {
 
     private Button bouton;
     private int idClasse;
 
-    public DAOCheckPartieDemarree(Button bouton, int idClasse) {
+    public DAOCheckPartieDemaree(Button bouton, int idClasse) {
         this.bouton = bouton;
         this.idClasse = idClasse;
     }

@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.acpi.mls.missionlunarspace.DAO.DAOCheckPartieDemarree;
+import com.acpi.mls.missionlunarspace.DAO.DAOCheckPartieDemaree;
 import com.acpi.mls.missionlunarspace.DAO.DAOEtudiant;
 
 public class EtudiantActivity extends AppCompatActivity {
@@ -16,6 +16,8 @@ public class EtudiantActivity extends AppCompatActivity {
     private String nomEtu;
     private String classeEtu;
     private String anneeEtu;
+    private String idEtudiant;
+    private String idClasse;
 
 
     @Override
@@ -38,7 +40,7 @@ public class EtudiantActivity extends AppCompatActivity {
             this.nomEtu = nom;
             this.classeEtu = classe;
             this.anneeEtu = annee;
-            new DAOEtudiant(EtudiantActivity.this).execute("getIdClasse","existClasse",this.classeEtu,annee);
+            new DAOEtudiant(EtudiantActivity.this).execute("getIdClasse", "existClasse", this.classeEtu, annee);
         } else {
             Toast.makeText(this, "Vous devez renseigner tous les champs !", Toast.LENGTH_SHORT).show();
         }
@@ -49,7 +51,8 @@ public class EtudiantActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("NomEtu", nomEtu);
         bundle.putString("ClasseEtu", classeEtu);
-        bundle.putString("AnneeEtu",anneeEtu);
+        bundle.putString("AnneeEtu", anneeEtu);
+        bundle.putString("IdEtu", idEtudiant);
 
         intent.putExtras(bundle);
         startActivity(intent);
@@ -62,16 +65,31 @@ public class EtudiantActivity extends AppCompatActivity {
     public void existeClasse(String id) {
         if (!id.equals("")) {
             //TODO Enlever la ligne pour recommencer l'ajout d'étudiant et enlever l'appel du set qui sera fait automatiquement dans le DAO
-            //new DAOEtudiant(EtudiantActivity.this).execute("createEtudiant","setIdEtu",this.nomEtu);
-            Constantes.idEtudiant = 1;
-
-            setContentView(R.layout.content_etudiant_attente);
-            Button boutonSuiveAttente = (Button) findViewById(R.id.buttonTempoAttente);
-            //TODO changer par boutonSuiveAttente.setVisibility(View.INVISIBLE);
-            boutonSuiveAttente.setVisibility(View.VISIBLE);
-            new DAOCheckPartieDemarree(boutonSuiveAttente, Integer.parseInt(id)).execute();
-        }
-        else
+            new DAOEtudiant(EtudiantActivity.this).execute("createEtudiant", "setIdEtu", this.nomEtu);
+            //setIdEtudiant("1");
+            this.idClasse = id;
+        } else
             Toast.makeText(this, "La classe n'existe pas.", Toast.LENGTH_SHORT).show();
+    }
+
+    public void faireNouvelEtudiant(String idEtudiant) {
+        if ("-1".equals(idEtudiant)) {
+            Toast.makeText(this, "Veuillez renter un nom different", Toast.LENGTH_SHORT).show();
+        } else {
+            this.setIdEtudiant(idEtudiant);
+            changerPageVersAttente();
+        }
+    }
+
+    private void changerPageVersAttente() {
+        setContentView(R.layout.content_etudiant_attente);
+        Button boutonSuiveAttente = (Button) findViewById(R.id.buttonTempoAttente);
+        //TODO changer par boutonSuiveAttente.setVisibility(View.INVISIBLE);
+        boutonSuiveAttente.setVisibility(View.VISIBLE);
+        new DAOCheckPartieDemaree(boutonSuiveAttente, Integer.parseInt(idClasse)).execute();
+    }
+
+    public void setIdEtudiant(String idEtudiant) {
+        this.idEtudiant = idEtudiant;
     }
 }

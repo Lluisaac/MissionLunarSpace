@@ -26,8 +26,8 @@ public class BtnRoles extends AppCompatActivity {
         return role;
     }
 
-    public void setRole(TextView role) {
-        this.role = role;
+    public void setRole(String role) {
+        this.role.setText(role);
     }
 
     public boolean isCache() {
@@ -49,7 +49,7 @@ public class BtnRoles extends AppCompatActivity {
      */
     public BtnRoles(TextView role, Button btn) {
         this.setBtnRole(btn);
-        this.setRole(role);
+        this.role = role;
         setCache(true);
     }
 
@@ -75,7 +75,7 @@ public class BtnRoles extends AppCompatActivity {
         TextView txt = findViewById(R.id.txtRole);
 
         btnRole.setBtnRole(btn);
-        btnRole.setRole(txt);
+        //btnRole.setRole(txt);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
