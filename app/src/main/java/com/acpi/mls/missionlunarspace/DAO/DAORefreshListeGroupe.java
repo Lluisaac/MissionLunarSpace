@@ -64,12 +64,4 @@ public class DAORefreshListeGroupe extends DAO {
             e.printStackTrace();
         }
     }
-
-    private void faireClear(ArrayList<String> liste) {
-        while (liste.size() > 0) {
-            liste.remove(0);
-        }
-    }
-
-
 }

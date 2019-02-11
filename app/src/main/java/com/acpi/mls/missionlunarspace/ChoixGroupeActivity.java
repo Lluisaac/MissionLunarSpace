@@ -55,8 +55,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe, true);
 
         recuperationGroupe();
-
-
     }
 
     private void recuperationGroupe() {

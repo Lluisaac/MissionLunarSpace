@@ -76,6 +76,7 @@ public class DAOEtudiant extends DAO {
         }
     }
 
+    //TODO pas ici
     private int getTypeEtudiant(int id) {
         try {
             PreparedStatement pst = cn.prepareStatement("SELECT idEtudiant, role FROM Etudiants WHERE idEtudiant = ?");
@@ -96,6 +97,8 @@ public class DAOEtudiant extends DAO {
         }
     }
 
+
+    //TODO refaire
     private int createEtudiant(String nom) {
         try {
             int id = getNextIdEtudiant();
@@ -103,18 +106,19 @@ public class DAOEtudiant extends DAO {
             preparedStatement.setString(1, nom);
             preparedStatement.executeUpdate();
             return id;
-        } catch (
-                SQLException e) {
+        } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();
             return -1;
         }
     }
 
+    //TODO Virer
     private int getLastIdEtudiant() {
         return getNextIdEtudiant() - 1;
     }
 
+    //TODO virer
     private int getNextIdEtudiant() {
         try {
             PreparedStatement pst = cn.prepareStatement("SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'lluisi' AND TABLE_NAME = 'Etudiants'");
@@ -127,4 +131,6 @@ public class DAOEtudiant extends DAO {
             return -1;
         }
     }
+
+    //TODO faire fonction qui fait tout
 }
