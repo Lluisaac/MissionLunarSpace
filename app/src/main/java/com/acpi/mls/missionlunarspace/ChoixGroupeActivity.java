@@ -84,7 +84,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     //Click sur le bouton continuer
     public void continuerRole(View view) {
-        if (!this.role.equals("")) {
+        if (!"".equals(this.role)) {
             if (this.role.equals("Capitaine")) {
                 setContentView(R.layout.page_capitaine);
             }
@@ -207,7 +207,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         }
 
         //TODO enlever le commentaire pour sauvegarde le classement tempo
-        //new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo,this.phase).execute("saveClassementTemp","",this.idGroupe);
+        new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo,this.phase).execute("saveClassementTemp","",this.idGroupe);
     }
 
 

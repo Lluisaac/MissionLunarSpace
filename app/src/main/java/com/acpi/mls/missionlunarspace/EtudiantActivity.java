@@ -85,7 +85,7 @@ public class EtudiantActivity extends AppCompatActivity {
         setContentView(R.layout.content_etudiant_attente);
         Button boutonSuiveAttente = (Button) findViewById(R.id.buttonTempoAttente);
         //TODO changer par boutonSuiveAttente.setVisibility(View.INVISIBLE);
-        boutonSuiveAttente.setVisibility(View.VISIBLE);
+        boutonSuiveAttente.setVisibility(View.INVISIBLE);
         new DAOCheckPartieDemaree(boutonSuiveAttente, Integer.parseInt(idClasse)).execute();
     }
 
