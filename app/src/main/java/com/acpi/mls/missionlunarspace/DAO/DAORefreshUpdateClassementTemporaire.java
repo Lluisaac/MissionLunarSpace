@@ -2,16 +2,15 @@ package com.acpi.mls.missionlunarspace.DAO;
 
 
 import com.acpi.mls.missionlunarspace.ChoixGroupeActivity;
-import com.acpi.mls.missionlunarspace.ChoixPersoActivity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DAORefreshListeGroupe extends DAO {
+public class DAORefreshUpdateClassementTemporaire extends DAO {
 
-    private ArrayList<String> liste;
+    private String precedent;
     private boolean continuer = true;
     private ChoixGroupeActivity choixGroupeActivity;
 
@@ -21,8 +20,8 @@ public class DAORefreshListeGroupe extends DAO {
      * Il faut faire myDAO.execute(monIdDeGroupe) pour un bon fonctionnement
      * /!\ Cela ne va pas modifier l'affichage d'une quelconque façon
      */
-    public DAORefreshListeGroupe(ChoixGroupeActivity choixGroupeActivity, ArrayList<String> liste) {
-        this.liste = liste;
+    public DAORefreshUpdateClassementTemporaire(ChoixGroupeActivity choixGroupeActivity) {
+        this.precedent = "";
         this.choixGroupeActivity = choixGroupeActivity;
     }
 
@@ -30,9 +29,7 @@ public class DAORefreshListeGroupe extends DAO {
     protected String[] doInBackground(String... strings) {
         while(continuer) {
             faireCN();
-            liste.clear();
-            setClassementGroupe(Integer.parseInt(strings[0]), liste);
-            publishProgress(strings[0]);
+            publishProgress(getDifferences(Integer.parseInt(strings[0])));
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -43,24 +40,25 @@ public class DAORefreshListeGroupe extends DAO {
 
     @Override
     protected void onProgressUpdate(String... result) {
-        choixGroupeActivity.refreshClassementGroupe(result[0]);
+        //choixGroupeActivity.afficherPopup(result[0]);
     }
 
     public void arreter() {
         continuer = false;
     }
 
-    private void setClassementGroupe(int idGroupe, ArrayList<String> classement) {
+    private String getDifferences(int phase) {
         try {
-            PreparedStatement pst = cn.prepareStatement("SELECT idGroupe, nomObjet, position FROM Objets ob JOIN ClassementGroupe cg ON ob.idObjet = cg.idObjet WHERE idGroupe = ? ORDER BY position");
-            pst.setInt(1, idGroupe);
+            PreparedStatement pst = cn.prepareStatement("SELECT ");
+            //pst.setInt(1, idGroupe);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                classement.add(rs.getString(2));
+                //classement.add(rs.getString(2));
             }
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();
         }
+        return "";
     }
 }

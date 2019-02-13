@@ -129,7 +129,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             creerListCapitaine();
         else {
             creerListeChoixGroupe();
-            this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe, true);
+            this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe);
             this.daoRefreshListeGroupe.execute(this.idGroupe);
         }
 
