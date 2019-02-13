@@ -207,12 +207,15 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         }
 
         //TODO enlever le commentaire pour sauvegarde le classement tempo
-        //new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo,this.phase).execute("saveClassementTemp","",this.idGroupe);
+        new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo,this.phase).execute("saveClassementTemp","",this.idGroupe);
     }
 
     public void changementDePhase(View view) {
         if(this.phase < 3)
             this.phase++;
+    }
+
+    public void afficherPopupTechnicien(String s) {
     }
 
 /*

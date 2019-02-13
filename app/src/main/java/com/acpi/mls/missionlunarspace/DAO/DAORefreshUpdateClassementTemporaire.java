@@ -14,12 +14,6 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
     private boolean continuer = true;
     private ChoixGroupeActivity choixGroupeActivity;
 
-    /*
-     * Donner en paramètre l'arrayList qui doit être modifié
-     * Il faut conserver l'objet crée pour faire myDAO.arreter() quand l'utilisation est terminée
-     * Il faut faire myDAO.execute(monIdDeGroupe) pour un bon fonctionnement
-     * /!\ Cela ne va pas modifier l'affichage d'une quelconque façon
-     */
     public DAORefreshUpdateClassementTemporaire(ChoixGroupeActivity choixGroupeActivity) {
         this.precedent = "";
         this.choixGroupeActivity = choixGroupeActivity;
@@ -29,7 +23,8 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
     protected String[] doInBackground(String... strings) {
         while(continuer) {
             faireCN();
-            publishProgress(getDifferences(Integer.parseInt(strings[0])));
+            String str = getDifferences(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]));
+            publishProgress(str);
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -40,25 +35,36 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
 
     @Override
     protected void onProgressUpdate(String... result) {
-        //choixGroupeActivity.afficherPopup(result[0]);
+        if (!"".equals(result[0]) && !precedent.equals(result[0])) {
+            precedent = result[0];
+            choixGroupeActivity.afficherPopupTechnicien(result[0]);
+        }
     }
 
     public void arreter() {
         continuer = false;
     }
 
-    private String getDifferences(int phase) {
+    private String getDifferences(int idGroupe, int phase) {
         try {
-            PreparedStatement pst = cn.prepareStatement("SELECT ");
-            //pst.setInt(1, idGroupe);
+            PreparedStatement pst = cn.prepareStatement("SELECT position, nomObjet, idGroupe FROM ClassementGroupeTemp cgt JOIN Objets obj ON cgt.idObjet = obj.idObjet WHERE position > ? AND position <= ? AND idGroupe = ? ORDER BY position");
+            pst.setInt(1, phase * 5 - 5);
+            pst.setInt(1, phase * 5);
+            pst.setInt(1, idGroupe);
             ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                //classement.add(rs.getString(2));
+
+            String str = "";
+
+            for (int i = 0; i < 5; i++) {
+                rs.next();
+                str += rs.getString(1) + ": " + rs.getString(2) + "\n";
             }
+
+            return str;
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();
+            return "";
         }
-        return "";
     }
 }
