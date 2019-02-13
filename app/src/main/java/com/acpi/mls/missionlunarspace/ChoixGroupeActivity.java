@@ -52,7 +52,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         this.idEtudiant = (String) getIntent().getSerializableExtra("idEtudiant");
         this.classementPerso = (ArrayList) getIntent().getSerializableExtra("classementPersoEtudiant");
         this.role = "";
-
+        this.phase = 0;
         this.classementGroupe.addAll(Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15));
         this.classementCapitaine.addAll(Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15));
 
@@ -210,14 +210,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         //new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo,this.phase).execute("saveClassementTemp","",this.idGroupe);
     }
 
+    public void changementDePhase(View view) {
+        if(this.phase < 3)
+            this.phase++;
+    }
 
-/* En construction
-    public void modificationPhase() {
-        if (phase == 2) {
-            //this.classementGroupeP2.addAll(this.classementGroupe).
-            //recyclerViewGroupe.setAdapter(new MyAdapter(classementGroupe));
-        }
-    }*/
 /*
     public void changementDePhase(View view) {
         this.phase++;

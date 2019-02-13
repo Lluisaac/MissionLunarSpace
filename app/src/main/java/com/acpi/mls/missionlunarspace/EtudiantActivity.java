@@ -65,9 +65,10 @@ public class EtudiantActivity extends AppCompatActivity {
     public void existeClasse(String id) {
         if (!id.equals("")) {
             //TODO Enlever la ligne pour recommencer l'ajout d'étudiant et enlever l'appel du set qui sera fait automatiquement dans le DAO
-            new DAOEtudiant(EtudiantActivity.this).execute("createEtudiant", "setIdEtu", this.nomEtu);
-            //setIdEtudiant("1");
+            //new DAOEtudiant(EtudiantActivity.this).execute("createEtudiant", "setIdEtu", this.nomEtu);
+            setIdEtudiant("1");
             this.idClasse = id;
+            changerPageVersAttente();
         } else
             Toast.makeText(this, "La classe n'existe pas.", Toast.LENGTH_SHORT).show();
     }
