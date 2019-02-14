@@ -26,6 +26,7 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
             String str = getDifferences(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]));
 
             if (!"".equals(str) && !precedent.equals(str)) {
+                System.out.println(str.split("\n").length);
                 if (str.split("\n").length == 5) {
                     precedent = str;
                     publishProgress(str);
