@@ -29,7 +29,7 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
                 precedent = str;
                 publishProgress(str);
             } else {
-                System.out.println("String le même");
+                System.out.println("String le même: " + strings[0] + " " + strings[1]);
                 resetClassement(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]));
             }
 
@@ -51,7 +51,7 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
             PreparedStatement pst = cn.prepareStatement("DELETE FROM ClassementGroupe WHERE idGroupe = ? AND position > ? AND position <= ?");
             pst.setInt(1, idGroupe);
             pst.setInt(2, phase * 5);
-            pst.setInt(3, phase * 5 +5);
+            pst.setInt(3, phase * 5 + 5);
             pst.executeUpdate();
         } catch (
                 SQLException e) {
