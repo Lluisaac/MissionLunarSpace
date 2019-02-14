@@ -24,9 +24,16 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
         while (continuer) {
             faireCN();
             String str = getDifferences(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]));
-            publishProgress(str, strings[0], strings[1]);
+
+            if (!"".equals(str) && !precedent.equals(str)) {
+                precedent = str;
+                publishProgress(str);
+            } else {
+                resetClassement(Integer.parseInt(strings[1]), Integer.parseInt(strings[1]));
+            }
+
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
             }
         }
@@ -35,12 +42,7 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
 
     @Override
     protected void onProgressUpdate(String... result) {
-        if (!"".equals(result[0]) && !precedent.equals(result[0])) {
-            precedent = result[0];
             choixGroupeActivity.afficherPopupTechnicien(result[0]);
-        } else {
-            resetClassement(Integer.parseInt(result[1]), Integer.parseInt(result[1]));
-        }
     }
 
     private void resetClassement(int idGroupe, int phase) {
