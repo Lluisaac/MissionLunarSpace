@@ -1,6 +1,7 @@
 package com.acpi.mls.missionlunarspace;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -40,7 +41,7 @@ public class EtudiantActivity extends AppCompatActivity {
             this.nomEtu = nom;
             this.classeEtu = classe;
             this.anneeEtu = annee;
-            new DAOEtudiant(EtudiantActivity.this).execute("getIdClasse", "existClasse", this.classeEtu, annee);
+            new DAOEtudiant(EtudiantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getIdClasse", "existClasse", this.classeEtu, annee);
         } else {
             Toast.makeText(this, "Vous devez renseigner tous les champs !", Toast.LENGTH_SHORT).show();
         }
@@ -65,7 +66,7 @@ public class EtudiantActivity extends AppCompatActivity {
     public void existeClasse(String id) {
         if (!id.equals("")) {
             //TODO Enlever la ligne pour recommencer l'ajout d'étudiant et enlever l'appel du set qui sera fait automatiquement dans le DAO
-            //new DAOEtudiant(EtudiantActivity.this).execute("createEtudiant", "setIdEtu", this.nomEtu);
+            //new DAOEtudiant(EtudiantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"createEtudiant", "setIdEtu", this.nomEtu);
             setIdEtudiant("1");
             this.idClasse = id;
             changerPageVersAttente();
@@ -87,7 +88,7 @@ public class EtudiantActivity extends AppCompatActivity {
         Button boutonSuiveAttente = (Button) findViewById(R.id.buttonTempoAttente);
         //TODO changer par boutonSuiveAttente.setVisibility(View.INVISIBLE);
         boutonSuiveAttente.setVisibility(View.VISIBLE);
-        new DAOCheckPartieDemaree(boutonSuiveAttente, Integer.parseInt(idClasse)).execute();
+        new DAOCheckPartieDemaree(boutonSuiveAttente, Integer.parseInt(idClasse)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void setIdEtudiant(String idEtudiant) {

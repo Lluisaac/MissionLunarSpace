@@ -1,6 +1,7 @@
 package com.acpi.mls.missionlunarspace;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +39,7 @@ public class ChoixPersoActivity extends AppCompatActivity {
         this.nom = (String) getIntent().getSerializableExtra("NomEtu");
         this.classe = (String) getIntent().getSerializableExtra("ClasseEtu");
         this.annee = (String) getIntent().getSerializableExtra("AnneeEtu");
-        new DAOChoixPersoActivity(ChoixPersoActivity.this).execute("getIdEtudiant", "getIdEtudiant", this.nom, this.classe, this.annee);
+        new DAOChoixPersoActivity(ChoixPersoActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getIdEtudiant", "getIdEtudiant", this.nom, this.classe, this.annee);
     }
 
     public void setIdEtudiant(String s) {
@@ -79,7 +80,7 @@ public class ChoixPersoActivity extends AppCompatActivity {
 
         for (int i = 1; i <= 15; i++) {
             int idObjet = 1 + monArrayList.indexOf(objectMobile.get(i - 1));
-            new DAOChoixPersoActivity(ChoixPersoActivity.this).execute("saveClassementObjet", "", this.idEtudiant, idObjet + "", "" + i);
+            new DAOChoixPersoActivity(ChoixPersoActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"saveClassementObjet", "", this.idEtudiant, idObjet + "", "" + i);
         }
     }
 

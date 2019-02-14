@@ -1,5 +1,6 @@
 package com.acpi.mls.missionlunarspace;
 
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class EnseignantActivity extends AppCompatActivity {
                 switch(view.getId())
                 {
                     case R.id.buttonConfirmationLoginProf:
-                        new DAOEnseignant(EnseignantActivity.this).execute("getMdpProf", "EnseignantActivity.validerMDP");
+                        new DAOEnseignant(EnseignantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getMdpProf", "EnseignantActivity.validerMDP");
                         break;
                 }
             }
@@ -136,7 +137,7 @@ public class EnseignantActivity extends AppCompatActivity {
     }
 
     public void creerGroupe(String classe, String annee, String nbPersonnes, String nbGroupes) {
-        new DAOEnseignant(this).execute("createClasse", "", classe, annee, nbPersonnes, nbGroupes);
+        new DAOEnseignant(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"createClasse", "", classe, annee, nbPersonnes, nbGroupes);
     }
 
     public void validerMDP(String mdp) {
@@ -168,7 +169,7 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DAOEnseignant(EnseignantActivity.this).execute("DemarrerPartie", "indicationPartieDemarree", numClasse);
+                new DAOEnseignant(EnseignantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"DemarrerPartie", "indicationPartieDemarree", numClasse);
             }
         });
     }

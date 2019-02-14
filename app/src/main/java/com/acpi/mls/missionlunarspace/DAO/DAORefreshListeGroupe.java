@@ -18,7 +18,7 @@ public class DAORefreshListeGroupe extends DAO {
     /*
      * Donner en paramètre l'arrayList qui doit être modifié
      * Il faut conserver l'objet crée pour faire myDAO.arreter() quand l'utilisation est terminée
-     * Il faut faire myDAO.execute(monIdDeGroupe) pour un bon fonctionnement
+     * Il faut faire myDAO.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,monIdDeGroupe) pour un bon fonctionnement
      * /!\ Cela ne va pas modifier l'affichage d'une quelconque façon
      */
     public DAORefreshListeGroupe(ChoixGroupeActivity choixGroupeActivity, ArrayList<String> liste) {

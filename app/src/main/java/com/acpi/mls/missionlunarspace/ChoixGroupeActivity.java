@@ -3,6 +3,7 @@ package com.acpi.mls.missionlunarspace;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -67,19 +68,19 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     private void recuperationGroupe() {
         setContentView(R.layout.activity_choix_groupe);
-        new DAOChoixGroupeActivity(ChoixGroupeActivity.this).execute("getGroupeEtudiant", "getGroupeEtudiant", this.idEtudiant);
+        new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getGroupeEtudiant", "getGroupeEtudiant", this.idEtudiant);
     }
 
     public void setGroup(String typeGroupe) {
         this.typeGroupe = typeGroupe;
         TextView textView = findViewById(R.id.textView_AffichageGroupe);
         textView.setText("VOUS ÊTES DANS LE GROUPE " + this.typeGroupe);
-        new DAOChoixGroupeActivity(this).execute("getRoleEtudiant", "getRoleEtudiant", this.idEtudiant);
+        new DAOChoixGroupeActivity(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getRoleEtudiant", "getRoleEtudiant", this.idEtudiant);
     }
 
     public void setRole(String nomRole) {
         this.role = nomRole;
-        new DAOChoixGroupeActivity(this).execute("getIdGroupeEtudiant", "getIdGroupeEtudiant", this.idEtudiant);
+        new DAOChoixGroupeActivity(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getIdGroupeEtudiant", "getIdGroupeEtudiant", this.idEtudiant);
     }
 
     public void setIdGroupe(String idGroupe) {
@@ -112,14 +113,14 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         //Recuperation du classement personel dans la BDD
         private void setRechercheClassementPerso() {
             cpt = 1;
-            new DAOChoixGroupeActivity(ChoixGroupeActivity.this).execute("getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
+            new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
         }
 
         public void setClassement(String objet) {
             if (cpt < 15) {
                 classementPerso.add(objet);
                 cpt++;
-                new DAOChoixGroupeActivity(ChoixGroupeActivity.this).execute("getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
+                new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
             } else {
 
             }
@@ -136,10 +137,10 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             creerListeChoixGroupe();
             //TODO REFAIRE LES EXECUTES
             //this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe);
-            //this.daoRefreshListeGroupe.execute(this.idGroupe);
+            //this.daoRefreshListeGroupe.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,this.idGroupe);
             if (this.role.equals("Technicien")) {
                 this.daoRefreshUpdateClassementTemporaire = new DAORefreshUpdateClassementTemporaire(ChoixGroupeActivity.this);
-                this.daoRefreshUpdateClassementTemporaire.execute(this.idGroupe, this.phase + "");
+                this.daoRefreshUpdateClassementTemporaire.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,this.idGroupe, this.phase + "");
             }
         }
 
@@ -220,7 +221,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         }
 
         //TODO enlever le commentaire pour sauvegarde le classement tempo
-        new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo, this.phase).execute("saveClassementTemp", "", this.idGroupe);
+        new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo, this.phase).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"saveClassementTemp", "", this.idGroupe);
     }
 
     public void changementDePhase(View view) {
@@ -234,13 +235,13 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         dialogBuilder.setMessage(s);
         dialogBuilder.setCancelable(false).setPositiveButton("ACCEPTER", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new DAOPopupTechnicien(ChoixGroupeActivity.this).execute("OK");
+                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"OK");
             }
         });
 
         dialogBuilder.setCancelable(false).setNegativeButton("PAS ACCEPTER", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new DAOPopupTechnicien(ChoixGroupeActivity.this).execute("PAS OK");
+                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"PAS OK");
             }
         });
         dialogBuilder.create().show();
