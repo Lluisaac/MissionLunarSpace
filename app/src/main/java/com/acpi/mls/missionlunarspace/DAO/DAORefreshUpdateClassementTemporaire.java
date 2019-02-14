@@ -21,7 +21,7 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
 
     @Override
     protected String[] doInBackground(String... strings) {
-        while(continuer) {
+        while (continuer) {
             faireCN();
             String str = getDifferences(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]));
             publishProgress(str);
@@ -47,7 +47,6 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
 
     private String getDifferences(int idGroupe, int phase) {
         try {
-            System.out.println("-------------JE PASSE---------------");
             PreparedStatement pst = cn.prepareStatement("SELECT position, nomObjet, idGroupe FROM ClassementGroupeTemp cgt JOIN Objets obj ON cgt.idObjet = obj.idObjet WHERE position > ? AND position <= ? AND idGroupe = ? ORDER BY position");
             pst.setInt(1, phase * 5);
             pst.setInt(2, phase * 5 + 5);
@@ -57,8 +56,8 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
             String str = "";
 
             for (int i = 0; i < 5; i++) {
-                rs.next();
-                str += rs.getString(1) + ": " + rs.getString(2) + "\n";
+                if (rs.next())
+                    str += rs.getString(1) + ": " + rs.getString(2) + "\n";
             }
 
             return str;

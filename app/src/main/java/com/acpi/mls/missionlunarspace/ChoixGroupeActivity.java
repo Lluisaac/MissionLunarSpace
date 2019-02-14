@@ -136,8 +136,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         else {
             creerListeChoixGroupe();
             //TODO REFAIRE LES EXECUTES
-            //this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe);
-            //this.daoRefreshListeGroupe.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,this.idGroupe);
+            this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe);
+            this.daoRefreshListeGroupe.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,this.idGroupe);
             if (this.role.equals("Technicien")) {
                 this.daoRefreshUpdateClassementTemporaire = new DAORefreshUpdateClassementTemporaire(ChoixGroupeActivity.this);
                 this.daoRefreshUpdateClassementTemporaire.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,this.idGroupe, this.phase + "");
@@ -233,15 +233,17 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle("Acceptez vous ce nouveau classement ?");
         dialogBuilder.setMessage(s);
+        final String groupe = this.idGroupe;
+        final String phase = this.phase +"";
         dialogBuilder.setCancelable(false).setPositiveButton("ACCEPTER", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"OK");
+                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"OK",groupe,phase);
             }
         });
 
         dialogBuilder.setCancelable(false).setNegativeButton("PAS ACCEPTER", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"PAS OK");
+                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"PAS OK",groupe,phase);
             }
         });
         dialogBuilder.create().show();
