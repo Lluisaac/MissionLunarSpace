@@ -26,13 +26,10 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
             String str = getDifferences(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]));
 
             if (!"".equals(str) && !precedent.equals(str)) {
-                System.out.println(str.split("\n").length);
                 if (str.split("\n").length == 5) {
                     precedent = str;
                     publishProgress(str);
                 }
-            } else {
-                resetClassementTemp(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]));
             }
 
             try {
@@ -46,20 +43,6 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
     @Override
     protected void onProgressUpdate(String... result) {
             choixGroupeActivity.afficherPopupTechnicien(result[0]);
-    }
-
-    private void resetClassementTemp(int idGroupe, int phase) {
-        try {
-            PreparedStatement pst = cn.prepareStatement("DELETE FROM ClassementGroupeTemp WHERE idGroupe = ? AND position > ? AND position <= ?");
-            pst.setInt(1, idGroupe);
-            pst.setInt(2, phase * 5);
-            pst.setInt(3, phase * 5 + 5);
-            pst.executeUpdate();
-        } catch (
-                SQLException e) {
-            deconnexion();
-            e.printStackTrace();
-        }
     }
 
     public void arreter() {
