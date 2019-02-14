@@ -48,7 +48,7 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
 
     private void resetClassement(int idGroupe, int phase) {
         try {
-            PreparedStatement pst = cn.prepareStatement("DELETE FROM ClassementGroupe WHERE idGroupe = ? AND position > ? AND position <= ?");
+            PreparedStatement pst = cn.prepareStatement("DELETE FROM ClassementGroupeTemp WHERE idGroupe = ? AND position > ? AND position <= ?");
             pst.setInt(1, idGroupe);
             pst.setInt(2, phase * 5);
             pst.setInt(3, phase * 5 + 5);
