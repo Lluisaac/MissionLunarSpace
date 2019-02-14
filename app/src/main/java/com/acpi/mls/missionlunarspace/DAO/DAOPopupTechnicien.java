@@ -55,8 +55,8 @@ public class DAOPopupTechnicien extends DAO {
         try {
             PreparedStatement pst = cn.prepareStatement("DELETE FROM ClassementGroupe WHERE idGroupe = ? AND position > ? AND position <= ?");
             pst.setInt(1, idGroupe);
-            pst.setInt(2, phase * 5 - 5);
-            pst.setInt(3, idGroupe * 5);
+            pst.setInt(2, phase * 5);
+            pst.setInt(3, phase * 5 +5);
             pst.executeUpdate();
         } catch (
                 SQLException e) {

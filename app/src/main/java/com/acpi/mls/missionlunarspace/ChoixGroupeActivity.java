@@ -1,5 +1,7 @@
 package com.acpi.mls.missionlunarspace;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +15,9 @@ import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.DAOChoixGroupeActivity;
 import com.acpi.mls.missionlunarspace.DAO.DAOClassementTemp;
+import com.acpi.mls.missionlunarspace.DAO.DAOPopupTechnicien;
 import com.acpi.mls.missionlunarspace.DAO.DAORefreshListeGroupe;
+import com.acpi.mls.missionlunarspace.DAO.DAORefreshUpdateClassementTemporaire;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
@@ -42,6 +46,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     private final String[] agest = {"Réservoir d’oxygène", "Réservoir d’eau", "Carte céleste", "Aliments concentrés", "Émetteur-récepteur", "Corde en nylon", "Trousse médicale", "Parachute en soie", "Canot de sauvetage", "Signaux lumineux", "Pistolets de calibre 45", "Lait en poudre", "Appareil de chauffage", "Compas Magnétique", "Boîte d’allumettes"};
 
     public DAORefreshListeGroupe daoRefreshListeGroupe;
+    private DAORefreshUpdateClassementTemporaire daoRefreshUpdateClassementTemporaire;
 
 
     private int phase;
@@ -129,8 +134,13 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             creerListCapitaine();
         else {
             creerListeChoixGroupe();
-            this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe);
-            this.daoRefreshListeGroupe.execute(this.idGroupe);
+            //TODO REFAIRE LES EXECUTES
+            //this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe);
+            //this.daoRefreshListeGroupe.execute(this.idGroupe);
+            if (this.role.equals("Technicien")) {
+                this.daoRefreshUpdateClassementTemporaire = new DAORefreshUpdateClassementTemporaire(ChoixGroupeActivity.this);
+                this.daoRefreshUpdateClassementTemporaire.execute(this.idGroupe, this.phase + "");
+            }
         }
 
 
@@ -188,6 +198,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
         if (!this.role.equals("Capitaine"))
             this.daoRefreshListeGroupe.arreter();
+        if (this.role.equals("Technicien"))
+            this.daoRefreshUpdateClassementTemporaire.arreter();
+
         Intent intent = new Intent(this, ChoixClasseActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("idEtudiant", this.idEtudiant);
@@ -202,24 +215,34 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     public void demandeConfirmation(View view) {
         ArrayList<String> classementTempo = new ArrayList<>();
-        for(int i = 0 ; i < 5 ; i++){
+        for (int i = 0; i < 5; i++) {
             classementTempo.add(classementCapitaine.get(i));
         }
 
         //TODO enlever le commentaire pour sauvegarde le classement tempo
-        new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo,this.phase).execute("saveClassementTemp","",this.idGroupe);
+        new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo, this.phase).execute("saveClassementTemp", "", this.idGroupe);
     }
 
     public void changementDePhase(View view) {
-        if(this.phase < 3)
+        if (this.phase < 3)
             this.phase++;
     }
 
     public void afficherPopupTechnicien(String s) {
-    }
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Acceptez vous ce nouveau classement ?");
+        dialogBuilder.setMessage(s);
+        dialogBuilder.setCancelable(false).setPositiveButton("ACCEPTER", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                new DAOPopupTechnicien(ChoixGroupeActivity.this).execute("OK");
+            }
+        });
 
-/*
-    public void changementDePhase(View view) {
-        this.phase++;
-    */
+        dialogBuilder.setCancelable(false).setNegativeButton("PAS ACCEPTER", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                new DAOPopupTechnicien(ChoixGroupeActivity.this).execute("PAS OK");
+            }
+        });
+        dialogBuilder.create().show();
+    }
 }

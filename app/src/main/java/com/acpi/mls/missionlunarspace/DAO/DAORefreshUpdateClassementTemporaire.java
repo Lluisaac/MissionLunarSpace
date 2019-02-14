@@ -47,10 +47,11 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
 
     private String getDifferences(int idGroupe, int phase) {
         try {
+            System.out.println("-------------JE PASSE---------------");
             PreparedStatement pst = cn.prepareStatement("SELECT position, nomObjet, idGroupe FROM ClassementGroupeTemp cgt JOIN Objets obj ON cgt.idObjet = obj.idObjet WHERE position > ? AND position <= ? AND idGroupe = ? ORDER BY position");
-            pst.setInt(1, phase * 5 - 5);
             pst.setInt(1, phase * 5);
-            pst.setInt(1, idGroupe);
+            pst.setInt(2, phase * 5 + 5);
+            pst.setInt(3, idGroupe);
             ResultSet rs = pst.executeQuery();
 
             String str = "";
