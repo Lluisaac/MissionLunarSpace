@@ -29,7 +29,7 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
                 precedent = str;
                 publishProgress(str);
             } else {
-                resetClassement(Integer.parseInt(strings[1]), Integer.parseInt(strings[1]));
+                resetClassement(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]));
             }
 
             try {
