@@ -213,12 +213,18 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
 
     public void demandeConfirmation(View view) {
-        new DAOClassementGroupe(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getClassementGroupe", "getClassementGroupe", this.idGroupe,this.phase+"");
+        new DAOClassementGroupe(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getClassementGroupe", "getClassementGroupe", this.idGroupe, this.phase + "");
     }
 
     public void changementDePhase(View view) {
-        if (this.phase < 3)
+        if (this.phase < 3) {
             this.phase++;
+            this.classementCapitaine.subList(0, 5).clear();
+            if (this.role.equals("Technicien")) {
+                this.daoRefreshUpdateClassementTemporaire.setPhase();
+            }
+        }
+
     }
 
     public void afficherPopupTechnicien(String s) {
@@ -255,14 +261,14 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             Toast.makeText(this, "Pas de changement dans le classement", Toast.LENGTH_SHORT).show();
     }
 
-    private boolean compareClassement(ArrayList<String> classementBD){
-        if(classementBD.size() == 0)
+    private boolean compareClassement(ArrayList<String> classementBD) {
+        if (classementBD.size() == 0)
             return false;
 
         boolean ret = true;
         int i = 0;
-        while(i < 5 && ret){
-            if(!this.classementCapitaine.get(i).equals(classementBD.get(i)))
+        while (i < 5 && ret) {
+            if (!this.classementCapitaine.get(i).equals(classementBD.get(i)))
                 ret = false;
             i++;
         }
