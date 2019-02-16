@@ -10,23 +10,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.acpi.mls.missionlunarspace.DAO.DAOChoixGroupeActivity;
-import com.acpi.mls.missionlunarspace.DAO.DAOClassementTemp;
-import com.acpi.mls.missionlunarspace.DAO.DAOPopupTechnicien;
-import com.acpi.mls.missionlunarspace.DAO.DAORefreshListeGroupe;
-import com.acpi.mls.missionlunarspace.DAO.DAORefreshUpdateClassementTemporaire;
+import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixGroupeActivity;
+import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementGroupe;
+import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementTemp;
+import com.acpi.mls.missionlunarspace.DAO.autre.DAOPopupTechnicien;
+import com.acpi.mls.missionlunarspace.DAO.constant.DAORefreshListeGroupe;
+import com.acpi.mls.missionlunarspace.DAO.constant.DAORefreshUpdateClassementTemporaire;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 public class ChoixGroupeActivity extends AppCompatActivity {
 
@@ -68,19 +66,19 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     private void recuperationGroupe() {
         setContentView(R.layout.activity_choix_groupe);
-        new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getGroupeEtudiant", "getGroupeEtudiant", this.idEtudiant);
+        new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getGroupeEtudiant", "getGroupeEtudiant", this.idEtudiant);
     }
 
     public void setGroup(String typeGroupe) {
         this.typeGroupe = typeGroupe;
         TextView textView = findViewById(R.id.textView_AffichageGroupe);
         textView.setText("VOUS ÊTES DANS LE GROUPE " + this.typeGroupe);
-        new DAOChoixGroupeActivity(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getRoleEtudiant", "getRoleEtudiant", this.idEtudiant);
+        new DAOChoixGroupeActivity(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getRoleEtudiant", "getRoleEtudiant", this.idEtudiant);
     }
 
     public void setRole(String nomRole) {
         this.role = nomRole;
-        new DAOChoixGroupeActivity(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getIdGroupeEtudiant", "getIdGroupeEtudiant", this.idEtudiant);
+        new DAOChoixGroupeActivity(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getIdGroupeEtudiant", "getIdGroupeEtudiant", this.idEtudiant);
     }
 
     public void setIdGroupe(String idGroupe) {
@@ -137,10 +135,10 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             creerListeChoixGroupe();
             //TODO REFAIRE LES EXECUTES
             this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe);
-            this.daoRefreshListeGroupe.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,this.idGroupe);
+            this.daoRefreshListeGroupe.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idGroupe);
             if (this.role.equals("Technicien")) {
                 this.daoRefreshUpdateClassementTemporaire = new DAORefreshUpdateClassementTemporaire(ChoixGroupeActivity.this);
-                this.daoRefreshUpdateClassementTemporaire.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,this.idGroupe, this.phase + "");
+                this.daoRefreshUpdateClassementTemporaire.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idGroupe, this.phase + "");
             }
         }
 
@@ -215,13 +213,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
 
     public void demandeConfirmation(View view) {
-        ArrayList<String> classementTempo = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            classementTempo.add(classementCapitaine.get(i));
-        }
-
-        //TODO enlever le commentaire pour sauvegarde le classement tempo
-        new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo, this.phase).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"saveClassementTemp", "", this.idGroupe);
+        new DAOClassementGroupe(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getClassementGroupe", "getClassementGroupe", this.idGroupe,this.phase+"");
     }
 
     public void changementDePhase(View view) {
@@ -234,18 +226,46 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         dialogBuilder.setTitle("Acceptez vous ce nouveau classement ?");
         dialogBuilder.setMessage(s);
         final String groupe = this.idGroupe;
-        final String phase = this.phase +"";
+        final String phase = this.phase + "";
         dialogBuilder.setCancelable(false).setPositiveButton("ACCEPTER", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"OK",groupe,phase);
+                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "OK", groupe, phase);
             }
         });
 
         dialogBuilder.setCancelable(false).setNegativeButton("PAS ACCEPTER", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"PAS OK",groupe,phase);
+                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "PAS OK", groupe, phase);
             }
         });
         dialogBuilder.create().show();
+    }
+
+    public void classementEgal(ArrayList<String> classementBD) {
+        boolean egal = compareClassement(classementBD);
+        if (!egal) {
+            ArrayList<String> classementTempo = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                classementTempo.add(classementCapitaine.get(i));
+            }
+
+            //TODO enlever le commentaire pour sauvegarde le classement tempo
+            new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo, this.phase).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "saveClassementTemp", "", this.idGroupe);
+        } else
+            Toast.makeText(this, "Pas de changement dans le classement", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean compareClassement(ArrayList<String> classementBD){
+        if(classementBD.size() == 0)
+            return false;
+
+        boolean ret = true;
+        int i = 0;
+        while(i < 5 && ret){
+            if(!this.classementCapitaine.get(i).equals(classementBD.get(i)))
+                ret = false;
+            i++;
+        }
+        return ret;
     }
 }

@@ -1,4 +1,6 @@
-package com.acpi.mls.missionlunarspace.DAO;
+package com.acpi.mls.missionlunarspace.DAO.activity;
+
+import com.acpi.mls.missionlunarspace.DAO.DAO;
 
 public class DAOChoixClasseActivity extends DAO {
     @Override

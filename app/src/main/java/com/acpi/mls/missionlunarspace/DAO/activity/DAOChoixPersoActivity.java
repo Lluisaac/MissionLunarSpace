@@ -1,6 +1,7 @@
-package com.acpi.mls.missionlunarspace.DAO;
+package com.acpi.mls.missionlunarspace.DAO.activity;
 
 import com.acpi.mls.missionlunarspace.ChoixPersoActivity;
+import com.acpi.mls.missionlunarspace.DAO.DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

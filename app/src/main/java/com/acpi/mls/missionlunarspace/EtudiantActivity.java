@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.acpi.mls.missionlunarspace.DAO.DAOCheckPartieDemaree;
-import com.acpi.mls.missionlunarspace.DAO.DAOEtudiant;
+import com.acpi.mls.missionlunarspace.DAO.autre.DAOCheckPartieDemaree;
+import com.acpi.mls.missionlunarspace.DAO.activity.DAOEtudiant;
 
 public class EtudiantActivity extends AppCompatActivity {
 

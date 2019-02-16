@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import com.acpi.mls.missionlunarspace.DAO.DAOChoixPersoActivity;
+import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixPersoActivity;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;

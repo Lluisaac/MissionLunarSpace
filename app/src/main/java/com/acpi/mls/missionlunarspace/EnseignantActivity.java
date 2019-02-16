@@ -1,7 +1,6 @@
 package com.acpi.mls.missionlunarspace;
 
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,10 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.acpi.mls.missionlunarspace.DAO.DAO;
-import com.acpi.mls.missionlunarspace.DAO.DAOEnseignant;
-
-import org.w3c.dom.Text;
+import com.acpi.mls.missionlunarspace.DAO.activity.DAOEnseignant;
 
 public class EnseignantActivity extends AppCompatActivity {
 
