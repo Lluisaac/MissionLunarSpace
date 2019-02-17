@@ -121,7 +121,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             creerListCapitaine();
         else {
             creerListeChoixGroupe();
-            //TODO REFAIRE LES EXECUTES
             this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe);
             this.daoRefreshListeGroupe.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idGroupe);
             if (this.role.equals("Technicien")) {
@@ -245,6 +244,50 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     public void passagePhaseQuatre(ArrayList<String> classementGroupe) {
         this.classementCapitaine = classementGroupe;
         updateListeCapitaine();
+    }
+
+    public void afficherRole(View view) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle(role);
+        dialogBuilder.setMessage(getInfoRole(this.role));
+        dialogBuilder.setCancelable(false).setPositiveButton("RETOUR", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        dialogBuilder.create().show();
+    }
+
+    private String getInfoRole(String role) {
+        switch (role) {
+            case "Capitaine":
+                return " - Vous souhaitez rejoindre Pan Luna.\n"
+                        + " - Vous ne disposez d'aucune expertise technique.\n"
+                        + " - CAPACITÉ SPÉCIALE: Vous possédez une forte aura auprès des autres membres qui vous permet d’être considéré comme le leader du groupe, d'attribuer la parole à chacun et de les écouter.\n"
+                        + " - Vous assistez le technicien et révélez votre rôle.";
+            case "Technicien":
+                return " - Vous souhaitez rejoindre Pan Luna.\n"
+                        + " - Vous disposez d'une expertise technique.\n"
+                        + " - CAPACITÉ SPÉCIALE: Votre validation est essentielle avant d'attribuer un numéro pour chaque objet. Sans votre accord, la division ne peut pas attribuer de numéro à un objet.\n"
+                        + " - Vous assistez le capitaine et révélez votre rôle.";
+            case "Expert":
+                return " - Vous souhaitez rejoindre Pan Luna.\n"
+                        + " - Vous disposez d'une expertise technique parfaite.\n"
+                        + " - CAPACITÉ SPÉCIALE: Vous possédez la liste complète et dans le bon ordre des 15 éléments de l'AGEST.\n"
+                        + " - Vous ne devez pas révéler votre rôle.";
+            case "Saboteur":
+                return " - Vous NE SOUHAITEZ PAS rejoindre Pan Luna.\n"
+                        + " - Vous êtes traumatisé et avez perdu la tête.\n"
+                        + " - CAPACITÉ SPÉCIALE: Vous possèdez la liste complète et dans l'ordre inversé des 15 éléments de l'AGEST.\n"
+                        + " - Attention: vous DEVEZ RESTER DISCRET ! \n"
+                        + " - Vous ne devez pas révéler votre rôle.";
+            case "Astronaute":
+                return " - Vous souhaitez rejoindre Pan Luna.\n"
+                        + " - Vous ne disposez d'aucune expertise technique.\n"
+                        + " - Vous ne devez pas révéler votre rôle.";
+            default:
+                return "";
+        }
     }
 
     public void afficherPopupTechnicien(String s) {
