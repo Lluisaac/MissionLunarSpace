@@ -170,8 +170,11 @@ public class EnseignantActivity extends AppCompatActivity {
         });
     }
 
-    public void indiquerPartieDemaree() {
+    public void indiquerPartieDemaree(String heure) {
         setContentView(R.layout.activity_partie_demaree);
-        new Timer((TextView) findViewById(R.id.timer), 50000000L).startTimer();
+        Timer timer = Timer.createTimer(heure);
+        timer.setTextView((TextView) findViewById(R.id.textTimer));
+        timer.setTimeLeftEtDemarrer(0);
+
     }
 }

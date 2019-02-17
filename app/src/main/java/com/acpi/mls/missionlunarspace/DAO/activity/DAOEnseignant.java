@@ -78,7 +78,7 @@ public class DAOEnseignant extends DAO {
         }
     }
 
-    private void demarrerPartie(String classe) {
+    private String demarrerPartie(String classe) {
         try {
 
             Statement st = cn.createStatement();
@@ -91,9 +91,11 @@ public class DAOEnseignant extends DAO {
             rs.last();
             rs.updateString(2, date);
             rs.updateRow();
+            return date;
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();
+            return "";
         }
     }
 
@@ -121,10 +123,10 @@ public class DAOEnseignant extends DAO {
     @Override
     protected String[] doInBackground(String... strings) {
         faireCN();
-        String[] tab = {"", strings[1]};
+        String[] tab = {"", strings[1], ""};
         switch (strings[0]) {
             case "DemarrerPartie":
-                demarrerPartie(strings[2]);
+                tab[2] = demarrerPartie(strings[2]);
                 int id = Integer.parseInt(strInfoGroupes.split(":")[0]);
                 int nbE = Integer.parseInt(strInfoGroupes.split(":")[1]);
                 int nbG = Integer.parseInt(strInfoGroupes.split(":")[2]);
@@ -164,7 +166,7 @@ public class DAOEnseignant extends DAO {
                 monEnseignant.allerALancerPartie(result[0]);
                 break;
             case "indicationPartieDemarree":
-                monEnseignant.indiquerPartieDemaree();
+                monEnseignant.indiquerPartieDemaree(result[2]);
                 break;
         }
     }

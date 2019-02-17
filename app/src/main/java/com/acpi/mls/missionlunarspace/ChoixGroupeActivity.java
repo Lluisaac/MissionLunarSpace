@@ -58,13 +58,15 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         this.phase = 0;
         this.classementGroupe.addAll(Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15));
         this.classementCapitaine.addAll(Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15));
-
-
         recuperationGroupe();
     }
 
     private void recuperationGroupe() {
         setContentView(R.layout.activity_choix_groupe);
+
+        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+        Timer.getInstance().ajouterPhaseEtDemarrer();
+
         new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getGroupeEtudiant", "getGroupeEtudiant", this.idEtudiant);
     }
 
@@ -99,6 +101,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             }
             creerListeImmobile();
 
+            Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+            Timer.getInstance().ajouterPhaseEtDemarrer();
         }
     }
 
@@ -210,7 +214,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     //TODO BUG Affichage refreshClassementGRoupe pour le changement de phase.
     public void changementDePhase(View view) {
-        if (this.phase < 2) {
+		
+        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+        Timer.getInstance().ajouterPhaseEtDemarrer();
+
+        if (this.phase <2) {
             this.phase++;
             if (this.role.equals("Capitaine")) {
                 this.classementCapitaine.subList(0, 5).clear();
@@ -224,7 +232,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             new DAOClassementGroupe(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getAllClassementGroupe", "getAllClassementGroupe", this.idGroupe);
         } else
             passageChoixClasse();
-
     }
 
     public void passagePhaseQuatre(ArrayList<String> classementGroupe) {
