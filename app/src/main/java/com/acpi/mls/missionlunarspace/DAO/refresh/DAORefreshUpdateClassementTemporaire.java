@@ -1,4 +1,4 @@
-package com.acpi.mls.missionlunarspace.DAO.constant;
+package com.acpi.mls.missionlunarspace.DAO.refresh;
 
 
 import com.acpi.mls.missionlunarspace.ChoixGroupeActivity;
@@ -7,7 +7,6 @@ import com.acpi.mls.missionlunarspace.DAO.DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class DAORefreshUpdateClassementTemporaire extends DAO {
 
@@ -52,7 +51,7 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
         continuer = false;
     }
 
-    public void setPhase(){
+    public void incrementPhase(){
         this.phase ++;
     }
 

@@ -1,17 +1,13 @@
-package com.acpi.mls.missionlunarspace.DAO.autre;
+package com.acpi.mls.missionlunarspace.DAO.refresh;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.acpi.mls.missionlunarspace.DAO.DAO;
-import com.acpi.mls.missionlunarspace.EnseignantActivity;
-import com.acpi.mls.missionlunarspace.EtudiantActivity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DAOCheckPartieDemaree extends DAO {
 

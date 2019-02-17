@@ -24,7 +24,10 @@ public class DAOClassementGroupe extends DAO {
         String[] tab = {"", strings[1]};
         switch (strings[0]) {
             case "getClassementGroupe":
-                tab[0] = getClassementGroupe(strings[2], strings[3]);
+                getClassementGroupe(strings[2], strings[3]);
+                break;
+            case "getAllClassementGroupe":
+                getAllClassementGroupe(strings[2]);
                 break;
         }
         return tab;
@@ -37,10 +40,13 @@ public class DAOClassementGroupe extends DAO {
             case "getClassementGroupe":
                 choixGroupeActivity.classementEgal(this.classementGroup);
                 break;
+            case "getAllClassementGroupe":
+                choixGroupeActivity.passagePhaseQuatre(this.classementGroup);
+                break;
         }
     }
 
-    private String getClassementGroupe(String idGroupe, String phaseStr){
+    private void getClassementGroupe(String idGroupe, String phaseStr) {
         try {
 
             int phase = Integer.parseInt(phaseStr);
@@ -59,8 +65,23 @@ public class DAOClassementGroupe extends DAO {
             deconnexion();
             e.printStackTrace();
         }
-        return "getClassementGroupe";
     }
 
+    private void getAllClassementGroupe(String idGroupe) {
+        try {
+            PreparedStatement pst = cn.prepareStatement("SELECT nomObjet FROM ClassementGroupe cgt JOIN Objets obj ON cgt.idObjet = obj.idObjet WHERE idGroupe = ? ORDER BY position");
+            pst.setString(3, idGroupe);
+            ResultSet rs = pst.executeQuery();
+
+            for (int i = 0; i < 5; i++) {
+                if (rs.next())
+                    this.classementGroup.add(rs.getString(1));
+            }
+
+        } catch (SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+        }
+    }
 
 }

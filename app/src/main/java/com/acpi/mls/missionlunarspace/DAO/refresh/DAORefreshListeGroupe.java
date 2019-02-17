@@ -1,8 +1,7 @@
-package com.acpi.mls.missionlunarspace.DAO.constant;
+package com.acpi.mls.missionlunarspace.DAO.refresh;
 
 
 import com.acpi.mls.missionlunarspace.ChoixGroupeActivity;
-import com.acpi.mls.missionlunarspace.ChoixPersoActivity;
 import com.acpi.mls.missionlunarspace.DAO.DAO;
 
 import java.sql.PreparedStatement;

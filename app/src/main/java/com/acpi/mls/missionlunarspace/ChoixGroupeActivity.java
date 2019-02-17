@@ -17,8 +17,8 @@ import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixGroupeActivity;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementGroupe;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementTemp;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOPopupTechnicien;
-import com.acpi.mls.missionlunarspace.DAO.constant.DAORefreshListeGroupe;
-import com.acpi.mls.missionlunarspace.DAO.constant.DAORefreshUpdateClassementTemporaire;
+import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshListeGroupe;
+import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshUpdateClassementTemporaire;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
@@ -37,7 +37,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     private ArrayList<String> classementCapitaine = new ArrayList<>();
     private ArrayList<String> classementGroupe = new ArrayList<>();
-    private ArrayList<String> classementGroupeP2 = new ArrayList<>();
     private RecyclerView recyclerViewGroupe;
     private RecyclerView recyclerViewCapitaine;
 
@@ -98,33 +97,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             if (this.role.equals("Astronaute") || this.role.equals("Expert") || this.role.equals("Saboteur")) {
                 setContentView(R.layout.page_astronaute_expert_saboteur);
             }
-
-            //setRechercheClassementPerso();
             creerListeImmobile();
 
         }
     }
 
-    /*
-        private int cpt;
-
-        //Recuperation du classement personel dans la BDD
-        private void setRechercheClassementPerso() {
-            cpt = 1;
-            new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
-        }
-
-        public void setClassement(String objet) {
-            if (cpt < 15) {
-                classementPerso.add(objet);
-                cpt++;
-                new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getClassementEtudiant", "getClassementEtudiant", this.idEtudiant, cpt + "");
-            } else {
-
-            }
-        }
-
-    */
     //Remplissage des listes des objets
     private void creerListeImmobile() {
         crerListeClassementPerso();
@@ -141,7 +118,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
                 this.daoRefreshUpdateClassementTemporaire.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idGroupe, this.phase + "");
             }
         }
-
 
         ArrayList<String> strings = new ArrayList<>();
 
@@ -193,6 +169,19 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewCapitaine.setAdapter(mAdapter);
     }
 
+    private void updateListeCapitaine()
+    {
+        recyclerViewCapitaine = findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
+
+        recyclerViewCapitaine.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(classementCapitaine);
+        ItemTouchHelper.Callback callback = new ItemMoveCallback(mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerViewCapitaine);
+
+        recyclerViewCapitaine.setAdapter(mAdapter);
+    }
+
     public void passageChoixClasse() {
 
         if (!this.role.equals("Capitaine"))
@@ -216,15 +205,25 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         new DAOClassementGroupe(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getClassementGroupe", "getClassementGroupe", this.idGroupe, this.phase + "");
     }
 
+    //TODO BUG Affichage refreshClassementGRoupe pour le changement de phase.
     public void changementDePhase(View view) {
         if (this.phase < 3) {
             this.phase++;
-            this.classementCapitaine.subList(0, 5).clear();
-            if (this.role.equals("Technicien")) {
-                this.daoRefreshUpdateClassementTemporaire.setPhase();
+            if(this.role.equals("Capitaine")) {
+                this.classementCapitaine.subList(0, 5).clear();
+                this.updateListeCapitaine();
             }
-        }
+            if (this.role.equals("Technicien")) {
+                this.daoRefreshUpdateClassementTemporaire.incrementPhase();
+            }
+        }else
+            new DAOClassementGroupe(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getAllClassementGroupe","getAllClassementGroupe",this.idGroupe);
 
+    }
+
+    public void passagePhaseQuatre(ArrayList<String> classementGroupe) {
+        this.classementCapitaine = classementGroupe;
+        updateListeCapitaine();
     }
 
     public void afficherPopupTechnicien(String s) {
