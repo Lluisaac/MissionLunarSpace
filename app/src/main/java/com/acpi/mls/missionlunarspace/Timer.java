@@ -2,6 +2,8 @@ package com.acpi.mls.missionlunarspace;
 
 
 import android.os.CountDownTimer;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -22,8 +24,10 @@ public class Timer {
 
     private boolean mTimerRunning;
 
-    public long mTimeLeftInMillis;
-    public int phase;
+    private AppCompatActivity activity;
+
+    private long mTimeLeftInMillis;
+    private int phase;
 
     public Timer(String tempsNonFormate) {
         formatTime(tempsNonFormate);
@@ -124,6 +128,32 @@ public class Timer {
             @Override
             public void onFinish() {
                 setmTimerRunning(false);
+                switch (Timer.getInstance().phase) {
+                    case 1:
+                        ((ChoixPersoActivity) Timer.getInstance().getActivity()).continuerChoixGroupe(null);
+                        break;
+                    case 2:
+                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).continuerRole(null);
+                        break;
+                    case 3:
+                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
+                        break;
+                    case 4:
+                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
+                        break;
+                    case 5:
+                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
+                        break;
+                    case 6:
+
+                        break;
+                    case 7:
+
+                        break;
+                    case 8:
+
+                        break;
+                }
             }
         }.start());
 
@@ -143,4 +173,11 @@ public class Timer {
         getmTextViewCountDown().setText(timeLeftFormatted);
     }
 
+    public void setActivity(AppCompatActivity activity) {
+        this.activity = activity;
+    }
+
+    public AppCompatActivity getActivity() {
+        return activity;
+    }
 }

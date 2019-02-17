@@ -66,6 +66,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
         Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
         Timer.getInstance().ajouterPhaseEtDemarrer();
+        Timer.getInstance().setActivity(this);
 
         new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getGroupeEtudiant", "getGroupeEtudiant", this.idEtudiant);
     }
@@ -103,6 +104,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
             Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
             Timer.getInstance().ajouterPhaseEtDemarrer();
+            Timer.getInstance().setActivity(this);
         }
     }
 
@@ -215,6 +217,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
         Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
         Timer.getInstance().ajouterPhaseEtDemarrer();
+        Timer.getInstance().setActivity(this);
 
         if (this.phase <2) {
             this.phase++;
