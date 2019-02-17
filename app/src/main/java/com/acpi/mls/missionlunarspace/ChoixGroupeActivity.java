@@ -197,7 +197,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void refreshClassementGroupe(String str) {
+    //TODO regler le bug de scrool
+    public void refreshClassementGroupe() {
         recyclerViewGroupe.setAdapter(new MyAdapter(this.classementGroupe));
     }
 
@@ -207,7 +208,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     //TODO BUG Affichage refreshClassementGRoupe pour le changement de phase.
     public void changementDePhase(View view) {
-        if (this.phase < 3) {
+        if (this.phase <2) {
             this.phase++;
             if(this.role.equals("Capitaine")) {
                 this.classementCapitaine.subList(0, 5).clear();

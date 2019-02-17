@@ -70,13 +70,12 @@ public class DAOClassementGroupe extends DAO {
     private void getAllClassementGroupe(String idGroupe) {
         try {
             PreparedStatement pst = cn.prepareStatement("SELECT nomObjet FROM ClassementGroupe cgt JOIN Objets obj ON cgt.idObjet = obj.idObjet WHERE idGroupe = ? ORDER BY position");
-            pst.setString(3, idGroupe);
+            pst.setString(1, idGroupe);
             ResultSet rs = pst.executeQuery();
 
-            for (int i = 0; i < 5; i++) {
-                if (rs.next())
-                    this.classementGroup.add(rs.getString(1));
-            }
+            while (rs.next())
+                this.classementGroup.add(rs.getString(1));
+
 
         } catch (SQLException e) {
             deconnexion();

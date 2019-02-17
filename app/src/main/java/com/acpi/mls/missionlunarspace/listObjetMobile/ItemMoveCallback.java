@@ -53,7 +53,6 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback {
                         (RecyclerViewAdapter.MyViewHolder) viewHolder;
                 mAdapter.onRowSelected(myViewHolder);
             }
-
         }
 
         super.onSelectedChanged(viewHolder, actionState);

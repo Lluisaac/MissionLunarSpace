@@ -31,7 +31,7 @@ public class DAORefreshListeGroupe extends DAO {
         while(continuer) {
             faireCN();
             liste.clear();
-            setClassementGroupe(Integer.parseInt(strings[0]), liste);
+            setClassementGroupe(Integer.parseInt(strings[0]));
             publishProgress(strings[0]);
             try {
                 Thread.sleep(500);
@@ -43,20 +43,20 @@ public class DAORefreshListeGroupe extends DAO {
 
     @Override
     protected void onProgressUpdate(String... result) {
-        choixGroupeActivity.refreshClassementGroupe(result[0]);
+        choixGroupeActivity.refreshClassementGroupe();
     }
 
     public void arreter() {
         continuer = false;
     }
 
-    private void setClassementGroupe(int idGroupe, ArrayList<String> classement) {
+    private void setClassementGroupe(int idGroupe) {
         try {
             PreparedStatement pst = cn.prepareStatement("SELECT idGroupe, nomObjet, position FROM Objets ob JOIN ClassementGroupe cg ON ob.idObjet = cg.idObjet WHERE idGroupe = ? ORDER BY position");
             pst.setInt(1, idGroupe);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                classement.add(rs.getString(2));
+                this.liste.add(rs.getString(2));
             }
         } catch (SQLException e) {
             deconnexion();
