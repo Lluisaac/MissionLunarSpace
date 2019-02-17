@@ -42,8 +42,8 @@ public class ChoixPersoActivity extends AppCompatActivity {
         this.annee = (String) getIntent().getSerializableExtra("AnneeEtu");
         new DAOChoixPersoActivity(ChoixPersoActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getIdEtudiant", "getIdEtudiant", this.nom, this.classe, this.annee);
         Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-        Timer.getInstance().ajouterPhaseEtDemarrer();
         Timer.getInstance().setActivity(this);
+        Timer.getInstance().ajouterPhaseEtDemarrer();
     }
 
     public void setIdEtudiant(String s) {

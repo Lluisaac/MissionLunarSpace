@@ -67,7 +67,7 @@ public class EtudiantActivity extends AppCompatActivity {
         if (!id.equals("")) {
             //TODO Enlever la ligne pour recommencer l'ajout d'étudiant et enlever l'appel du set qui sera fait automatiquement dans le DAO
             //new DAOEtudiant(EtudiantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"createEtudiant", "setIdEtu", this.nomEtu);
-            setIdEtudiant("1");
+            setIdEtudiant("55");
             this.idClasse = id;
             changerPageVersAttente();
         } else

@@ -65,8 +65,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choix_groupe);
 
         Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-        Timer.getInstance().ajouterPhaseEtDemarrer();
         Timer.getInstance().setActivity(this);
+        Timer.getInstance().ajouterPhaseEtDemarrer();
 
         new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getGroupeEtudiant", "getGroupeEtudiant", this.idEtudiant);
     }
@@ -103,8 +103,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             creerListeImmobile();
 
             Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-            Timer.getInstance().ajouterPhaseEtDemarrer();
             Timer.getInstance().setActivity(this);
+            Timer.getInstance().ajouterPhaseEtDemarrer();
         }
     }
 
@@ -218,8 +218,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     public void changementDePhase(View view) {
 		
         Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-        Timer.getInstance().ajouterPhaseEtDemarrer();
         Timer.getInstance().setActivity(this);
+        Timer.getInstance().ajouterPhaseEtDemarrer();
 
         if (this.phase <2) {
             this.phase++;
