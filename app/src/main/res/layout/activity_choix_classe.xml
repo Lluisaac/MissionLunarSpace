@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ChoixClasseActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewObjetVrac"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/recyclerView_objetPerso"
-        app:layout_constraintStart_toEndOf="@+id/recyclerView_Capitaine_ChoixGroupeCapitaine"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
@@ -28,15 +17,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitre3" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_objetPerso"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <TextView
         android:id="@+id/textView10"
@@ -50,21 +30,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitre3" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_Capitaine_ChoixGroupeCapitaine"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
     <TextView
         android:id="@+id/textViewTitre3"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:text="Classement par groupe"
+        android:text="Classement de la classe"
         android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,5 +56,40 @@
         app:layout_constraintEnd_toStartOf="@+id/textView12"
         app:layout_constraintStart_toEndOf="@+id/textView10"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitre3" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_choixClasse_classementPerso"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_choixClasse_classementGroupe"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerView_choixClasse_classementPerso"
+        app:layout_constraintStart_toEndOf="@+id/recyclerView_choixClasse_classementClasse"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_choixClasse_classementClasse"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
 </android.support.constraint.ConstraintLayout>

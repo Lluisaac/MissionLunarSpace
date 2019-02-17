@@ -169,8 +169,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewCapitaine.setAdapter(mAdapter);
     }
 
-    private void updateListeCapitaine()
-    {
+    private void updateListeCapitaine() {
         recyclerViewCapitaine = findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
 
         recyclerViewCapitaine.setLayoutManager(new LinearLayoutManager(this));
@@ -193,6 +192,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("idEtudiant", this.idEtudiant);
         bundle.putString("typeGroupe", this.typeGroupe);
+        bundle.putString("roleEtudiant", this.role);
+        bundle.putString("idGroupe", this.idGroupe);
+        bundle.putStringArrayList("classementPerso", this.classementPerso);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -208,17 +210,20 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     //TODO BUG Affichage refreshClassementGRoupe pour le changement de phase.
     public void changementDePhase(View view) {
-        if (this.phase <2) {
+        if (this.phase < 2) {
             this.phase++;
-            if(this.role.equals("Capitaine")) {
+            if (this.role.equals("Capitaine")) {
                 this.classementCapitaine.subList(0, 5).clear();
                 this.updateListeCapitaine();
             }
             if (this.role.equals("Technicien")) {
                 this.daoRefreshUpdateClassementTemporaire.incrementPhase();
             }
-        }else
-            new DAOClassementGroupe(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getAllClassementGroupe","getAllClassementGroupe",this.idGroupe);
+        } else if (this.phase == 2) {
+            this.phase++;
+            new DAOClassementGroupe(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getAllClassementGroupe", "getAllClassementGroupe", this.idGroupe);
+        } else
+            passageChoixClasse();
 
     }
 
