@@ -17,6 +17,8 @@ import com.acpi.mls.missionlunarspace.DAO.activity.DAOEnseignant;
 
 public class EnseignantActivity extends AppCompatActivity {
 
+    private boolean isLogin = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,13 @@ public class EnseignantActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isLogin) {
+            super.onBackPressed();
+        }
     }
 
     protected void faireElementsCreationGroupe() {
@@ -143,6 +152,7 @@ public class EnseignantActivity extends AppCompatActivity {
             entre = entre == null ? "" : entre;
             if (entre.equals(mdp)) {
                 setContentView(R.layout.activity_enseignant_config_groupe);
+                this.isLogin = false;
                 faireElementsCreationGroupe();
             } else {
                 Toast.makeText(this, "Mot de passe éronné", Toast.LENGTH_SHORT).show();

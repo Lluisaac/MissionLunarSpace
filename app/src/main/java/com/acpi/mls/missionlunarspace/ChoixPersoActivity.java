@@ -46,6 +46,11 @@ public class ChoixPersoActivity extends AppCompatActivity {
         Timer.getInstance().ajouterPhaseEtDemarrer();
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     public void setIdEtudiant(String s) {
         this.idEtudiant = s;
         ajouterObjets();

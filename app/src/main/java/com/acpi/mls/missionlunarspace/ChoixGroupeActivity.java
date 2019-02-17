@@ -71,6 +71,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getGroupeEtudiant", "getGroupeEtudiant", this.idEtudiant);
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     public void setGroup(String typeGroupe) {
         this.typeGroupe = typeGroupe;
         TextView textView = findViewById(R.id.textView_AffichageGroupe);

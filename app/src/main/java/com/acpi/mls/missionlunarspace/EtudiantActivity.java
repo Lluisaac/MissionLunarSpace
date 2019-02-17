@@ -21,11 +21,20 @@ public class EtudiantActivity extends AppCompatActivity {
     private String idEtudiant;
     private String idClasse;
 
+    private boolean isAttente = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_etudiant);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!isAttente) {
+            super.onBackPressed();
+        }
     }
 
     public void onClikButtonContinuer(View view) throws InterruptedException {
@@ -85,6 +94,7 @@ public class EtudiantActivity extends AppCompatActivity {
     }
 
     private void changerPageVersAttente() {
+        isAttente = true;
         setContentView(R.layout.content_etudiant_attente);
         Button boutonSuiveAttente = (Button) findViewById(R.id.buttonTempoAttente);
         //TODO changer par boutonSuiveAttente.setVisibility(View.INVISIBLE);
