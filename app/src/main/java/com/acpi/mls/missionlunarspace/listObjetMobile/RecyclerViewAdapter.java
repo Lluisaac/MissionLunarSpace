@@ -14,11 +14,7 @@ import java.util.Collections;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
 
-    private ArrayList<String> data;
-
-    public ArrayList<String> getData() {
-        return this.data;
-    }
+    protected ArrayList<String> data;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
