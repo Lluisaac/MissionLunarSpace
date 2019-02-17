@@ -2,52 +2,91 @@ package com.acpi.mls.missionlunarspace;
 
 
 import android.os.CountDownTimer;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 
 public class Timer {
 
+    public static Timer timer;
+    private static long[] tempsParPhase = {10 * 60, 5 * 60, 15 * 60, 10 * 60, 5 * 60, 5 * 60, 10 * 60, 5 * 60};
+    private static long tempsTotal = 60 * 60;
+    private long[] tempsDepart = new long[3];
 
     private TextView mTextViewCountDown;
-    private Button mButtonStart;
 
     private CountDownTimer mCountDownTimer;
 
     private boolean mTimerRunning;
 
-    private long mTimeLeftInMillis;
+    public long mTimeLeftInMillis;
+    public int phase;
 
-    public Timer(TextView tv, long timeLeft){
-        this.setmTextViewCountDown(tv);
-        this.setmTimeLeftInMillis(timeLeft);
-
+    public Timer(String tempsNonFormate) {
+        formatTime(tempsNonFormate);
+        this.phase = 0;
     }
 
-    public Timer(TextView tv, Button btn, long timeLeft){
-        this.setmTextViewCountDown(tv);
-        this.setmButtonStart(btn);
-        this.setmTimeLeftInMillis(timeLeft);
+    public static Timer createTimer(String tempsNonFormate) {
+        Timer.timer = new Timer(tempsNonFormate);
+        return timer;
+    }
 
+    public static Timer getInstance() {
+        return timer;
+    }
+
+    private void formatTime(String tempsNonFormate) {
+        String[] tempsDep = tempsNonFormate.split(" ")[1].split(":");
+        tempsDepart[0] = Integer.parseInt(tempsDep[0]);
+        tempsDepart[1] = Integer.parseInt(tempsDep[1]);
+        tempsDepart[2] = Integer.parseInt(tempsDep[2]);
+    }
+
+    public void setTimeLeftEtDemarrer(int phase) {
+        mTimeLeftInMillis = getTimeLeft(phase);
+        startTimer();
+    }
+
+    public void ajouterPhaseEtDemarrer() {
+        this.phase++;
+        setTimeLeftEtDemarrer(phase);
+    }
+
+    private long getTimeLeft(int phase) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String[] tempsDep = sdf.format(cal.getTime()).split(":");
+        int[] current = {Integer.parseInt(tempsDep[0]) + 1, Integer.parseInt(tempsDep[1]), Integer.parseInt(tempsDep[2])};
+
+        long heuresEnSec = (current[0] - tempsDepart[0]) * 3600;
+        long minutesEnSec = (current[1] - tempsDepart[1]) * 60;
+        long secondesEnSec = (current[2] - tempsDepart[2]) * 1;
+        return (getTimePhase(phase) - (heuresEnSec + minutesEnSec + secondesEnSec)) * 1000;
+    }
+
+    private long getTimePhase(int phase) {
+        switch (phase) {
+            case 0:
+                return tempsTotal;
+            default:
+                long val = 0L;
+                for (int i = 0; i < phase; i++) {
+                   val += tempsParPhase[i];
+                }
+                return val;
+        }
     }
 
     public TextView getmTextViewCountDown() {
         return mTextViewCountDown;
     }
 
-    public void setmTextViewCountDown(TextView mTextViewCountDown) {
+    public void setTextView(TextView mTextViewCountDown) {
         this.mTextViewCountDown = mTextViewCountDown;
-    }
-
-    public Button getmButtonStart() {
-        return mButtonStart;
-    }
-
-    public void setmButtonStart(Button mButtonStart) {
-        this.mButtonStart = mButtonStart;
     }
 
     public CountDownTimer getmCountDownTimer() {
@@ -85,8 +124,6 @@ public class Timer {
             @Override
             public void onFinish() {
                 setmTimerRunning(false);
-                getmButtonStart().setText("Start");
-                getmButtonStart().setVisibility(View.INVISIBLE);
             }
         }.start());
 
@@ -96,10 +133,7 @@ public class Timer {
     public void pauseTimer() {
         getmCountDownTimer().cancel();
         setmTimerRunning(false);
-        getmButtonStart().setText("Start");
     }
-
-
 
     public void updateCountDownText() {
         int minutes = (int) (getmTimeLeftInMillis() / 1000) / 60;

@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixPersoActivity;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
@@ -40,6 +41,8 @@ public class ChoixPersoActivity extends AppCompatActivity {
         this.classe = (String) getIntent().getSerializableExtra("ClasseEtu");
         this.annee = (String) getIntent().getSerializableExtra("AnneeEtu");
         new DAOChoixPersoActivity(ChoixPersoActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getIdEtudiant", "getIdEtudiant", this.nom, this.classe, this.annee);
+        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+        Timer.getInstance().ajouterPhaseEtDemarrer();
     }
 
     public void setIdEtudiant(String s) {
