@@ -128,6 +128,7 @@ public class Timer {
             @Override
             public void onFinish() {
                 setmTimerRunning(false);
+                /* TODO : Enlever le commentaire
                 switch (Timer.getInstance().phase) {
                     case 1:
                         ((ChoixPersoActivity) Timer.getInstance().getActivity()).continuerChoixGroupe(null);
@@ -154,6 +155,7 @@ public class Timer {
 
                         break;
                 }
+                */
             }
         }.start());
 
