@@ -81,10 +81,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onRowClear(MyViewHolder myViewHolder) {
         myViewHolder.rowView.setBackgroundColor(Color.WHITE);
-        if (this.choixGroupeActivity != null)
-            this.choixGroupeActivity.test();
+        if (this.choixGroupeActivity != null) {
+            if (this.choixGroupeActivity.getPhase() == 3) {
+                this.choixGroupeActivity.mouvementFait();
+            }
+        }
     }
 
+    public void setData(ArrayList<String> data) {
+        this.data = data;
+    }
 
 }
 

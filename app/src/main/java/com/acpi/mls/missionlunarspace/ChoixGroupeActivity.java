@@ -10,7 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.widget.Adapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +18,7 @@ import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixGroupeActivity;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementGroupe;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementTemp;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOPopupTechnicien;
+import com.acpi.mls.missionlunarspace.DAO.refresh.DAOPhase4Capitaine;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshListeGroupe;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshUpdateClassementTemporaire;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
@@ -47,6 +48,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     public DAORefreshListeGroupe daoRefreshListeGroupe;
     private DAORefreshUpdateClassementTemporaire daoRefreshUpdateClassementTemporaire;
 
+    private int nbMouvements = 0;
+    private boolean confirmerPossible = false;
+    private ArrayList<String> classementPrecCapitaine = new ArrayList<>();
 
     private int phase;
     private int nbDeplacement = 0;
@@ -119,9 +123,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     private void creerListeImmobile() {
         crerListeClassementPerso();
 
-        if (this.role.equals("Capitaine"))
+        if (this.role.equals("Capitaine")) {
             creerListCapitaine();
-        else {
+        } else {
             creerListeChoixGroupe();
             this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe);
             this.daoRefreshListeGroupe.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idGroupe);
@@ -173,7 +177,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewCapitaine = findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
 
         recyclerViewCapitaine.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(classementCapitaine,this);
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(classementCapitaine, this);
         ItemTouchHelper.Callback callback = new ItemMoveCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerViewCapitaine);
@@ -181,16 +185,18 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewCapitaine.setAdapter(mAdapter);
     }
 
+    public void test() {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new MyAdapter(this.classementCapitaine));
+        this.recyclerViewCapitaine = recyclerView;
+        System.out.println("----------------------------------------------------" + this.nbDeplacement);
+    }
+
     private void updateListeCapitaine() {
-        recyclerViewCapitaine = findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
-
-        recyclerViewCapitaine.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(classementCapitaine);
-        ItemTouchHelper.Callback callback = new ItemMoveCallback(mAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerViewCapitaine);
-
-        recyclerViewCapitaine.setAdapter(mAdapter);
+        RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerViewCapitaine.getAdapter();
+        adapter.setData(classementCapitaine);
+        adapter.notifyDataSetChanged();
     }
 
     public void passageChoixClasse() {
@@ -211,16 +217,65 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
-    public void test(){
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyAdapter(this.classementCapitaine));
-        this.recyclerViewCapitaine = recyclerView;
-        System.out.println("----------------------------------------------------"+this.nbDeplacement);
+    private void setClassementPrecedent() {
+        this.classementPrecCapitaine = new ArrayList<>(classementCapitaine);
     }
 
+    private void revertClassement() {
+        this.classementCapitaine = new ArrayList<>(classementPrecCapitaine);
+        updateListeCapitaine();
+    }
+
+    public void mouvementFait() {
+        Toast.makeText(this, "La liste est à présent immobile", Toast.LENGTH_SHORT).show();
+        setAdapterBougeable(false);
+        appartitionBoutonReset(true);
+        this.nbMouvements++;
+        this.confirmerPossible = true;
+    }
+
+    public void resetMouvement(View view) {
+        revertClassement();
+        confirmerMouvementRecu();
+        this.nbMouvements--;
+    }
+
+    private void confirmerMouvementRecu() {
+        this.setAdapterBougeable(true);
+        appartitionBoutonReset(false);
+        this.confirmerPossible = false;
+    }
+
+    public void faireDemandeMouvement() {
+        this.confirmerPossible = false;
+        appartitionBoutonReset(false);
+        new DAOPhase4Capitaine(this, classementCapitaine).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idGroupe + "", this.nbMouvements + "");
+    }
+
+    public void mouvementRecu(int nbMouv) {
+        if (nbMouv != this.nbMouvements) {
+            resetMouvement(null);
+            Toast.makeText(this, "Le technicien refuse.", Toast.LENGTH_SHORT).show();
+        } else {
+            confirmerMouvementRecu();
+            Toast.makeText(this, "Le technicien accepte.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void appartitionBoutonReset(boolean b) {
+        Button but = (Button) findViewById(R.id.boutonReset);
+        but.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public void setAdapterBougeable(boolean b) {
+        if (b) {
+            // TODO: Enlever le syso et mettre que l'adapter soit bougeable
+            System.out.println("Liste bougeable !");
+        } else {
+            // TODO: Enlever le syso et mettre que l'adapter soit immobile
+            System.out.println("Liste immobile !");
+        }
+    }
 
     //TODO regler le bug de scrool
     public void refreshClassementGroupe() {
@@ -230,14 +285,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         //ArrayList<String> temp = classementGroupe;
 
         //MyAdapter mAdapter = new MyAdapter(temp);
-       // this.recyclerViewGroupe.stopScroll();
+        // this.recyclerViewGroupe.stopScroll();
         recyclerViewGroupe.setAdapter(new MyAdapter(this.classementGroupe));
 
 
-
-
-
-       // mAdapter.notifyDataSetChanged();
+        // mAdapter.notifyDataSetChanged();
 
 
         /*
@@ -254,15 +306,19 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     //TODO BUG Affichage refreshClassementGRoupe pour le changement de phase.
     public void changementDePhase(View view) {
-		
+
         Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
         Timer.getInstance().setActivity(this);
         Timer.getInstance().ajouterPhaseEtDemarrer();
 
-        if (this.phase <2) {
+        if (this.phase < 2) {
             this.phase++;
             if (this.role.equals("Capitaine")) {
-                this.classementCapitaine.subList(0, 5).clear();
+                this.classementCapitaine.remove(0);
+                this.classementCapitaine.remove(0);
+                this.classementCapitaine.remove(0);
+                this.classementCapitaine.remove(0);
+                this.classementCapitaine.remove(0);
                 this.updateListeCapitaine();
             }
             if (this.role.equals("Technicien")) {
@@ -276,8 +332,28 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
 
     public void passagePhaseQuatre(ArrayList<String> classementGroupe) {
+        //TODO enlever le toast
+        Toast.makeText(this, "Vous êtes dans la Phase " + (phase + 1), Toast.LENGTH_SHORT).show();
+
         this.classementCapitaine = classementGroupe;
         updateListeCapitaine();
+        setClassementPrecedent();
+
+        Button but = (Button) findViewById(R.id.buttonCapitaineDemande);
+        but.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                switch(view.getId())
+                {
+                    case R.id.buttonCapitaineDemande:
+                        if (confirmerPossible) {
+                            faireDemandeMouvement();
+                        } else {
+                            Toast.makeText(ChoixGroupeActivity.this, "Vous devez faire un mouvement ou attendre confirmation du Technicien", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                }
+            }
+        });
     }
 
     public void afficherRole(View view) {
@@ -370,5 +446,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             i++;
         }
         return ret;
+    }
+
+    public int getPhase() {
+        return phase;
     }
 }
