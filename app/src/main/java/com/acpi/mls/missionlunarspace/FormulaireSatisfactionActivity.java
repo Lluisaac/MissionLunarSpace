@@ -10,4 +10,9 @@ public class FormulaireSatisfactionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulaire_satisfaction);
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

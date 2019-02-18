@@ -19,6 +19,57 @@ public class DAOEnseignant extends DAO {
         this.monEnseignant = ea;
     }
 
+    @Override
+    protected String[] doInBackground(String... strings) {
+        faireCN();
+        String[] tab = {"", strings[1], ""};
+        switch (strings[0]) {
+            case "DemarrerPartie":
+                tab[2] = demarrerPartie(strings[2]);
+                int id = Integer.parseInt(strInfoGroupes.split(":")[0]);
+                int nbE = Integer.parseInt(strInfoGroupes.split(":")[1]);
+                int nbG = Integer.parseInt(strInfoGroupes.split(":")[2]);
+                assignerJoueur(id, nbE, nbG);
+                break;
+            case "getMdpProf":
+                tab[0] = getMdpProf();
+                break;
+            case "createClasse":
+                int num = createClasse(strings[2], Integer.parseInt(strings[3]));
+                if (num != -1) {
+                    strInfoGroupes = createGroupes(num, Integer.parseInt(strings[4]), Integer.parseInt(strings[5]));
+                    if (strInfoGroupes == null) {
+                        tab[1] = "Erreur a la création";
+                    } else {
+                        tab[0] = num + "";
+                        tab[1] = "Aller a lancer partie";
+                    }
+                } else {
+                    tab[1] = "Erreur a la création";
+                }
+                break;
+        }
+        return tab;
+    }
+
+    @Override
+    protected void onPostExecute(String[] result) {
+        switch (result[1]) {
+            case "EnseignantActivity.validerMDP":
+                monEnseignant.validerMDP(result[0]);
+                break;
+            case "Erreur a la création":
+                monEnseignant.erreurALaCreation();
+                break;
+            case "Aller a lancer partie":
+                monEnseignant.allerALancerPartie(result[0]);
+                break;
+            case "indicationPartieDemarree":
+                monEnseignant.indiquerPartieDemaree(result[2]);
+                break;
+        }
+    }
+
     public String getMdpProf() {
         try {
             Statement st = cn.createStatement();
@@ -117,57 +168,6 @@ public class DAOEnseignant extends DAO {
 
             deconnexion();
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected String[] doInBackground(String... strings) {
-        faireCN();
-        String[] tab = {"", strings[1], ""};
-        switch (strings[0]) {
-            case "DemarrerPartie":
-                tab[2] = demarrerPartie(strings[2]);
-                int id = Integer.parseInt(strInfoGroupes.split(":")[0]);
-                int nbE = Integer.parseInt(strInfoGroupes.split(":")[1]);
-                int nbG = Integer.parseInt(strInfoGroupes.split(":")[2]);
-                assignerJoueur(id, nbE, nbG);
-                break;
-            case "getMdpProf":
-                tab[0] = getMdpProf();
-                break;
-            case "createClasse":
-                int num = createClasse(strings[2], Integer.parseInt(strings[3]));
-                if (num != -1) {
-                    strInfoGroupes = createGroupes(num, Integer.parseInt(strings[4]), Integer.parseInt(strings[5]));
-                    if (strInfoGroupes == null) {
-                        tab[1] = "Erreur a la création";
-                    } else {
-                        tab[0] = num + "";
-                        tab[1] = "Aller a lancer partie";
-                    }
-                } else {
-                    tab[1] = "Erreur a la création";
-                }
-                break;
-        }
-        return tab;
-    }
-
-    @Override
-    protected void onPostExecute(String[] result) {
-        switch (result[1]) {
-            case "EnseignantActivity.validerMDP":
-                monEnseignant.validerMDP(result[0]);
-                break;
-            case "Erreur a la création":
-                monEnseignant.erreurALaCreation();
-                break;
-            case "Aller a lancer partie":
-                monEnseignant.allerALancerPartie(result[0]);
-                break;
-            case "indicationPartieDemarree":
-                monEnseignant.indiquerPartieDemaree(result[2]);
-                break;
         }
     }
 }

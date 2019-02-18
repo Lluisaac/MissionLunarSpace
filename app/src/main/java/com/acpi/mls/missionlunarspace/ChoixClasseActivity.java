@@ -39,6 +39,10 @@ public class ChoixClasseActivity extends AppCompatActivity {
         initLayout();
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 
     private void initLayout() {
         initClassementPerso();
