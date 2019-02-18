@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
 
     private int phase;
+    private int nbDeplacement = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +173,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewCapitaine = findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
 
         recyclerViewCapitaine.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(classementCapitaine);
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(classementCapitaine,this);
         ItemTouchHelper.Callback callback = new ItemMoveCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerViewCapitaine);
@@ -209,10 +211,42 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
+    public void test(){
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new MyAdapter(this.classementCapitaine));
+        this.recyclerViewCapitaine = recyclerView;
+        System.out.println("----------------------------------------------------"+this.nbDeplacement);
+    }
+
+
     //TODO regler le bug de scrool
     public void refreshClassementGroupe() {
+
+        //this.recyclerViewGroupe.getRecycledViewPool().clear();
+        //this.recyclerViewGroupe.getAdapter().notifyItemRangeInserted(0,15);
+        //ArrayList<String> temp = classementGroupe;
+
+        //MyAdapter mAdapter = new MyAdapter(temp);
+       // this.recyclerViewGroupe.stopScroll();
         recyclerViewGroupe.setAdapter(new MyAdapter(this.classementGroupe));
+
+
+
+
+
+       // mAdapter.notifyDataSetChanged();
+
+
+        /*
+        RecyclerView recyclerViewGroupe2 = (RecyclerView) findViewById(R.id.recyclerViewObjetGroupe);
+        recyclerViewGroupe2.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewGroupe2.setAdapter(new MyAdapter(classementGroupe));
+        */
     }
+
 
     public void demandeConfirmation(View view) {
         new DAOClassementGroupe(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getClassementGroupe", "getClassementGroupe", this.idGroupe, this.phase + "");

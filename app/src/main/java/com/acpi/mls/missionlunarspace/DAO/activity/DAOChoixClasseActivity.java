@@ -17,7 +17,6 @@ public class DAOChoixClasseActivity extends DAO {
         this.classementGroup = new ArrayList<>();
     }
 
-
     @Override
     protected String[] doInBackground(String... strings) {
         faireCN();
@@ -26,6 +25,11 @@ public class DAOChoixClasseActivity extends DAO {
             case "getAllClassementGroupe":
                 getAllClassementGroupe(strings[2]);
                 break;
+            case "saveClassementClasse":
+                saveClassementClasse(strings[2], strings[3], strings[4]);
+                break;
+            case "getIdClasse":
+                tab[0] = getIdClasse(strings[2]);
         }
         return tab;
     }
@@ -56,4 +60,35 @@ public class DAOChoixClasseActivity extends DAO {
             e.printStackTrace();
         }
     }
+
+    private String getIdClasse(String idGroupe) {
+        try {
+            PreparedStatement preparedStatement = cn.prepareStatement("SELECT idClasse FROM Groupes WHERE idGroupe = ?");
+            preparedStatement.setString(1, idGroupe);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            rs.next();
+            return rs.getString(1);
+        } catch (SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    private void saveClassementClasse(String idClasse, String idObjet, String position) {
+        try {
+            PreparedStatement preparedStatement = cn.prepareStatement("INSERT INTO ClassementClasse (idClasse,idObjet,position) VALUES (?,?,?)");
+            preparedStatement.setString(1, idClasse);
+            preparedStatement.setString(2, idObjet);
+            preparedStatement.setString(3, position);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+        }
+    }
 }
+
+

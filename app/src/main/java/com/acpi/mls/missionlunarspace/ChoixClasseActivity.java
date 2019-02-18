@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixClasseActivity;
+import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixPersoActivity;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
@@ -82,5 +83,14 @@ public class ChoixClasseActivity extends AppCompatActivity {
         RecyclerView recyclerViewClassementPerso = (RecyclerView) findViewById(R.id.recyclerView_choixClasse_classementGroupe);
         recyclerViewClassementPerso.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewClassementPerso.setAdapter(new MyAdapter(list));
+    }
+
+    private void saveClassement() {
+        ArrayList<String> monArrayList = new ArrayList<String>(Arrays.asList(ChoixPersoActivity.listObjets));
+
+        for (int i = 1; i <= 15; i++) {
+            int idObjet = 1 + monArrayList.indexOf(classementClasse.get(i - 1));
+           // new DAOChoixClasseActivity(DAOChoixClasseActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"saveClassementClasse", "", this.idEtudiant, idObjet + "", "" + i);
+        }
     }
 }

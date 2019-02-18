@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.acpi.mls.missionlunarspace.ChoixGroupeActivity;
 import com.acpi.mls.missionlunarspace.R;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Collections;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
 
     protected ArrayList<String> data;
+    protected ChoixGroupeActivity choixGroupeActivity = null;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -30,6 +32,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public RecyclerViewAdapter(ArrayList<String> data) {
         this.data = data;
+    }
+
+    public RecyclerViewAdapter(ArrayList<String> data, ChoixGroupeActivity choixGroupeActivity) {
+        this.data = data;
+        this.choixGroupeActivity = choixGroupeActivity;
     }
 
     @Override
@@ -61,7 +68,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Collections.swap(data, i, i - 1);
             }
         }
+
         notifyItemMoved(fromPosition, toPosition);
+
     }
 
     @Override
@@ -72,7 +81,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onRowClear(MyViewHolder myViewHolder) {
         myViewHolder.rowView.setBackgroundColor(Color.WHITE);
+        if (this.choixGroupeActivity != null)
+            this.choixGroupeActivity.test();
     }
+
 
 }
 
