@@ -22,6 +22,7 @@ import com.acpi.mls.missionlunarspace.DAO.refresh.DAOPhase4Capitaine;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshListeGroupe;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshUpdateClassementTemporaire;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
+import com.acpi.mls.missionlunarspace.immobile.MyLinearLayoutManager;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
 
@@ -161,7 +162,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     private void creerListeChoixGroupe() {
         recyclerViewGroupe = (RecyclerView) findViewById(R.id.recyclerViewObjetGroupe);
-        recyclerViewGroupe.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewGroupe.setLayoutManager(new MyLinearLayoutManager(this));
         recyclerViewGroupe.setAdapter(new MyAdapter(classementGroupe));
     }
 
@@ -285,7 +286,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         //ArrayList<String> temp = classementGroupe;
 
         //MyAdapter mAdapter = new MyAdapter(temp);
-        // this.recyclerViewGroupe.stopScroll();
         recyclerViewGroupe.setAdapter(new MyAdapter(this.classementGroupe));
 
 

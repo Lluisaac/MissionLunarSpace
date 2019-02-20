@@ -19,6 +19,7 @@
         <activity android:name=".ChoixPersoActivity" />
         <activity android:name=".EtudiantActivity" />
         <activity android:name=".EnseignantActivity" />
+        <activity android:name=".SelectionEtudiantEnseignant"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">

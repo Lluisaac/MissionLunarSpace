@@ -7,25 +7,29 @@
     tools:context="com.acpi.mls.missionlunarspace.MainActivity">
 
     <Button
-        android:id="@+id/button_enseignant"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:onClick="goActivityProf"
-        android:text="@string/enseignant"
-        app:layout_constraintBottom_toTopOf="@+id/button_etudiant"
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="lancerJeu"
+        android:text="Lancer le jeu"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView29"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="MISION LUNAR SPACE 9 "
+        android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button_etudiant"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:onClick="goActivityEtu"
-        android:text="@string/etudiants"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_enseignant" />
 </android.support.constraint.ConstraintLayout>
