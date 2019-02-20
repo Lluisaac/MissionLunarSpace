@@ -49,7 +49,7 @@ public class DAOPhase4Technicien extends DAO {
             pst.setInt(1, idGroupe);
             ResultSet rs = pst.executeQuery();
             rs.next();
-            return rs.getInt(1) == 1;
+            return rs.getInt(1) > 0;
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();

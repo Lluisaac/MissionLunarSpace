@@ -349,6 +349,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         } else if (this.role.equals("Technicien")) {
             daoRefreshUpdateClassementTemporaire.arreter();
             this.daoRefreshPhase4Technicien = new DAOPhase4Technicien(this);
+            this.daoRefreshPhase4Technicien.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe);
         }
     }
 
