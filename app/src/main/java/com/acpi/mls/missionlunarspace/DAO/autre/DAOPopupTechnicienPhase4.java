@@ -36,6 +36,7 @@ public class DAOPopupTechnicienPhase4 extends DAO {
             rs.next();
             rs.updateInt(2, 0);
             rs.updateInt(3, rs.getInt(3) + (isOk ? 1 : 0));
+            rs.updateRow();
 
         } catch (
                 SQLException e) {

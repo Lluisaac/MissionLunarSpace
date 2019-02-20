@@ -438,6 +438,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     public void redemarrerRefreshPhase4() {
         this.daoRefreshPhase4Technicien = new DAOPhase4Technicien(this);
+        this.daoRefreshPhase4Technicien.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe);
     }
 
     public void classementEgal(ArrayList<String> classementBD) {
