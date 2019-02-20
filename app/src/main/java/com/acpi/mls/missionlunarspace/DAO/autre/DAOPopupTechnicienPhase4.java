@@ -1,24 +1,52 @@
 package com.acpi.mls.missionlunarspace.DAO.autre;
 
 import com.acpi.mls.missionlunarspace.ChoixGroupeActivity;
-import com.acpi.mls.missionlunarspace.ChoixPersoActivity;
 import com.acpi.mls.missionlunarspace.DAO.DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DAOPopupTechnicien extends DAO {
+public class DAOPopupTechnicienPhase4 extends DAO {
+
+    private ChoixGroupeActivity choixGroupeActivity;
+
+    public DAOPopupTechnicienPhase4(ChoixGroupeActivity choixGroupeActivity) {
+        this.choixGroupeActivity = choixGroupeActivity;
+    }
 
     @Override
     protected String[] doInBackground(String... strings) {
         faireCN();
         if ("OK".equals(strings[0])) {
-            resetClassement(Integer.parseInt(strings[1]), Integer.parseInt(strings[2]));
+            resetClassement(Integer.parseInt(strings[1]));
             mettreClassementTemporaireDefinitif(Integer.parseInt(strings[1]));
         }
-        resetClassementTemporaire(Integer.parseInt(strings[1]), Integer.parseInt(strings[2]));
+        resetClassementTemporaire(Integer.parseInt(strings[1]));
+        changerMouvementPhase4(Integer.parseInt(strings[1]), "OK".equals(strings[0]));
         return null;
+    }
+
+    private void changerMouvementPhase4(int idGroupe, boolean isOk) {
+        try {
+            PreparedStatement pst = cn.prepareStatement("SELECT idGroupe, enAttenteReponse, nbMouvements FROM MouvementPhase4 WHERE idGroupe = ?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            pst.setInt(1, idGroupe);
+            ResultSet rs = pst.executeQuery();
+
+            rs.next();
+            rs.updateInt(2, 0);
+            rs.updateInt(3, rs.getInt(3) + (isOk ? 1 : 0));
+
+        } catch (
+                SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onPostExecute(String[] result) {
+        choixGroupeActivity.redemarrerRefreshPhase4();
     }
 
     private void mettreClassementTemporaireDefinitif(int idGroupe) {
@@ -46,12 +74,10 @@ public class DAOPopupTechnicien extends DAO {
         }
     }
 
-    private void resetClassement(int idGroupe, int phase) {
+    private void resetClassement(int idGroupe) {
         try {
-            PreparedStatement pst = cn.prepareStatement("DELETE FROM ClassementGroupe WHERE idGroupe = ? AND position > ? AND position <= ?");
+            PreparedStatement pst = cn.prepareStatement("DELETE FROM ClassementGroupe WHERE idGroupe = ?");
             pst.setInt(1, idGroupe);
-            pst.setInt(2, phase * 5);
-            pst.setInt(3, phase * 5 +5);
             pst.executeUpdate();
         } catch (
                 SQLException e) {
@@ -60,7 +86,7 @@ public class DAOPopupTechnicien extends DAO {
         }
     }
 
-    private void resetClassementTemporaire(int idGroupe, int phase) {
+    private void resetClassementTemporaire(int idGroupe) {
         try {
             PreparedStatement pst = cn.prepareStatement("DELETE FROM ClassementGroupeTemp WHERE idGroupe = ?");
             pst.setInt(1, idGroupe);

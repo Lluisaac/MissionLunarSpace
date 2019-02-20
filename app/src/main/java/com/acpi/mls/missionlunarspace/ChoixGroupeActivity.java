@@ -18,7 +18,9 @@ import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixGroupeActivity;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementGroupe;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementTemp;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOPopupTechnicien;
+import com.acpi.mls.missionlunarspace.DAO.autre.DAOPopupTechnicienPhase4;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAOPhase4Capitaine;
+import com.acpi.mls.missionlunarspace.DAO.refresh.DAOPhase4Technicien;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshListeGroupe;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshUpdateClassementTemporaire;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
@@ -48,6 +50,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     public DAORefreshListeGroupe daoRefreshListeGroupe;
     private DAORefreshUpdateClassementTemporaire daoRefreshUpdateClassementTemporaire;
+    private DAOPhase4Technicien daoRefreshPhase4Technicien;
 
     private int nbMouvements = 0;
     private boolean confirmerPossible = false;
@@ -202,10 +205,13 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     public void passageChoixClasse() {
 
-        if (!this.role.equals("Capitaine"))
+        if (!this.role.equals("Capitaine")) {
             this.daoRefreshListeGroupe.arreter();
-        if (this.role.equals("Technicien"))
-            this.daoRefreshUpdateClassementTemporaire.arreter();
+        }
+
+        if (this.role.equals("Technicien")) {
+            this.daoRefreshPhase4Technicien.arreter();
+        }
 
         Intent intent = new Intent(this, ChoixClasseActivity.class);
         Bundle bundle = new Bundle();
@@ -279,8 +285,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
 
     public void refreshClassementGroupe(ArrayList<String> temp) {
-        MyAdapter adapter = (MyAdapter) recyclerViewGroupe.getAdapter();
         this.classementGroupe = temp;
+        MyAdapter adapter = (MyAdapter) recyclerViewGroupe.getAdapter();
         adapter.setList(this.classementGroupe);
         adapter.notifyDataSetChanged();
     }
@@ -321,7 +327,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         //TODO enlever le toast
         Toast.makeText(this, "Vous êtes dans la Phase " + (phase + 1), Toast.LENGTH_SHORT).show();
 
-        if (this.role == "Capitaine") {
+        if (this.role.equals("Capitaine")) {
             this.classementCapitaine = classementGroupe;
             updateListeCapitaine();
             setClassementPrecedent();
@@ -340,6 +346,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
                     }
                 }
             });
+        } else if (this.role.equals("Technicien")) {
+            daoRefreshUpdateClassementTemporaire.arreter();
+            this.daoRefreshPhase4Technicien = new DAOPhase4Technicien(this);
         }
     }
 
@@ -395,16 +404,39 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         final String phase = this.phase + "";
         dialogBuilder.setCancelable(false).setPositiveButton("ACCEPTER", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "OK", groupe, phase);
+                new DAOPopupTechnicien().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "OK", groupe, phase);
             }
         });
 
         dialogBuilder.setCancelable(false).setNegativeButton("PAS ACCEPTER", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                new DAOPopupTechnicien(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "PAS OK", groupe, phase);
+                new DAOPopupTechnicien().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "PAS OK", groupe, phase);
             }
         });
         dialogBuilder.create().show();
+    }
+
+    public void afficherPopupTechnicienPhase4(String s) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Acceptez vous ce nouveau classement ?");
+        dialogBuilder.setMessage(s);
+        final String groupe = this.idGroupe;
+        dialogBuilder.setCancelable(false).setPositiveButton("ACCEPTER", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                new DAOPopupTechnicienPhase4(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "OK", groupe);
+            }
+        });
+
+        dialogBuilder.setCancelable(false).setNegativeButton("PAS ACCEPTER", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                new DAOPopupTechnicienPhase4(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "PAS OK", groupe);
+            }
+        });
+        dialogBuilder.create().show();
+    }
+
+    public void redemarrerRefreshPhase4() {
+        this.daoRefreshPhase4Technicien = new DAOPhase4Technicien(this);
     }
 
     public void classementEgal(ArrayList<String> classementBD) {
