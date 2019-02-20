@@ -108,4 +108,20 @@ public class ChoixPersoActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
+    public static String findIdObjet(String nomObjet){
+        String ret = "";
+        int i = 0;
+        boolean trouve = false;
+        while( i < ChoixPersoActivity.listObjets.length && !trouve)
+        {
+            if(nomObjet.equals(ChoixPersoActivity.listObjets[i]))
+            {
+                trouve = true;
+                ret = (i+1) + "";
+            }
+            i++;
+        }
+        return  ret;
+    }
 }
