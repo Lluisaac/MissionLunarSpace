@@ -23,6 +23,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return new MyViewHolder(view);
     }
 
+    public void setList(List<String> list) {
+        this.list = list;
+    }
+
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textView.setText(list.get(position));

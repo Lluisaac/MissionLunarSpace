@@ -21,8 +21,7 @@ public class DAORefreshListeGroupe extends DAO {
      * Il faut faire myDAO.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,monIdDeGroupe) pour un bon fonctionnement
      * /!\ Cela ne va pas modifier l'affichage d'une quelconque façon
      */
-    public DAORefreshListeGroupe(ChoixGroupeActivity choixGroupeActivity, ArrayList<String> liste) {
-        this.liste = liste;
+    public DAORefreshListeGroupe(ChoixGroupeActivity choixGroupeActivity) {
         this.choixGroupeActivity = choixGroupeActivity;
     }
 
@@ -30,11 +29,10 @@ public class DAORefreshListeGroupe extends DAO {
     protected String[] doInBackground(String... strings) {
         while(continuer) {
             faireCN();
-            liste.clear();
             setClassementGroupe(Integer.parseInt(strings[0]));
             publishProgress(strings[0]);
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
             }
         }
@@ -43,7 +41,7 @@ public class DAORefreshListeGroupe extends DAO {
 
     @Override
     protected void onProgressUpdate(String... result) {
-        choixGroupeActivity.refreshClassementGroupe();
+        choixGroupeActivity.refreshClassementGroupe(liste);
     }
 
     public void arreter() {
@@ -52,11 +50,12 @@ public class DAORefreshListeGroupe extends DAO {
 
     private void setClassementGroupe(int idGroupe) {
         try {
+            liste = new ArrayList<>();
             PreparedStatement pst = cn.prepareStatement("SELECT idGroupe, nomObjet, position FROM Objets ob JOIN ClassementGroupe cg ON ob.idObjet = cg.idObjet WHERE idGroupe = ? ORDER BY position");
             pst.setInt(1, idGroupe);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                this.liste.add(rs.getString(2));
+                liste.add(rs.getString(2));
             }
         } catch (SQLException e) {
             deconnexion();

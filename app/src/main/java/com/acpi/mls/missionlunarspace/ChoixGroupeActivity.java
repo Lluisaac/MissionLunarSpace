@@ -128,7 +128,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             creerListCapitaine();
         } else {
             creerListeChoixGroupe();
-            this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this, classementGroupe);
+            this.daoRefreshListeGroupe = new DAORefreshListeGroupe(ChoixGroupeActivity.this);
             this.daoRefreshListeGroupe.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idGroupe);
             if (this.role.equals("Technicien")) {
                 this.daoRefreshUpdateClassementTemporaire = new DAORefreshUpdateClassementTemporaire(ChoixGroupeActivity.this);
@@ -278,25 +278,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         }
     }
 
-    //TODO regler le bug de scrool
-    public void refreshClassementGroupe() {
-
-        //this.recyclerViewGroupe.getRecycledViewPool().clear();
-        //this.recyclerViewGroupe.getAdapter().notifyItemRangeInserted(0,15);
-        //ArrayList<String> temp = classementGroupe;
-
-        //MyAdapter mAdapter = new MyAdapter(temp);
-        recyclerViewGroupe.setAdapter(new MyAdapter(this.classementGroupe));
-
-
-        // mAdapter.notifyDataSetChanged();
-
-
-        /*
-        RecyclerView recyclerViewGroupe2 = (RecyclerView) findViewById(R.id.recyclerViewObjetGroupe);
-        recyclerViewGroupe2.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewGroupe2.setAdapter(new MyAdapter(classementGroupe));
-        */
+    public void refreshClassementGroupe(ArrayList<String> temp) {
+        MyAdapter adapter = (MyAdapter) recyclerViewGroupe.getAdapter();
+        this.classementGroupe = temp;
+        adapter.setList(this.classementGroupe);
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -335,25 +321,26 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         //TODO enlever le toast
         Toast.makeText(this, "Vous êtes dans la Phase " + (phase + 1), Toast.LENGTH_SHORT).show();
 
-        this.classementCapitaine = classementGroupe;
-        updateListeCapitaine();
-        setClassementPrecedent();
+        if (this.role == "Capitaine") {
+            this.classementCapitaine = classementGroupe;
+            updateListeCapitaine();
+            setClassementPrecedent();
 
-        Button but = (Button) findViewById(R.id.buttonCapitaineDemande);
-        but.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                switch(view.getId())
-                {
-                    case R.id.buttonCapitaineDemande:
-                        if (confirmerPossible) {
-                            faireDemandeMouvement();
-                        } else {
-                            Toast.makeText(ChoixGroupeActivity.this, "Vous devez faire un mouvement ou attendre confirmation du Technicien", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
+            Button but = findViewById(R.id.buttonCapitaineDemande);
+            but.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    switch (view.getId()) {
+                        case R.id.buttonCapitaineDemande:
+                            if (confirmerPossible) {
+                                faireDemandeMouvement();
+                            } else {
+                                Toast.makeText(ChoixGroupeActivity.this, "Vous devez faire un mouvement ou attendre confirmation du Technicien", Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void afficherRole(View view) {
