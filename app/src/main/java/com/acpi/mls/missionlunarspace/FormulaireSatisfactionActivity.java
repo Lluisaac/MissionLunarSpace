@@ -5,14 +5,20 @@ import android.os.Bundle;
 
 public class FormulaireSatisfactionActivity extends AppCompatActivity {
 
+    private String idEtudiant;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_formulaire_satisfaction);
+        idEtudiant = (String) getIntent().getSerializableExtra("idEtudiant");
+                setContentView(R.layout.activity_formulaire_satisfaction);
+
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed() {}
 
-    }
+
+
+
 }

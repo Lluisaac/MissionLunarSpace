@@ -21,6 +21,7 @@ import com.acpi.mls.missionlunarspace.DAO.autre.DAOPopupTechnicien;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshListeGroupe;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshUpdateClassementTemporaire;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
+import com.acpi.mls.missionlunarspace.immobile.MyLinearLayoutManager;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
 
@@ -157,7 +158,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     private void creerListeChoixGroupe() {
         recyclerViewGroupe = (RecyclerView) findViewById(R.id.recyclerViewObjetGroupe);
-        recyclerViewGroupe.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewGroupe.setLayoutManager(new MyLinearLayoutManager(this));
         recyclerViewGroupe.setAdapter(new MyAdapter(classementGroupe));
     }
 
@@ -182,15 +183,18 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
 
     private void updateListeCapitaine() {
-        recyclerViewCapitaine = findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
-
+        //recyclerViewCapitaine = findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
+        /*
         recyclerViewCapitaine.setLayoutManager(new LinearLayoutManager(this));
         RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(classementCapitaine);
         ItemTouchHelper.Callback callback = new ItemMoveCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerViewCapitaine);
+        */
 
-        recyclerViewCapitaine.setAdapter(mAdapter);
+        //recyclerViewCapitaine.setAdapter(mAdapter);
+
+        recyclerViewCapitaine.getAdapter().notifyDataSetChanged();
     }
 
     public void passageChoixClasse() {
@@ -211,8 +215,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
     public void test(){
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -231,6 +233,10 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
         //MyAdapter mAdapter = new MyAdapter(temp);
        // this.recyclerViewGroupe.stopScroll();
+
+
+        //recyclerViewGroupe.getRecycledViewPool().clear();
+        //recyclerViewGroupe.getAdapter().notifyDataSetChanged();
         recyclerViewGroupe.setAdapter(new MyAdapter(this.classementGroupe));
 
 

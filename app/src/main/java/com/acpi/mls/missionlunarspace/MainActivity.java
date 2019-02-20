@@ -17,15 +17,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
-    public void goActivityProf(View view) {
-        Intent intent = new Intent(this, EnseignantActivity.class);
-        startActivity(intent);
     }
-
-    public void goActivityEtu(View view) {
-        Intent intent = new Intent(this, EtudiantActivity.class);
+    public void lancerJeu(View view) {
+        Intent intent = new Intent(this, SelectionEtudiantEnseignant.class);
         startActivity(intent);
     }
 }
