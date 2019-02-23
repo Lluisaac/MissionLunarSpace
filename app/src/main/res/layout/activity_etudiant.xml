@@ -43,7 +43,7 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/nom"
-        android:text="Emma"
+        android:text="Isaac"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitre" />
@@ -69,7 +69,7 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/classe"
-        android:text="S4"
+        android:text="maClasse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNomEtu"

@@ -266,6 +266,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         } else {
             confirmerMouvementRecu();
             Toast.makeText(this, "Le technicien accepte.", Toast.LENGTH_SHORT).show();
+            if (nbMouv == 3) {
+                this.setAdapterBougeable(false);
+            }
         }
     }
 
@@ -275,13 +278,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
 
     public void setAdapterBougeable(boolean b) {
-        if (b) {
-            // TODO: Enlever le syso et mettre que l'adapter soit bougeable
-            System.out.println("Liste bougeable !");
-        } else {
-            // TODO: Enlever le syso et mettre que l'adapter soit immobile
-            System.out.println("Liste immobile !");
-        }
+        ((RecyclerViewAdapter) recyclerViewCapitaine.getAdapter()).setMovability(b);
     }
 
     public void refreshClassementGroupe(ArrayList<String> temp) {
