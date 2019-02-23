@@ -28,8 +28,12 @@ public class DAOChoixClasseActivity extends DAO {
             case "saveClassementClasse":
                 saveClassementClasse(strings[2], strings[3], strings[4]);
                 break;
+            case "deleteClassementClasse":
+                deleteClassementClasse(strings[2]);
+                break;
             case "getIdClasse":
                 tab[0] = getIdClasse(strings[2]);
+                break;
         }
         return tab;
     }
@@ -40,6 +44,9 @@ public class DAOChoixClasseActivity extends DAO {
         switch (result[1]) {
             case "getAllClassementGroupe":
                 choixClasseActivity.initClasssementGroupe(this.classementGroup);
+                break;
+            case "getIdClasse":
+                choixClasseActivity.setIdClasse(result[0]);
                 break;
         }
     }
@@ -63,7 +70,7 @@ public class DAOChoixClasseActivity extends DAO {
 
     private String getIdClasse(String idGroupe) {
         try {
-            PreparedStatement preparedStatement = cn.prepareStatement("SELECT idClasse FROM Groupes WHERE idGroupe = ?");
+            PreparedStatement preparedStatement = cn.prepareStatement("SELECT classe FROM Groupes WHERE idGroupe = ?");
             preparedStatement.setString(1, idGroupe);
             ResultSet rs = preparedStatement.executeQuery();
 
@@ -73,6 +80,17 @@ public class DAOChoixClasseActivity extends DAO {
             deconnexion();
             e.printStackTrace();
             return null;
+        }
+    }
+
+    private void deleteClassementClasse(String idClasse) {
+        try {
+            PreparedStatement preparedStatement = cn.prepareStatement("DELETE FROM ClassementClasse WHERE idClasse = ? ");
+            preparedStatement.setString(1, idClasse);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            deconnexion();
+            e.printStackTrace();
         }
     }
 

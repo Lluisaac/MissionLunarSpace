@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MissionLunarSpace</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="enseignant">Enseignant</string>
+    <string name="etudiants">Etudiants</string>
+    <string name="nom">Nom</string>
+    <string name="classe">Classe</string>
+    <string name="button">Button</string>
+    <string name="montrer">Montrer</string>
+    <string name="role">Role</string>
+</resources>

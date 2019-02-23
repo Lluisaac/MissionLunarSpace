@@ -469,4 +469,13 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     public int getPhase() {
         return phase;
     }
+
+    public void goFormulaire(View view) {
+        Intent intent = new Intent(this, FormulaireSatisfactionActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("idEtudiant", this.idEtudiant);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+    }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acpi.mls.missionlunarspace.ChoixClasseActivity;
 import com.acpi.mls.missionlunarspace.ChoixGroupeActivity;
 import com.acpi.mls.missionlunarspace.R;
 
@@ -19,6 +20,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     protected ArrayList<String> data;
     protected ChoixGroupeActivity choixGroupeActivity = null;
     private boolean canMove = true;
+    protected ChoixClasseActivity choixClasseActivity = null;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -43,6 +45,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public void setMovability(boolean bool) {
         this.canMove = bool;
+    }
+    
+    public RecyclerViewAdapter(ArrayList<String> data, ChoixClasseActivity choixClasseActivity) {
+        this.data = data;
+        this.choixClasseActivity = choixClasseActivity;
     }
 
     @Override
@@ -92,6 +99,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             if (this.choixGroupeActivity.getPhase() == 3) {
                 this.choixGroupeActivity.mouvementFait();
             }
+        }
+        if(this.choixClasseActivity != null){
+            this.choixClasseActivity.saveClassement();
         }
     }
 
