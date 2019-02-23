@@ -189,14 +189,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewCapitaine.setAdapter(mAdapter);
     }
 
-    public void test() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyAdapter(this.classementCapitaine));
-        this.recyclerViewCapitaine = recyclerView;
-        System.out.println("----------------------------------------------------" + this.nbDeplacement);
-    }
-
     private void updateListeCapitaine() {
         RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerViewCapitaine.getAdapter();
         adapter.setData(classementCapitaine);
@@ -296,9 +288,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     //TODO BUG Affichage refreshClassementGRoupe pour le changement de phase.
     public void changementDePhase(View view) {
 
-        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-        Timer.getInstance().setActivity(this);
-        Timer.getInstance().ajouterPhaseEtDemarrer();
+        if (this.phase <= 2) {
+            Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+            Timer.getInstance().setActivity(this);
+            Timer.getInstance().ajouterPhaseEtDemarrer();
+        }
 
         if (this.phase < 2) {
             this.phase++;

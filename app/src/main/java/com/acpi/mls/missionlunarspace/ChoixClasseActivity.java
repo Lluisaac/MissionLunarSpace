@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixClasseActivity;
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixPersoActivity;
@@ -44,6 +45,9 @@ public class ChoixClasseActivity extends AppCompatActivity {
         initLayout();
         new DAOChoixClasseActivity(ChoixClasseActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getIdClasse", "getIdClasse", this.idGroupe);
 
+        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+        Timer.getInstance().setActivity(this);
+        Timer.getInstance().ajouterPhaseEtDemarrer();
 
     }
 
