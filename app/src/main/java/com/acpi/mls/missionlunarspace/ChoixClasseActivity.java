@@ -9,6 +9,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixClasseActivity;
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixPersoActivity;
+import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshListeClasse;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
@@ -23,7 +24,10 @@ public class ChoixClasseActivity extends AppCompatActivity {
     private String roleEtudiant;
     private String typeGroupe;
     private String idGroupe;
+    private String idClasse;
     private ArrayList<String> classementClasse = new ArrayList<>();
+    private RecyclerView classementClasseRecycler;
+    private DAORefreshListeClasse daoRefreshListeClasse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,9 @@ public class ChoixClasseActivity extends AppCompatActivity {
         this.classementClasse.addAll((Arrays.asList(ChoixPersoActivity.listObjets).subList(0, 15)));
 
         initLayout();
+        new DAOChoixClasseActivity(ChoixClasseActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getIdClasse", "getIdClasse", this.idGroupe);
+
+
     }
 
     @Override
@@ -52,20 +59,20 @@ public class ChoixClasseActivity extends AppCompatActivity {
         } else {
             initClassementClasse();
         }
-        new DAOChoixClasseActivity(ChoixClasseActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getAllClassementGroupe","getAllClassementGroupe",this.idGroupe);
+        new DAOChoixClasseActivity(ChoixClasseActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getAllClassementGroupe", "getAllClassementGroupe", this.idGroupe);
     }
 
-    private void initClassementPerso(){
+    private void initClassementPerso() {
         RecyclerView recyclerViewClassementPerso = (RecyclerView) findViewById(R.id.recyclerView_choixClasse_classementPerso);
         recyclerViewClassementPerso.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewClassementPerso.setAdapter(new MyAdapter(this.classementPerso));
     }
 
-    private void initClassementClasseCaptitaine(){
+    private void initClassementClasseCaptitaine() {
         RecyclerView recyclerViewCapitaine = findViewById(R.id.recyclerView_choixClasse_classementClasse);
 
         recyclerViewCapitaine.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(this.classementClasse);
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter(this.classementClasse, ChoixClasseActivity.this);
         ItemTouchHelper.Callback callback = new ItemMoveCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerViewCapitaine);
@@ -73,10 +80,10 @@ public class ChoixClasseActivity extends AppCompatActivity {
         recyclerViewCapitaine.setAdapter(mAdapter);
     }
 
-    private void initClassementClasse(){
-        RecyclerView recyclerViewClassementPerso = (RecyclerView) findViewById(R.id.recyclerView_choixClasse_classementClasse);
-        recyclerViewClassementPerso.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewClassementPerso.setAdapter(new MyAdapter(this.classementClasse));
+    private void initClassementClasse() {
+        this.classementClasseRecycler = (RecyclerView) findViewById(R.id.recyclerView_choixClasse_classementClasse);
+        classementClasseRecycler.setLayoutManager(new LinearLayoutManager(this));
+        classementClasseRecycler.setAdapter(new MyAdapter(this.classementClasse));
     }
 
     public void initClasssementGroupe(ArrayList<String> list) {
@@ -85,12 +92,30 @@ public class ChoixClasseActivity extends AppCompatActivity {
         recyclerViewClassementPerso.setAdapter(new MyAdapter(list));
     }
 
-    private void saveClassement() {
+    public void saveClassement() {
         ArrayList<String> monArrayList = new ArrayList<String>(Arrays.asList(ChoixPersoActivity.listObjets));
-
+        new DAOChoixClasseActivity(ChoixClasseActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "deleteClassementClasse", "", this.idClasse);
         for (int i = 1; i <= 15; i++) {
             int idObjet = 1 + monArrayList.indexOf(classementClasse.get(i - 1));
-           // new DAOChoixClasseActivity(DAOChoixClasseActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"saveClassementClasse", "", this.idEtudiant, idObjet + "", "" + i);
+            new DAOChoixClasseActivity(ChoixClasseActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "saveClassementClasse", "", this.idClasse, idObjet + "", "" + i);
+        }
+    }
+
+    public void setIdClasse(String s) {
+        this.idClasse = s;
+        if(!this.roleEtudiant.equals("Capitaine") && this.typeGroupe.equals(1 + ""))
+        {
+            this.daoRefreshListeClasse = new DAORefreshListeClasse(ChoixClasseActivity.this);
+            this.daoRefreshListeClasse.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idClasse);
+        }
+    }
+
+    public void refreshClassementClasse(ArrayList<String> liste) {
+        if (!liste.equals(this.classementClasse)) {
+            this.classementClasse = liste;
+            MyAdapter adapter = (MyAdapter) this.classementClasseRecycler.getAdapter();
+            adapter.setList(this.classementClasse);
+            adapter.notifyDataSetChanged();
         }
     }
 }
