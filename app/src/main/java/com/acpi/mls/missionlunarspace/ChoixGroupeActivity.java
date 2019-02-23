@@ -472,7 +472,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     public int getPhase() {
         return phase;
     }
-
+/*
     public void goFormulaire(View view) {
         Intent intent = new Intent(this, FormulaireSatisfactionActivity.class);
         Bundle bundle = new Bundle();
@@ -481,4 +481,5 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+    */
 }
