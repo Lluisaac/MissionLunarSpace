@@ -189,14 +189,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recyclerViewCapitaine.setAdapter(mAdapter);
     }
 
-    public void test() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_Capitaine_ChoixGroupeCapitaine);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyAdapter(this.classementCapitaine));
-        this.recyclerViewCapitaine = recyclerView;
-        System.out.println("----------------------------------------------------" + this.nbDeplacement);
-    }
-
     private void updateListeCapitaine() {
         RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerViewCapitaine.getAdapter();
         adapter.setData(classementCapitaine);
@@ -266,6 +258,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         } else {
             confirmerMouvementRecu();
             Toast.makeText(this, "Le technicien accepte.", Toast.LENGTH_SHORT).show();
+            if (nbMouv == 3) {
+                this.setAdapterBougeable(false);
+            }
         }
     }
 
@@ -275,13 +270,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
 
     public void setAdapterBougeable(boolean b) {
-        if (b) {
-            // TODO: Enlever le syso et mettre que l'adapter soit bougeable
-            System.out.println("Liste bougeable !");
-        } else {
-            // TODO: Enlever le syso et mettre que l'adapter soit immobile
-            System.out.println("Liste immobile !");
-        }
+        ((RecyclerViewAdapter) recyclerViewCapitaine.getAdapter()).setMovability(b);
     }
 
     public void refreshClassementGroupe(ArrayList<String> temp) {
@@ -299,9 +288,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     //TODO BUG Affichage refreshClassementGRoupe pour le changement de phase.
     public void changementDePhase(View view) {
 
-        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-        Timer.getInstance().setActivity(this);
-        Timer.getInstance().ajouterPhaseEtDemarrer();
+        if (this.phase <= 2) {
+            Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+            Timer.getInstance().setActivity(this);
+            Timer.getInstance().ajouterPhaseEtDemarrer();
+        }
 
         if (this.phase < 2) {
             this.phase++;

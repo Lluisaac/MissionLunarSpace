@@ -146,7 +146,7 @@ public class Timer {
                         ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
                         break;
                     case 6:
-
+                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
                         break;
                     case 7:
 

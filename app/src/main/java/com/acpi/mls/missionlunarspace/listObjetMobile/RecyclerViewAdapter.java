@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.acpi.mls.missionlunarspace.ChoixClasseActivity;
 import com.acpi.mls.missionlunarspace.ChoixGroupeActivity;
@@ -18,6 +19,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     protected ArrayList<String> data;
     protected ChoixGroupeActivity choixGroupeActivity = null;
+    private boolean canMove = true;
     protected ChoixClasseActivity choixClasseActivity = null;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -41,6 +43,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.choixGroupeActivity = choixGroupeActivity;
     }
 
+    public void setMovability(boolean bool) {
+        this.canMove = bool;
+    }
+    
     public RecyclerViewAdapter(ArrayList<String> data, ChoixClasseActivity choixClasseActivity) {
         this.data = data;
         this.choixClasseActivity = choixClasseActivity;
@@ -66,18 +72,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onRowMoved(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(data, i, i + 1);
+        if (this.canMove) {
+            if (fromPosition < toPosition) {
+                for (int i = fromPosition; i < toPosition; i++) {
+                    Collections.swap(data, i, i + 1);
+                }
+            } else {
+                for (int i = fromPosition; i > toPosition; i--) {
+                    Collections.swap(data, i, i - 1);
+                }
             }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(data, i, i - 1);
-            }
+
+            notifyItemMoved(fromPosition, toPosition);
         }
-
-        notifyItemMoved(fromPosition, toPosition);
-
     }
 
     @Override
@@ -88,7 +95,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onRowClear(MyViewHolder myViewHolder) {
         myViewHolder.rowView.setBackgroundColor(Color.WHITE);
-        if (this.choixGroupeActivity != null) {
+        if (this.choixGroupeActivity != null && this.canMove) {
             if (this.choixGroupeActivity.getPhase() == 3) {
                 this.choixGroupeActivity.mouvementFait();
             }
