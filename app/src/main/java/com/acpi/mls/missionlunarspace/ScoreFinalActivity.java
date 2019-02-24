@@ -1,5 +1,6 @@
 package com.acpi.mls.missionlunarspace;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -154,6 +155,15 @@ public class ScoreFinalActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView_titre);
         textView.setText("VOUS ETES UN " + "TITRE");
         textView.setVisibility(View.VISIBLE);
+    }
+
+
+    private void passageFormSatisfaction(View view){
+        Intent intent = new Intent(this, FormulaireSatisfactionActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("idEtudiant", Integer.parseInt(this.idEtudiant));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
 

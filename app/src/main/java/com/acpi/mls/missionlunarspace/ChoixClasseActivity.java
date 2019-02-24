@@ -134,4 +134,16 @@ public class ChoixClasseActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
+    public void passageDenonciation(View view){
+        Intent intent = new Intent(this, DenonciationActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("idEtudiant",this.idEtudiant);
+        bundle.putString("idGroupe", this.idGroupe);
+        bundle.putString("idClasse", this.idClasse);
+        bundle.putString("roleEtudiant", this.roleEtudiant);
+        bundle.putString("typeGroupe", this.typeGroupe);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 }
