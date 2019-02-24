@@ -8,4 +8,75 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+
+    <style name="defaultTextView"  parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="frag1TableLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="frag1HeaderTableRow" parent="frag1TableLayout">
+        <item name="android:layout_marginBottom">3dp</item>
+    </style>
+
+    <style name="frag1TableRow" parent="frag1TableLayout">
+    </style>
+
+    <style name="frag1Col" parent="defaultTextView">
+        <item name="android:layout_marginBottom">1dp</item>
+        <item name="android:background">@drawable/tableborder</item>
+    </style>
+
+    <style name="frag1HeaderCol" parent="frag1Col">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="frag2TableLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:stretchColumns">*</item>
+        <item name="android:shrinkColumns">*</item>
+        <item name="android:layout_margin">5dp</item>
+
+    </style>
+
+    <style name="frag2TableRow" parent="frag2TableLayout">
+        <item name="android:background">#ccc</item>
+    </style>
+
+    <style name="frag2Col" parent="defaultTextView">
+        <item name="android:background">#ffffff</item>
+    </style>
+
+    <style name="frag2HeaderCol" parent="frag2Col">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">1dp</item>
+    </style>
+    <style name="frag2ColImpair" parent="frag2Col">
+        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:gravity">right</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+    <style name="frag2ColImpair1" parent="frag2ColImpair">
+        <item name="android:layout_marginRight">1dp</item>
+    </style>
+    <style name="frag2ColPair" parent="frag2ColImpair">
+        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:layout_marginBottom">1dp</item>
+    </style>
+    <style name="frag2ColPair1" parent="frag2ColPair">
+        <item name="android:layout_marginRight">1dp</item>
+    </style>
+
+    <style name="frag3HeaderCol" parent="frag2Col">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:layout_marginLeft">1dp</item>
+    </style>
+
 </resources>

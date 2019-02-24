@@ -128,9 +128,9 @@ public class ChoixClasseActivity extends AppCompatActivity {
     public void passageScoreFinal(View view) {
         Intent intent = new Intent(this, ScoreFinalActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt("idEtudiant", Integer.parseInt(this.idEtudiant));
-        bundle.putInt("idGroupe", Integer.parseInt(this.idGroupe));
-        bundle.putInt("idClasse", Integer.parseInt(this.idClasse));
+        bundle.putString("idEtudiant",this.idEtudiant);
+        bundle.putString("idGroupe", this.idGroupe);
+        bundle.putString("idClasse", this.idClasse);
         intent.putExtras(bundle);
         startActivity(intent);
     }
