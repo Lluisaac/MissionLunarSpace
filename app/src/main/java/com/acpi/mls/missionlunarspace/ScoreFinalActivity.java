@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.acpi.mls.missionlunarspace.DAO.activity.DAOScoreFinal;
+import com.acpi.mls.missionlunarspace.DAO.refresh.DAOScoreFinal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +27,9 @@ public class ScoreFinalActivity extends AppCompatActivity {
     private TableLayout containerTable;
 
     private TableRow[] tabTableRow = new TableRow[16];
+    private ArrayList<String> classe;
+    private ArrayList<String> groupe;
+    private ArrayList<String> perso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class ScoreFinalActivity extends AppCompatActivity {
         this.idEtudiant = (String) getIntent().getSerializableExtra("idEtudiant");
         this.idGroupe = (String) getIntent().getSerializableExtra("idGroupe");
         this.idClasse = (String) getIntent().getSerializableExtra("idClasse");
-        //new DAOScoreFinal(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idClasse, idGroupe, idEtudiant);
+        new DAOScoreFinal(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idClasse, idGroupe, idEtudiant);
         initTableau();
     }
 
@@ -46,11 +49,82 @@ public class ScoreFinalActivity extends AppCompatActivity {
 
     public void mettreScores(ArrayList<String>[] tab) {
         ArrayList<String> agest = new ArrayList<>(Arrays.asList(this.agest));
-        ArrayList<String> classe = tab[2];
-        ArrayList<String> groupe = tab[1];
-        ArrayList<String> perso = tab[0];
-        //TODO faire que les 4 listes du dessus s'affichent sur la page
-        //TODO faire que les scores s'affichent correctement sur la page
+        classe = tab[2];
+        groupe = tab[1];
+        perso = tab[0];
+        afficherPerso();
+        afficherTitre(trouverTitre(getScore(perso)));
+    }
+
+    private String trouverTitre(int score) {
+        if (score < 26) {
+            return "Héros Galactique";
+        } else if (score < 33) {
+            return "Commandant Interstellaire";
+        } else if (score < 46) {
+            return "Eclaireur Spatial";
+        } else if (score < 56) {
+            return "Pilote Interplanétaire";
+        } else if (score < 70) {
+            return "As des Astres";
+        } else {
+            return "Officier Stellaire";
+        }
+    }
+
+    private void afficherVide() {
+        for (int i = 1; i < 5; i++) {
+            for (int j = 0; j < 16; j++) {
+                TextView text6 = createTextView(false, j == 15);
+                text6.setText("");
+                this.tabTableRow[j].addView(text6, i);
+                text6.setGravity(Gravity.LEFT);
+            }
+        }
+    }
+
+    private void afficherPerso() {
+        String[] pos = new String[15];
+
+        for (int i = 0; i < 15; i++) {
+            pos[i] = (perso.indexOf(ChoixPersoActivity.listObjets[i]) + 1) + "";
+        }
+
+        afficherInfoTab(pos, 1);
+        afficherScore(getScore(perso), 1);
+    }
+
+    public void afficherGroupe() {
+        String[] pos = new String[15];
+
+        for (int i = 0; i < 15; i++) {
+            pos[i] = (groupe.indexOf(ChoixPersoActivity.listObjets[i]) + 1) + "";
+        }
+
+        afficherInfoTab(pos, 2);
+        afficherScore(getScore(groupe), 2);
+    }
+
+    public void afficherClasse() {
+        String[] pos = new String[15];
+
+        for (int i = 0; i < 15; i++) {
+            pos[i] = (classe.indexOf(ChoixPersoActivity.listObjets[i]) + 1) + "";
+        }
+
+        afficherInfoTab(pos, 3);
+        afficherScore(getScore(classe), 3);
+    }
+
+    public void afficherAGEST() {
+        String[] pos = new String[15];
+        ArrayList<String> liste = new ArrayList<>(Arrays.asList(agest));
+
+        for (int i = 0; i < 15; i++) {
+            pos[i] = (liste.indexOf(ChoixPersoActivity.listObjets[i]) + 1) + "";
+        }
+
+        afficherInfoTab(pos, 4);
     }
 
     private int getScore(ArrayList<String> tab) {
@@ -105,6 +179,7 @@ public class ScoreFinalActivity extends AppCompatActivity {
         }
 
         afficherNomObjet();
+        afficherVide();
     }
 
     private TextView createTextView(boolean endline, boolean endcolumn) {
@@ -132,27 +207,23 @@ public class ScoreFinalActivity extends AppCompatActivity {
         text6.setGravity(Gravity.LEFT);
     }
 
-    public void afficherInfoTab(ArrayList<Integer> pos, int index ){
+    private void afficherInfoTab(String[] pos, int index ){
         for (int j = 0; j < 15; j++) {
-            TextView text6 = createTextView(false, j == 15);
-            text6.setText(pos.get(j));
-            this.tabTableRow[j].addView(text6, index);
+            TextView text6 = (TextView) this.tabTableRow[j].getChildAt(index);
+            text6.setText(pos[j]);
             text6.setGravity(Gravity.LEFT);
         }
     }
 
-    public void afficherAGEST() {
-        for (int j = 0; j < 15; j++) {
-            TextView text6 = createTextView(false, j == 15);
-            text6.setText(this.agest[j]);
-            this.tabTableRow[j].addView(text6, 4);
-            text6.setGravity(Gravity.LEFT);
-        }
+    private void afficherScore(int score, int index) {
+        TextView text6 = (TextView) this.tabTableRow[15].getChildAt(index);
+        text6.setText(score + "");
+        text6.setGravity(Gravity.LEFT);
     }
 
-    private void afficherTitre(){
+    private void afficherTitre(String titre){
         TextView textView = findViewById(R.id.textView_titre);
-        textView.setText("VOUS ETES UN " + "TITRE");
+        textView.setText("Vous êtes un " + titre);
         textView.setVisibility(View.VISIBLE);
     }
 }
