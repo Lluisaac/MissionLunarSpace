@@ -149,7 +149,7 @@ public class Timer {
                         ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
                         break;
                     case 7:
-
+                        ((ChoixClasseActivity) Timer.getInstance().getActivity()).passageScoreFinal(null);
                         break;
                     case 8:
 

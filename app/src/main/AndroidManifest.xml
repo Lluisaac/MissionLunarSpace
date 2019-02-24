@@ -13,13 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FormulaireSatisfactionActivity"></activity>
+        <activity android:name=".FormulaireSatisfactionActivity" />
         <activity android:name=".ChoixClasseActivity" />
         <activity android:name=".ChoixGroupeActivity" />
         <activity android:name=".ChoixPersoActivity" />
         <activity android:name=".EtudiantActivity" />
         <activity android:name=".EnseignantActivity" />
-        <activity android:name=".SelectionEtudiantEnseignant"/>
+        <activity android:name=".SelectionEtudiantEnseignant" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -29,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DenonciationActivity"></activity>
     </application>
 
 </manifest>

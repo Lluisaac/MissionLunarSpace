@@ -1,11 +1,13 @@
 package com.acpi.mls.missionlunarspace;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixClasseActivity;
@@ -121,5 +123,15 @@ public class ChoixClasseActivity extends AppCompatActivity {
             adapter.setList(this.classementClasse);
             adapter.notifyDataSetChanged();
         }
+    }
+
+    public void passageScoreFinal(View view) {
+        Intent intent = new Intent(this, ScoreFinalActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("idEtudiant", Integer.parseInt(this.idEtudiant));
+        bundle.putInt("idGroupe", Integer.parseInt(this.idGroupe));
+        bundle.putInt("idClasse", Integer.parseInt(this.idClasse));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
