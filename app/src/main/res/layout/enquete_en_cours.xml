@@ -28,7 +28,7 @@
         android:text="Enquête en cours !"
         android:textAlignment="center"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/button13"
+        app:layout_constraintBottom_toTopOf="@+id/button_enquete_termine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
         app:srcCompat="@mipmap/ic_logo_temp" />
 
     <Button
-        android:id="@+id/button13"
+        android:id="@+id/button_enquete_termine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

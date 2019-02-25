@@ -13,7 +13,7 @@ public class DAODenonciationActivity extends DAO {
     private DenonciationActivity denonciationActivity;
     private ArrayList<String> listeNomEtudiant;
 
-    public DAODenonciationActivity(DenonciationActivity choixClasseActivity) {
+    public DAODenonciationActivity(DenonciationActivity denonciationActivity) {
         this.denonciationActivity = denonciationActivity;
         this.listeNomEtudiant = new ArrayList<>();
     }
@@ -26,6 +26,15 @@ public class DAODenonciationActivity extends DAO {
             case "getNomEtudiantsGroupe":
                 getNomEtudiantsGroupe(strings[2]);
                 break;
+            case "getSaboteur":
+                tab[0] = getSaboteur(strings[2]);
+                break;
+            case "getExpert":
+                tab[0] = getExpert(strings[2]);
+                break;
+            case "saveEnquete":
+                saveEnquete(strings[2],strings[3],strings[4]);
+                break;
         }
         return tab;
     }
@@ -36,6 +45,12 @@ public class DAODenonciationActivity extends DAO {
         switch (result[1]) {
             case "getNomEtudiantsGroupe":
                 this.denonciationActivity.getNomEudiantsGroupe(this.listeNomEtudiant);
+                break;
+            case "getSaboteur":
+                this.denonciationActivity.getSaboteur(result[0]);
+                break;
+            case "getExpert":
+                this.denonciationActivity.getExpert(result[0]);
                 break;
         }
     }
@@ -48,6 +63,52 @@ public class DAODenonciationActivity extends DAO {
             while (rs.next()) {
                 this.listeNomEtudiant.add(rs.getString(1));
             }
+        } catch (
+                SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+        }
+    }
+
+    private String getSaboteur(String idGroupe) {
+        try {
+            PreparedStatement pst = cn.prepareStatement("SELECT nomEtudiant FROM Etudiants  WHERE groupe = ?  AND role = 4;");
+            pst.setString(1, idGroupe);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next())
+                return rs.getString(1);
+            return null;
+        } catch (
+                SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String getExpert(String idGroupe) {
+        try {
+            PreparedStatement pst = cn.prepareStatement("SELECT nomEtudiant FROM Etudiants  WHERE groupe = ?  AND role = 3;");
+            pst.setString(1, idGroupe);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next())
+                return rs.getString(1);
+            return null;
+        } catch (
+                SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void saveEnquete(String idGroupe, String resultatSaboteur, String resultatExpert){
+        try {
+            PreparedStatement pst = cn.prepareStatement("UPDATE Groupes SET expertTrouve = ? , saboteurTrouve = ? WHERE idGroupe = ?");
+            pst.setInt(1, Integer.parseInt(resultatExpert));
+            pst.setInt(2, Integer.parseInt(resultatSaboteur));
+            pst.setInt(3, Integer.parseInt(idGroupe));
+            pst.executeUpdate();
         } catch (
                 SQLException e) {
             deconnexion();

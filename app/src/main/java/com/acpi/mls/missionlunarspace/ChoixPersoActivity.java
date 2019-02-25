@@ -96,7 +96,7 @@ public class ChoixPersoActivity extends AppCompatActivity {
 
     public void continuerChoixGroupe(View view) {
         //TODO enlever le commentaire pour enregistrer les classement dans la BD
-        saveClassement();
+        //saveClassement();
         passageGroupe();
     }
 
