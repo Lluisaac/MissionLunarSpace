@@ -32,7 +32,7 @@
 
     <include
         layout="@layout/mobile_liste"
-        android:layout_width="wrap_content"
+        android:layout_width="628dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -43,7 +43,7 @@
 
     <include
         layout="@layout/immobile_liste"
-        android:layout_width="wrap_content"
+        android:layout_width="628dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -67,21 +67,23 @@
 
     <TextView
         android:id="@+id/textView27"
-        android:layout_width="wrap_content"
+        android:layout_width="628dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Choix classement personnel"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitre6" />
 
     <TextView
         android:id="@+id/textView28"
-        android:layout_width="wrap_content"
+        android:layout_width="628dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Liste des objets"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitre6" />
 
