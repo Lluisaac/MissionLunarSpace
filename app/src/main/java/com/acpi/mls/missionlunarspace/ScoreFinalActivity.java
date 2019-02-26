@@ -10,6 +10,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAOScoreFinal;
+import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckEtape;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,8 +54,6 @@ public class ScoreFinalActivity extends AppCompatActivity {
         classe = tab[2];
         groupe = tab[1];
         perso = tab[0];
-        afficherPerso();
-        afficherTitre(trouverTitre(getScore(perso)));
     }
 
     private String trouverTitre(int score) {
@@ -84,7 +83,7 @@ public class ScoreFinalActivity extends AppCompatActivity {
         }
     }
 
-    private void afficherPerso() {
+    public void afficherPerso() {
         String[] pos = new String[15];
 
         for (int i = 0; i < 15; i++) {
@@ -126,6 +125,9 @@ public class ScoreFinalActivity extends AppCompatActivity {
         }
 
         afficherInfoTab(pos, 4);
+        afficherTitre(trouverTitre(getScore(perso)));
+
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "4");
     }
 
     private int getScore(ArrayList<String> tab) {
@@ -229,7 +231,7 @@ public class ScoreFinalActivity extends AppCompatActivity {
     }
 
 
-    private void passageFormSatisfaction(View view){
+    public void passageFormSatisfaction(View view){
         Intent intent = new Intent(this, FormulaireSatisfactionActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("idEtudiant", Integer.parseInt(this.idEtudiant));

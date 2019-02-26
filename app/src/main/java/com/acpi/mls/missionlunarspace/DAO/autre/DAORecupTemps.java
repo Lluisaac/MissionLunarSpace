@@ -20,7 +20,14 @@ public class DAORecupTemps extends DAO {
     @Override
     protected String[] doInBackground(String... strings) {
         faireCN();
-        String[] tab = {strings[0].equals("groupe") ? getTempsDebutAvecGroupe(strings[1]) : getTempsDebutAvecClasse(strings[1])};
+        String[] tab = {"NULL"};
+        while (tab[0].equals("NULL")) {
+            tab[0] = strings[0].equals("groupe") ? getTempsDebutAvecGroupe(strings[1]) : getTempsDebutAvecClasse(strings[1]);
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {}
+        }
         return tab;
     }
 

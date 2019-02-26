@@ -14,10 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOEnseignant;
+import com.acpi.mls.missionlunarspace.DAO.autre.DAOAugmenterEtapes;
+import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckEnqueteFinie;
+
+import org.w3c.dom.Text;
 
 public class EnseignantActivity extends AppCompatActivity {
 
     private boolean isLogin = true;
+    private int idClasse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,16 +91,16 @@ public class EnseignantActivity extends AppCompatActivity {
                 r3.setVisibility(View.INVISIBLE);
                 r4.setVisibility(View.INVISIBLE);
 
-                if ((nb / 5) >= 1) {
+                if ((nb / 5) >= 1 && ((nb - 1) / 8) < 1) {
                     r1.setVisibility(View.VISIBLE);
                 }
-                if ((nb / 5) >= 2) {
+                if ((nb / 5) >= 2 && ((nb - 1) / 8) < 2) {
                     r2.setVisibility(View.VISIBLE);
                 }
-                if ((nb / 5) >= 3) {
+                if ((nb / 5) >= 3 && ((nb - 1) / 8) < 3) {
                     r3.setVisibility(View.VISIBLE);
                 }
-                if ((nb / 5) >= 4) {
+                if ((nb / 5) >= 4 && ((nb - 1) / 8) < 4) {
                     r4.setVisibility(View.VISIBLE);
                 }
             }
@@ -132,7 +137,7 @@ public class EnseignantActivity extends AppCompatActivity {
                             Toast.makeText(EnseignantActivity.this, "Veuillez selectionner un groupe valide", Toast.LENGTH_SHORT).show();
                         } else {
                             int num = Integer.parseInt(((RadioButton) findViewById(groupe.getCheckedRadioButtonId())).getText().toString());
-                            creerGroupe(nomClasse.getText().toString(), annee.getText().toString(), nbPersonnes.getText().toString(), num + "");
+                            creerClasse(nomClasse.getText().toString(), annee.getText().toString(), nbPersonnes.getText().toString(), num + "");
                         }
                         break;
                 }
@@ -141,7 +146,7 @@ public class EnseignantActivity extends AppCompatActivity {
 
     }
 
-    public void creerGroupe(String classe, String annee, String nbPersonnes, String nbGroupes) {
+    public void creerClasse(String classe, String annee, String nbPersonnes, String nbGroupes) {
         new DAOEnseignant(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"createClasse", "", classe, annee, nbPersonnes, nbGroupes);
     }
 
@@ -167,6 +172,7 @@ public class EnseignantActivity extends AppCompatActivity {
 
     public void allerALancerPartie(String numClasse) {
         setContentView(R.layout.activity_demarrer_partie);
+        this.idClasse = Integer.parseInt(numClasse);
         faireElementsDemarrerPartie(numClasse);
     }
 
@@ -182,9 +188,163 @@ public class EnseignantActivity extends AppCompatActivity {
 
     public void indiquerPartieDemaree(String heure) {
         setContentView(R.layout.activity_partie_demaree);
-        Timer timer = Timer.createTimer(heure);
-        timer.setTextView((TextView) findViewById(R.id.textTimer));
-        timer.setTimeLeftEtDemarrer(0);
+        TimerProf.createTimer(heure);
+        TimerProf.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+        TimerProf.getInstance().setActivity(this);
+        TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
+    }
 
+    public void faireAttenteClassementGroupe() {
+        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        demarrer.setText("Passer au Classement de Groupe");
+        demarrer.setVisibility(View.VISIBLE);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
+                demarrer.setVisibility(View.INVISIBLE);
+                augmenterEtapeClasse();
+
+                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                texte.setText("Le Classement de Groupe est bien démarré");
+            }
+        });
+    }
+
+    public void faireAttenteClassementClasse() {
+        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        demarrer.setText("Passer au Classement de Classe");
+        demarrer.setVisibility(View.VISIBLE);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
+                demarrer.setVisibility(View.INVISIBLE);
+                augmenterEtapeClasse();
+
+                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                texte.setText("Le Classement de Classe est bien démarré");
+            }
+        });
+    }
+
+    public void faireAttenteEnquete() {
+        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        demarrer.setText("Passer à l'Enquête Spatiale");
+        demarrer.setVisibility(View.VISIBLE);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                demarrer.setVisibility(View.INVISIBLE);
+                augmenterEtapeClasse();
+
+                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                texte.setText("L'Enquête Spatiale est bien démarrée");
+                new DAOCheckEnqueteFinie(EnseignantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,idClasse + "");
+            }
+        });
+    }
+
+    public void faireAttenteSatisfaction() {
+        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        demarrer.setText("Passer au Formulaire de satisfaction");
+        demarrer.setVisibility(View.VISIBLE);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                demarrer.setVisibility(View.INVISIBLE);
+                augmenterEtapeClasse();
+
+                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                texte.setText("Le Formulaire est bien démarré");
+            }
+        });
+    }
+
+    private void augmenterEtapeClasse() {
+        new DAOAugmenterEtapes(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,idClasse + "", "0");
+    }
+
+    public void faireAttenteSF1() {
+        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        demarrer.setText("Passer au Résultat Personnel");
+        demarrer.setVisibility(View.VISIBLE);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                demarrer.setVisibility(View.INVISIBLE);
+                augmenterEtapeScoreFinal();
+
+                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                texte.setText("Résultat Personnel");
+                faireAttenteSF2();
+            }
+        });
+    }
+
+    public void faireAttenteSF2() {
+        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        demarrer.setText("Passer au Résultat de Groupe");
+        demarrer.setVisibility(View.VISIBLE);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                demarrer.setVisibility(View.INVISIBLE);
+                augmenterEtapeScoreFinal();
+
+                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                texte.setText("Résultat de Groupe");
+                faireAttenteSF3();
+            }
+        });
+
+    }
+
+    public void faireAttenteSF3() {
+        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        demarrer.setText("Passer au Résultat de Classe");
+        demarrer.setVisibility(View.VISIBLE);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                demarrer.setVisibility(View.INVISIBLE);
+                augmenterEtapeScoreFinal();
+
+                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                texte.setText("Résultat de Classe");
+                faireAttenteSF4();
+            }
+        });
+
+    }
+
+    public void faireAttenteSF4() {
+        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        demarrer.setText("Passer au Résultat AGEST");
+        demarrer.setVisibility(View.VISIBLE);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                demarrer.setVisibility(View.INVISIBLE);
+                augmenterEtapeScoreFinal();
+
+                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                texte.setText("Résultat AGEST");
+                faireAttenteSatisfaction();
+            }
+        });
+
+    }
+
+    private void augmenterEtapeScoreFinal() {
+        new DAOAugmenterEtapes(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,idClasse + "", "1");
     }
 }

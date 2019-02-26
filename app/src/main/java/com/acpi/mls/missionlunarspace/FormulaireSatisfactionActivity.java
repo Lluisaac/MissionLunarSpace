@@ -11,12 +11,12 @@ import com.acpi.mls.missionlunarspace.DAO.activity.DAOFormulaireStatisfactionAct
 
 public class FormulaireSatisfactionActivity extends AppCompatActivity {
 
-    private String idEtudiant;
+    private int idEtudiant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        idEtudiant = (String) getIntent().getSerializableExtra("idEtudiant");
+        idEtudiant = (int) getIntent().getSerializableExtra("idEtudiant");
         setContentView(R.layout.activity_formulaire_satisfaction);
     }
 
@@ -44,7 +44,7 @@ public class FormulaireSatisfactionActivity extends AppCompatActivity {
         EditText enc = findViewById(R.id.noteCommunication);
         String nC = enc.getText().toString();
 
-        new DAOFormulaireStatisfactionActivity().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "saveForm","", this.idEtudiant, mC, mT,nD,nL,nO,nC);
+        new DAOFormulaireStatisfactionActivity().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "saveForm","", this.idEtudiant + "", mC, mT,nD,nL,nO,nC);
 
         setContentView(R.layout.page_fin);
     }
