@@ -1,5 +1,7 @@
 package com.acpi.mls.missionlunarspace;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixClasseActivity;
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixPersoActivity;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshListeClasse;
+import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckEtape;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
@@ -125,17 +128,24 @@ public class ChoixClasseActivity extends AppCompatActivity {
         }
     }
 
-    public void passageScoreFinal(View view) {
-        Intent intent = new Intent(this, ScoreFinalActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("idEtudiant",this.idEtudiant);
-        bundle.putString("idGroupe", this.idGroupe);
-        bundle.putString("idClasse", this.idClasse);
-        intent.putExtras(bundle);
-        startActivity(intent);
+    public void passageAttenteDenonciation(View view) {
+        setContentView(R.layout.content_classe_attente);
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "3");
     }
 
-    public void passageDenonciation(View view){
+    public void afficherRole(View view) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle(roleEtudiant);
+        dialogBuilder.setMessage(ChoixGroupeActivity.getInfoRole(this.roleEtudiant));
+        dialogBuilder.setCancelable(false).setPositiveButton("RETOUR", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        dialogBuilder.create().show();
+    }
+
+    public void passageDenonciation(){
         Intent intent = new Intent(this, DenonciationActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("idEtudiant",this.idEtudiant);

@@ -33,7 +33,7 @@ public class DAOScoreFinal extends DAO {
 
         int etapePrec = -1;
 
-        while (etape != 3) {
+        while (etape != 4) {
             int etapeAct = getEtape(Integer.parseInt(strings[0]));
             if (etapeAct != etapePrec) {
                 etapePrec = etapeAct;
@@ -61,12 +61,15 @@ public class DAOScoreFinal extends DAO {
                 activity.mettreScores(tab);
                 break;
             case 1:
-                activity.afficherGroupe();
+                activity.afficherPerso();
                 break;
             case 2:
-                activity.afficherClasse();
+                activity.afficherGroupe();
                 break;
             case 3:
+                activity.afficherClasse();
+                break;
+            case 4:
                 activity.afficherAGEST();
                 break;
         }
@@ -75,7 +78,7 @@ public class DAOScoreFinal extends DAO {
     private int getEtape(int idClasse) {
         try {
             ArrayList<String> classementTemp = new ArrayList<>();
-            PreparedStatement pst = cn.prepareStatement("SELECT etape, idClasse FROM synchroScoreFinal WHERE idClasse = ?");
+            PreparedStatement pst = cn.prepareStatement("SELECT etapeSF, idClasse FROM Classes WHERE idClasse = ?");
             pst.setInt(1, idClasse);
             ResultSet rs = pst.executeQuery();
             rs.next();

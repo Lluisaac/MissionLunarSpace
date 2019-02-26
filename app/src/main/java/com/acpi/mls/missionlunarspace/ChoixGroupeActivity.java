@@ -23,6 +23,7 @@ import com.acpi.mls.missionlunarspace.DAO.refresh.DAOPhase4Capitaine;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAOPhase4Technicien;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshListeGroupe;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshUpdateClassementTemporaire;
+import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckEtape;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.immobile.MyLinearLayoutManager;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
@@ -71,13 +72,19 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         recuperationGroupe();
     }
 
-    private void recuperationGroupe() {
+    public void fairePageAttente() {
         setContentView(R.layout.activity_choix_groupe);
+        TextView textView = findViewById(R.id.textView_AffichageGroupe);
+        textView.setText("VOUS ÊTES DANS LE GROUPE " + this.typeGroupe);
 
-        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-        Timer.getInstance().setActivity(this);
-        Timer.getInstance().ajouterPhaseEtDemarrer();
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "1");
+    }
 
+    public void sortirPageRegroupement() {
+        continuerRole(null);
+    }
+
+    private void recuperationGroupe() {
         new DAOChoixGroupeActivity(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getGroupeEtudiant", "getGroupeEtudiant", this.idEtudiant);
     }
 
@@ -88,8 +95,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     public void setGroup(String typeGroupe) {
         this.typeGroupe = typeGroupe;
-        TextView textView = findViewById(R.id.textView_AffichageGroupe);
-        textView.setText("VOUS ÊTES DANS LE GROUPE " + this.typeGroupe);
         new DAOChoixGroupeActivity(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getRoleEtudiant", "getRoleEtudiant", this.idEtudiant);
     }
 
@@ -116,11 +121,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
                 setContentView(R.layout.page_astronaute_expert_saboteur);
             }
             creerListeImmobile();
-
-            Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-            Timer.getInstance().setActivity(this);
-            Timer.getInstance().ajouterPhaseEtDemarrer();
         }
+
+        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+        Timer.getInstance().setActivity(this);
+        Timer.getInstance().ajouterPhaseEtDemarrer();
     }
 
     //Remplissage des listes des objets
@@ -287,8 +292,11 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     //TODO BUG Affichage refreshClassementGRoupe pour le changement de phase.
     public void changementDePhase(View view) {
+        if (phase < 4) {
+            Toast.makeText(this, "Vous êtes dans la Phase " + (phase + 2), Toast.LENGTH_SHORT).show();
+        }
 
-        if (this.phase <= 2) {
+        if (this.phase <= 2 ) {
             Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
             Timer.getInstance().setActivity(this);
             Timer.getInstance().ajouterPhaseEtDemarrer();
@@ -310,14 +318,18 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         } else if (this.phase == 2) {
             this.phase++;
             new DAOClassementGroupe(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getAllClassementGroupe", "getAllClassementGroupe", this.idGroupe);
-        } else
-            passageChoixClasse();
+        } else {
+            passageAttenteClasse();
+        }
+
+    }
+
+    private void passageAttenteClasse() {
+        setContentView(R.layout.content_groupe_attente);
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "2");;
     }
 
     public void passagePhaseQuatre(ArrayList<String> classementGroupe) {
-        //TODO enlever le toast
-        Toast.makeText(this, "Vous êtes dans la Phase " + (phase + 1), Toast.LENGTH_SHORT).show();
-
         if (this.role.equals("Capitaine")) {
             this.classementCapitaine = classementGroupe;
             updateListeCapitaine();
@@ -356,7 +368,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         dialogBuilder.create().show();
     }
 
-    private String getInfoRole(String role) {
+    public static String getInfoRole(String role) {
         switch (role) {
             case "Capitaine":
                 return " - Vous souhaitez rejoindre Pan Luna.\n"

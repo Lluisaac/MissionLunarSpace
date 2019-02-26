@@ -19,29 +19,25 @@
         android:id="@+id/texteAttente"
         android:layout_width="715dp"
         android:layout_height="wrap_content"
-        android:text="EN ATTENTE DE DEBUT DE PARTIE"
+        android:text="EN ATTENTE DE PASSAGE AU CLASSEMENT PAR CLASSE"
         android:textAlignment="center"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonAttente"
+        android:id="@+id/button14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="321dp"
-        android:layout_marginTop="99dp"
-        android:layout_marginEnd="322dp"
-        android:layout_marginBottom="33dp"
-        android:onClick="onCLickTempo"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="afficherRole"
+        android:text="Role ?"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewClasseEtu" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -1,10 +1,11 @@
-package com.acpi.mls.missionlunarspace.DAO.refresh;
+package com.acpi.mls.missionlunarspace.DAO.refresh.check;
 
 import android.view.View;
 import android.widget.Button;
 
 import com.acpi.mls.missionlunarspace.DAO.DAO;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAORecupTemps;
+import com.acpi.mls.missionlunarspace.EtudiantActivity;
 import com.acpi.mls.missionlunarspace.Timer;
 
 import java.sql.PreparedStatement;
@@ -13,10 +14,12 @@ import java.sql.SQLException;
 
 public class DAOCheckPartieDemaree extends DAO {
 
+    private final EtudiantActivity etudiantActivity;
     private Button bouton;
     private int idClasse;
 
-    public DAOCheckPartieDemaree(Button bouton, int idClasse) {
+    public DAOCheckPartieDemaree(Button bouton, int idClasse, EtudiantActivity etudiantActivity) {
+        this.etudiantActivity = etudiantActivity;
         this.bouton = bouton;
         this.idClasse = idClasse;
     }
@@ -54,6 +57,6 @@ public class DAOCheckPartieDemaree extends DAO {
 
     @Override
     protected void onPostExecute(String[] result) {
-        bouton.setVisibility(View.VISIBLE);
+        etudiantActivity.pouvoirChangerPage();
     }
 }

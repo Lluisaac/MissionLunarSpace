@@ -3,7 +3,6 @@ package com.acpi.mls.missionlunarspace;
 
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -11,9 +10,9 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-public class Timer {
+public class TimerProf {
 
-    public static Timer timer;
+    public static TimerProf timer;
     private static long[] tempsParPhase = {10 * 60, 15 * 60, 10 * 60, 5 * 60, 5 * 60, 10 * 60};
     private static long tempsTotal = 55 * 60;
     private long[] tempsDepart = new long[3];
@@ -24,22 +23,22 @@ public class Timer {
 
     private boolean mTimerRunning;
 
-    private AppCompatActivity activity;
+    private EnseignantActivity activity;
 
     private long mTimeLeftInMillis;
     private int phase;
 
-    public Timer(String tempsNonFormate) {
+    public TimerProf(String tempsNonFormate) {
         formatTime(tempsNonFormate);
         this.phase = 0;
     }
 
-    public static Timer createTimer(String tempsNonFormate) {
-        Timer.timer = new Timer(tempsNonFormate);
+    public static TimerProf createTimer(String tempsNonFormate) {
+        TimerProf.timer = new TimerProf(tempsNonFormate);
         return timer;
     }
 
-    public static Timer getInstance() {
+    public static TimerProf getInstance() {
         return timer;
     }
 
@@ -65,6 +64,7 @@ public class Timer {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String[] tempsDep = sdf.format(cal.getTime()).split(":");
+        //TODO enlever le +1, parceque l'heure des tablettes d'émulatteur est décalée par rapport a celles de la vraie vie.
         int[] current = {Integer.parseInt(tempsDep[0]) + 1, Integer.parseInt(tempsDep[1]), Integer.parseInt(tempsDep[2])};
 
         long heuresEnSec = (current[0] - tempsDepart[0]) * 3600;
@@ -129,33 +129,32 @@ public class Timer {
             @Override
             public void onFinish() {
                 setmTimerRunning(false);
-                //TODO : Enlever le commentaire
-                /*switch (Timer.getInstance().phase) {
+                switch (TimerProf.getInstance().phase) {
                     case 1:
                         //On se trouve dans le classement Perso et le timer finit: on va dans une attente
-                        ((ChoixPersoActivity) Timer.getInstance().getActivity()).continuerChoixGroupe(null);
+                        activity.faireAttenteClassementGroupe();
                         break;
                     case 2:
                         //On se trouve dans le classement Groupe p1 et le timer finit: on passe a l'étape suivante
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
+                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
                         break;
                     case 3:
                         //On se trouve dans le classement Groupe p2 et le timer finit: on passe a l'étape suivante
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
+                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
                         break;
                     case 4:
                         //On se trouve dans le classement Groupe p3 et le timer finit: on passe a l'étape suivante
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
+                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
                         break;
                     case 5:
                         //On se trouve dans le classement Groupe p4 et le timer finit: on va dans une attente
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).passageAttenteClasse(null);
+                        activity.faireAttenteClassementClasse();
                         break;
                     case 6:
                         //On se trouve dans le classement Classe et le timer finit: on va dans une attente
-                        ((ChoixClasseActivity) Timer.getInstance().getActivity()).passageAttenteDenonciation(null);
+                        activity.faireAttenteEnquete();
                         break;
-                }*/
+                }
 
             }
         }.start());
@@ -176,7 +175,7 @@ public class Timer {
         getmTextViewCountDown().setText(timeLeftFormatted);
     }
 
-    public void setActivity(AppCompatActivity activity) {
+    public void setActivity(EnseignantActivity activity) {
         this.activity = activity;
     }
 

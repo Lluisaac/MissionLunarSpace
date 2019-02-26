@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.acpi.mls.missionlunarspace.DAO.autre.DAORecupTemps;
-import com.acpi.mls.missionlunarspace.DAO.refresh.DAOCheckPartieDemaree;
+import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckPartieDemaree;
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOEtudiant;
 
 public class EtudiantActivity extends AppCompatActivity {
@@ -96,15 +96,20 @@ public class EtudiantActivity extends AppCompatActivity {
     private void changerPageVersAttente() {
         isAttente = true;
         setContentView(R.layout.content_etudiant_attente);
-        Button boutonSuiveAttente = (Button) findViewById(R.id.buttonTempoAttente);
+        Button boutonSuiveAttente = (Button) findViewById(R.id.buttonAttente);
         //TODO changer par boutonSuiveAttente.setVisibility(View.INVISIBLE);
-        boutonSuiveAttente.setVisibility(View.VISIBLE);
-        new DAOCheckPartieDemaree(boutonSuiveAttente, Integer.parseInt(idClasse)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        boutonSuiveAttente.setVisibility(View.INVISIBLE);
+        new DAOCheckPartieDemaree(boutonSuiveAttente, Integer.parseInt(idClasse), this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+    }
+
+    public void pouvoirChangerPage() {
         new DAORecupTemps(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "classe", idClasse + "");
     }
 
     public void createTimer(String heure) {
         Timer.createTimer(heure);
+        onCLickTempo(null);
     }
 
     public void setIdEtudiant(String idEtudiant) {
