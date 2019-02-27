@@ -1,7 +1,5 @@
 package com.acpi.mls.missionlunarspace.DAO.autre;
 
-import android.support.v7.app.AppCompatActivity;
-
 import com.acpi.mls.missionlunarspace.DAO.DAO;
 import com.acpi.mls.missionlunarspace.EtudiantActivity;
 
@@ -33,7 +31,7 @@ public class DAORecupTemps extends DAO {
 
     @Override
     protected void onPostExecute(String[] result) {
-        activity.createTimer(result[0]);
+        activity.faireTimer(result[0]);
     }
 
     private String getTempsDebutAvecGroupe(String idGroupe) {

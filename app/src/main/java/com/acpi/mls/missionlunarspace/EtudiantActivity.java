@@ -79,7 +79,6 @@ public class EtudiantActivity extends AppCompatActivity {
             new DAOEtudiant(EtudiantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"createEtudiant", "setIdEtu", this.nomEtu);
             //setIdEtudiant("1");
             this.idClasse = id;
-            changerPageVersAttente();
         } else
             Toast.makeText(this, "La classe n'existe pas.", Toast.LENGTH_SHORT).show();
     }
@@ -107,7 +106,7 @@ public class EtudiantActivity extends AppCompatActivity {
         new DAORecupTemps(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "classe", idClasse + "");
     }
 
-    public void createTimer(String heure) {
+    public void faireTimer(String heure) {
         Timer.createTimer(heure);
         onCLickTempo(null);
     }

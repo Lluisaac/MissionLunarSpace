@@ -31,7 +31,7 @@ public class Timer {
 
     boolean fait;
 
-    public Timer(String tempsNonFormate) {
+    private Timer(String tempsNonFormate) {
         formatTime(tempsNonFormate);
         this.phase = 0;
     }
