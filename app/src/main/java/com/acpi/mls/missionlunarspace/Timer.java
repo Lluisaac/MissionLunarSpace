@@ -29,9 +29,7 @@ public class Timer {
     private long mTimeLeftInMillis;
     private int phase;
 
-    boolean fait;
-
-    private Timer(String tempsNonFormate) {
+    public Timer(String tempsNonFormate) {
         formatTime(tempsNonFormate);
         this.phase = 0;
     }
@@ -83,7 +81,7 @@ public class Timer {
             default:
                 long val = 0L;
                 for (int i = 0; i < phase; i++) {
-                    val += tempsParPhase[i];
+                   val += tempsParPhase[i];
                 }
                 return val;
         }
@@ -122,7 +120,6 @@ public class Timer {
     }
 
     public void startTimer() {
-        fait = false;
         setmCountDownTimer(new CountDownTimer(getmTimeLeftInMillis(), 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -136,45 +133,27 @@ public class Timer {
                 switch (Timer.getInstance().phase) {
                     case 1:
                         //On se trouve dans le classement Perso et le timer finit: on va dans une attente
-                        if (!fait) {
-                            ((ChoixPersoActivity) Timer.getInstance().getActivity()).continuerChoixGroupe(null);
-                            fait = true;
-                        }
+                        ((ChoixPersoActivity) Timer.getInstance().getActivity()).continuerChoixGroupe(null);
                         break;
                     case 2:
                         //On se trouve dans le classement Groupe p1 et le timer finit: on passe a l'étape suivante
-                        if (!fait) {
-                            ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
-                            fait = true;
-                        }
+                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
                         break;
                     case 3:
                         //On se trouve dans le classement Groupe p2 et le timer finit: on passe a l'étape suivante
-                        if (!fait) {
-                            ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
-                            fait = true;
-                        }
+                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
                         break;
                     case 4:
                         //On se trouve dans le classement Groupe p3 et le timer finit: on passe a l'étape suivante
-                        if (!fait) {
-                            ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
-                            fait = true;
-                        }
+                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
                         break;
                     case 5:
                         //On se trouve dans le classement Groupe p4 et le timer finit: on va dans une attente
-                        if (!fait) {
-                            ((ChoixGroupeActivity) Timer.getInstance().getActivity()).passageAttenteClasse();
-                            fait = true;
-                        }
+                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).passageAttenteClasse();
                         break;
                     case 6:
                         //On se trouve dans le classement Classe et le timer finit: on va dans une attente
-                        if (!fait) {
-                            ((ChoixClasseActivity) Timer.getInstance().getActivity()).passageAttenteDenonciation(null);
-                            fait = true;
-                        }
+                        ((ChoixClasseActivity) Timer.getInstance().getActivity()).passageAttenteDenonciation(null);
                         break;
                 }
 

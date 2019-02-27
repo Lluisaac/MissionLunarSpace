@@ -28,8 +28,6 @@ public class TimerProf {
     private long mTimeLeftInMillis;
     private int phase;
 
-    boolean fait;
-
     public TimerProf(String tempsNonFormate) {
         formatTime(tempsNonFormate);
         this.phase = 0;
@@ -82,7 +80,7 @@ public class TimerProf {
             default:
                 long val = 0L;
                 for (int i = 0; i < phase; i++) {
-                    val += tempsParPhase[i];
+                   val += tempsParPhase[i];
                 }
                 return val;
         }
@@ -121,7 +119,6 @@ public class TimerProf {
     }
 
     public void startTimer() {
-        fait = false;
         setmCountDownTimer(new CountDownTimer(getmTimeLeftInMillis(), 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -135,45 +132,27 @@ public class TimerProf {
                 switch (TimerProf.getInstance().phase) {
                     case 1:
                         //On se trouve dans le classement Perso et le timer finit: on va dans une attente
-                        if (!fait) {
-                            activity.faireAttenteClassementGroupe();
-                            fait = true;
-                        }
+                        activity.faireAttenteClassementGroupe();
                         break;
                     case 2:
                         //On se trouve dans le classement Groupe p1 et le timer finit: on passe a l'étape suivante
-                        if (!fait) {
-                            TimerProf.getInstance().ajouterPhaseEtDemarrer();
-                            fait = true;
-                        }
+                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
                         break;
                     case 3:
                         //On se trouve dans le classement Groupe p2 et le timer finit: on passe a l'étape suivante
-                        if (!fait) {
-                            TimerProf.getInstance().ajouterPhaseEtDemarrer();
-                            fait = true;
-                        }
+                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
                         break;
                     case 4:
                         //On se trouve dans le classement Groupe p3 et le timer finit: on passe a l'étape suivante
-                        if (!fait) {
-                            TimerProf.getInstance().ajouterPhaseEtDemarrer();
-                            fait = true;
-                        }
+                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
                         break;
                     case 5:
                         //On se trouve dans le classement Groupe p4 et le timer finit: on va dans une attente
-                        if (!fait) {
-                            activity.faireAttenteClassementClasse();
-                            fait = true;
-                        }
+                        activity.faireAttenteClassementClasse();
                         break;
                     case 6:
                         //On se trouve dans le classement Classe et le timer finit: on va dans une attente
-                        if (!fait) {
-                            activity.faireAttenteEnquete();
-                            fait = true;
-                        }
+                        activity.faireAttenteEnquete();
                         break;
                 }
 
