@@ -63,11 +63,11 @@ public class DenonciationActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         saboteur.setAdapter(adapter);
         expert.setAdapter(adapter);
-        //TODO Faire aussi avec le type 4
+
         if (this.typeGroupe.equals("1") || this.typeGroupe.equals("2")) {
             new DAODenonciationActivity(DenonciationActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getSaboteur", "getSaboteur", this.idGroupe);
         }
-        if (this.typeGroupe.equals("1")) {
+        if (this.typeGroupe.equals("1") || this.typeGroupe.equals("4")) {
             new DAODenonciationActivity(DenonciationActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getExpert", "getExpert", this.idGroupe);
         }
     }
@@ -123,7 +123,6 @@ public class DenonciationActivity extends AppCompatActivity {
         }
 
         new DAODenonciationActivity(DenonciationActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "saveEnquete", "", this.idGroupe, s, e);
-        //TODO faire un pop up qui affiche le resultat et redirige vers score
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle("Resultat de l'enquête");
@@ -137,7 +136,6 @@ public class DenonciationActivity extends AppCompatActivity {
     }
 
     public void afficherButtonFin(){
-        //TODO ICI
         Button suite = findViewById(R.id.button_enquete_termine);
         suite.setOnClickListener(new View.OnClickListener() {
             @Override

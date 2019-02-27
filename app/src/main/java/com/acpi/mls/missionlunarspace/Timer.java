@@ -65,6 +65,7 @@ public class Timer {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String[] tempsDep = sdf.format(cal.getTime()).split(":");
+        //TODO enlever le +1
         int[] current = {Integer.parseInt(tempsDep[0]) + 1, Integer.parseInt(tempsDep[1]), Integer.parseInt(tempsDep[2])};
 
         long heuresEnSec = (current[0] - tempsDepart[0]) * 3600;
@@ -129,8 +130,7 @@ public class Timer {
             @Override
             public void onFinish() {
                 setmTimerRunning(false);
-                //TODO : Enlever le commentaire
-                /*switch (Timer.getInstance().phase) {
+                switch (Timer.getInstance().phase) {
                     case 1:
                         //On se trouve dans le classement Perso et le timer finit: on va dans une attente
                         ((ChoixPersoActivity) Timer.getInstance().getActivity()).continuerChoixGroupe(null);
@@ -155,7 +155,7 @@ public class Timer {
                         //On se trouve dans le classement Classe et le timer finit: on va dans une attente
                         ((ChoixClasseActivity) Timer.getInstance().getActivity()).passageAttenteDenonciation(null);
                         break;
-                }*/
+                }
 
             }
         }.start());

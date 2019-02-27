@@ -15,7 +15,6 @@
         android:text="MDP ?"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <!-- TODO: supprimer le texte par defaut -->
     <EditText
         android:id="@+id/mdpProf"
         android:layout_width="wrap_content"
@@ -25,7 +24,6 @@
         android:ems="10"
         android:hint="password"
         android:inputType="textPassword"
-        android:text="motdepasse"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView" />
 
