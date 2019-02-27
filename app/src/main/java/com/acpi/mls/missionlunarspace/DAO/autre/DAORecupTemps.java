@@ -2,64 +2,36 @@ package com.acpi.mls.missionlunarspace.DAO.autre;
 
 import com.acpi.mls.missionlunarspace.DAO.DAO;
 import com.acpi.mls.missionlunarspace.EtudiantActivity;
-import com.acpi.mls.missionlunarspace.Timer;
-import com.acpi.mls.missionlunarspace.TimerProf;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DAORecupTemps extends DAO {
     private EtudiantActivity activity;
-    private Timer timer;
-    private TimerProf timerProf;
 
     public DAORecupTemps(EtudiantActivity activity) {
         this.activity = activity;
-    }
-
-    public DAORecupTemps(Timer timer) {
-        this.timer = timer;
-    }
-
-    public DAORecupTemps(TimerProf activity) {
-        this.timerProf = timerProf;
     }
 
 
     @Override
     protected String[] doInBackground(String... strings) {
         faireCN();
-        if (!strings[0].equals("simple")) {
-            String[] tab = {"NULL"};
-            while (tab[0].equals("NULL")) {
-                tab[0] = strings[0].equals("groupe") ? getTempsDebutAvecGroupe(strings[1]) : getTempsDebutAvecClasse(strings[1]);
+        String[] tab = {"NULL"};
+        while (tab[0].equals("NULL")) {
+            tab[0] = strings[0].equals("groupe") ? getTempsDebutAvecGroupe(strings[1]) : getTempsDebutAvecClasse(strings[1]);
 
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                }
-            }
-            return tab;
-        } else {
-            String[] tab = {"simple", getLastTemps(), strings[1]};
-            return tab;
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {}
         }
+        return tab;
     }
 
     @Override
     protected void onPostExecute(String[] result) {
-        if (result.length == 1) {
-            activity.faireTimer(result[0]);
-        } else {
-            String[] temps = result[1].split(" ")[1].split(":");
-            if (timerProf == null) {
-                timer.postTimeLeft(Integer.parseInt(result[2]), temps);
-            } else {
-                timerProf.postTimeLeft(Integer.parseInt(result[2]), temps);
-            }
-        }
+        activity.faireTimer(result[0]);
     }
 
     private String getTempsDebutAvecGroupe(String idGroupe) {
@@ -71,20 +43,6 @@ public class DAORecupTemps extends DAO {
             rs.last();
             return rs.getString(1);
 
-        } catch (SQLException e) {
-            deconnexion();
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    private String getLastTemps() {
-        try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT NOW()");
-            rs.last();
-            String date = rs.getString(1);
-            return date;
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();
