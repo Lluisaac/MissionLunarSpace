@@ -17,9 +17,9 @@
 
     <TextView
         android:id="@+id/texteAttente"
-        android:layout_width="715dp"
+        android:layout_width="1264dp"
         android:layout_height="wrap_content"
-        android:text="EN ATTENTE DE PASSAGE AU CLASSEMENT PAR CLASSE"
+        android:text="EN ATTENTE DE PASSAGE AU CLASSEMENT LUNAR SPACE 9"
         android:textAlignment="center"
         android:textSize="36sp"
         android:textStyle="bold"
