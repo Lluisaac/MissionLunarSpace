@@ -23,7 +23,7 @@ public class DAORecupTemps extends DAO {
         this.timer = timer;
     }
 
-    public DAORecupTemps(TimerProf activity) {
+    public DAORecupTemps(TimerProf timerProf) {
         this.timerProf = timerProf;
     }
 
@@ -43,7 +43,7 @@ public class DAORecupTemps extends DAO {
             }
             return tab;
         } else {
-            String[] tab = {"simple", getLastTemps(), strings[1]};
+            String[] tab = {"simple", getLastTemps(), strings[1], getTempsDebutAvecClasse(strings[2])};
             return tab;
         }
     }
@@ -53,11 +53,12 @@ public class DAORecupTemps extends DAO {
         if (result.length == 1) {
             activity.faireTimer(result[0]);
         } else {
-            String[] temps = result[1].split(" ")[1].split(":");
+            String[] tempsD = result[1].split(" ")[1].split(":");
+            String[] temps = result[3].split(" ")[1].split(":");
             if (timerProf == null) {
-                timer.postTimeLeft(Integer.parseInt(result[2]), temps);
+                timer.postTimeLeft(Integer.parseInt(result[2]), tempsD, temps);
             } else {
-                timerProf.postTimeLeft(Integer.parseInt(result[2]), temps);
+                timerProf.postTimeLeft(Integer.parseInt(result[2]), tempsD, temps);
             }
         }
     }

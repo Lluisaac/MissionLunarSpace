@@ -38,6 +38,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     private String role;
     private String idEtudiant;
     private String idGroupe;
+    private String idClasse;
 
     private ArrayList classementPerso = new ArrayList<>();
 
@@ -125,7 +126,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
         Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
         Timer.getInstance().setActivity(this);
-        Timer.getInstance().ajouterPhaseEtDemarrer();
+        Timer.getInstance().ajouterPhaseEtDemarrer(Integer.parseInt(idClasse));
     }
 
     //Remplissage des listes des objets
@@ -297,9 +298,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         }
 
         if (this.phase <= 2 ) {
-            Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-            Timer.getInstance().setActivity(this);
-            Timer.getInstance().ajouterPhaseEtDemarrer();
         }
 
         if (this.phase < 2) {
@@ -322,6 +320,12 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             passageAttenteClasse();
         }
 
+    }
+
+    public void faireTimer(int idClasse) {
+        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+        Timer.getInstance().setActivity(this);
+        Timer.getInstance().ajouterPhaseEtDemarrer(idClasse);
     }
 
     public void passageAttenteClasse() {

@@ -50,32 +50,30 @@ public class Timer {
         tempsDepart[2] = Integer.parseInt(tempsDep[2]);
     }
 
-    public void ajouterPhaseEtDemarrer() {
+    public void ajouterPhaseEtDemarrer(int classe) {
         this.phase++;
-        setTimeLeftEtDemarrer(phase);
+        faireDemandeTemps(phase, classe);
     }
 
-    public void setTimeLeftEtDemarrer(int phase) {
-        faireDemandeTemps(phase);
+    private void faireDemandeTemps(int phase, int classe) {
+        new DAORecupTemps(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "simple", phase + "", classe + "");
     }
 
-    private void faireDemandeTemps(int phase) {
-        new DAORecupTemps(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "simple", phase + "");
-    }
-
-    public void postTimeLeft(int phase, String[] time) {
-        mTimeLeftInMillis = getTimeLeft(phase, time);
+    public void postTimeLeft(int phase, String[] timeD, String[] time) {
+        mTimeLeftInMillis = getTimeLeft(phase, timeD, time);
         startTimer();
     }
 
-    private long getTimeLeft(int phase, String[] time) {
-        tempsDepart[0] = Integer.parseInt(time[0]);
-        tempsDepart[1] = Integer.parseInt(time[1]);
-        tempsDepart[2] = Integer.parseInt(time[2]);
+    private long getTimeLeft(int phase, String[] timeD, String[] time) {
+        tempsDepart[0] = Integer.parseInt(timeD[0]);
+        tempsDepart[1] = Integer.parseInt(timeD[1]);
+        tempsDepart[2] = Integer.parseInt(timeD[2]);
 
-        long heuresEnSec = tempsDepart[0] * 3600;
-        long minutesEnSec = tempsDepart[1] * 60;
-        long secondesEnSec = tempsDepart[2] * 1;
+        int[] tempsAct = {Integer.parseInt(time[0]), Integer.parseInt(time[1]), Integer.parseInt(time[2])};
+
+        long heuresEnSec = (tempsAct[0] - tempsDepart[0]) * 3600;
+        long minutesEnSec = (tempsAct[1] - tempsDepart[1]) * 60;
+        long secondesEnSec = (tempsAct[2] - tempsDepart[2]) * 1;
         return (getTimePhase(phase) - (heuresEnSec + minutesEnSec + secondesEnSec)) * 1000;
     }
 

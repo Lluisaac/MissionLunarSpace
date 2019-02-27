@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixPersoActivity;
+import com.acpi.mls.missionlunarspace.DAO.activity.DAOEtudiant;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
 import com.acpi.mls.missionlunarspace.listObjetMobile.ItemMoveCallback;
 import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
@@ -41,14 +42,18 @@ public class ChoixPersoActivity extends AppCompatActivity {
         this.classe = (String) getIntent().getSerializableExtra("ClasseEtu");
         this.annee = (String) getIntent().getSerializableExtra("AnneeEtu");
         new DAOChoixPersoActivity(ChoixPersoActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getIdEtudiant", "getIdEtudiant", this.nom, this.classe, this.annee);
-        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-        Timer.getInstance().setActivity(this);
-        Timer.getInstance().ajouterPhaseEtDemarrer();
+        new DAOEtudiant(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getIdClasse", "etudiant", this.classe, this.annee);
     }
 
     @Override
     public void onBackPressed() {
 
+    }
+
+    public void faireTimer(int idClasse) {
+        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+        Timer.getInstance().setActivity(this);
+        Timer.getInstance().ajouterPhaseEtDemarrer(idClasse);
     }
 
     public void setIdEtudiant(String s) {

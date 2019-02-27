@@ -8,6 +8,7 @@ import com.acpi.mls.missionlunarspace.EnseignantActivity;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class DAOAugmenterEtapes extends DAO {
     @Override
     protected String[] doInBackground(String... strings) {
         faireCN();
-
+        resetTimerDepart(Integer.parseInt(strings[0]));
         incrementerEtape(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]));
         String[] tab = {strings[1]};
         return tab;
@@ -58,6 +59,27 @@ public class DAOAugmenterEtapes extends DAO {
             e.printStackTrace();
         }
 
+    }
+
+    private String resetTimerDepart(int classe) {
+        try {
+
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT NOW()");
+            rs.last();
+            String date = rs.getString(1);
+
+            st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = st.executeQuery("SELECT idClasse, heureDepart FROM Classes WHERE idClasse = " + classe);
+            rs.last();
+            rs.updateString(2, date);
+            rs.updateRow();
+            return date;
+        } catch (SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+            return "";
+        }
     }
 
 
