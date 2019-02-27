@@ -52,7 +52,7 @@ public class ChoixClasseActivity extends AppCompatActivity {
 
         Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
         Timer.getInstance().setActivity(this);
-        Timer.getInstance().ajouterPhaseEtDemarrer(Integer.parseInt(idClasse));
+        Timer.getInstance().ajouterPhaseEtDemarrer();
 
     }
 

@@ -188,10 +188,10 @@ public class EnseignantActivity extends AppCompatActivity {
 
     public void indiquerPartieDemaree(String heure) {
         setContentView(R.layout.activity_partie_demaree);
-        TimerProf.createTimer(heure, idClasse);
+        TimerProf.createTimer(heure);
         TimerProf.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
         TimerProf.getInstance().setActivity(this);
-        TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer(idClasse);
+        TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
     }
 
     public void faireAttenteClassementGroupe() {
@@ -202,7 +202,7 @@ public class EnseignantActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer(idClasse);
+                TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
                 demarrer.setVisibility(View.INVISIBLE);
                 augmenterEtapeClasse();
 
@@ -220,7 +220,7 @@ public class EnseignantActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer(idClasse);
+                TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
                 demarrer.setVisibility(View.INVISIBLE);
                 augmenterEtapeClasse();
 
