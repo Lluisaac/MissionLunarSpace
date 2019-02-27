@@ -156,17 +156,17 @@ public class ScoreFinalActivity extends AppCompatActivity {
         tableRow.addView(text, 0);
 
         TextView text2 = createTextView(false, false);
-        text2.setText("Classement Personnel");
+        text2.setText(getString(R.string.classement_individuel));
         text2.setGravity(Gravity.CENTER);
         tableRow.addView(text2, 1);
 
         TextView text3 = createTextView(false, false);
-        text3.setText("Classement par Groupe");
+        text3.setText(getString(R.string.classement_de_division));
         text3.setGravity(Gravity.CENTER);
         tableRow.addView(text3, 2);
 
         TextView text4 = createTextView(false, true);
-        text4.setText("Classement par Classe");
+        text4.setText(getString(R.string.classement_lunar_space_9));
         text4.setGravity(Gravity.CENTER);
         tableRow.addView(text4, 3);
 
