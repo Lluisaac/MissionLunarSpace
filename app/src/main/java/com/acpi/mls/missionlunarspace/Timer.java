@@ -14,7 +14,7 @@ import java.util.Locale;
 public class Timer {
 
     public static Timer timer;
-    private static long[] tempsParPhase = {10 * 60, 15 * 60, 10 * 60, 5 * 60, 5 * 60, 10 * 60};
+    private static long[] tempsParPhase = {10, 15, 10, 5, 5, 10};
     private static long tempsTotal = 55 * 60;
     private long[] tempsDepart = new long[3];
 
