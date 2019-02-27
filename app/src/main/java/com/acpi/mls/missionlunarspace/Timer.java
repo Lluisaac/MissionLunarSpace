@@ -1,21 +1,20 @@
 package com.acpi.mls.missionlunarspace;
 
 
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import com.acpi.mls.missionlunarspace.DAO.autre.DAORecupTemps;
+
 import java.util.Locale;
 
 
 public class Timer {
 
     public static Timer timer;
-    //private static long[] tempsParPhase = {10 * 15, 15 * 15, 10 * 15, 5 * 15, 5 * 15, 10 * 15};
-    private static long[] tempsParPhase = {30, 30, 30, 30, 30, 30};
+    private static long[] tempsParPhase = {10 * 15, 15 * 15, 10 * 15, 5 * 15, 5 * 15, 10 * 15};
     private static long tempsTotal = 55 * 60;
     private long[] tempsDepart = new long[3];
 
@@ -51,41 +50,37 @@ public class Timer {
         tempsDepart[2] = Integer.parseInt(tempsDep[2]);
     }
 
-    public void setTimeLeftEtDemarrer(int phase) {
-        mTimeLeftInMillis = getTimeLeft(phase);
-        startTimer();
-    }
-
     public void ajouterPhaseEtDemarrer() {
         this.phase++;
-        System.out.println(activity.getClass() + ": " + this.phase);
         setTimeLeftEtDemarrer(phase);
     }
 
-    private long getTimeLeft(int phase) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String[] tempsDep = sdf.format(cal.getTime()).split(":");
-        //TODO enlever le +1
-        int[] current = {Integer.parseInt(tempsDep[0]) + 1, Integer.parseInt(tempsDep[1]), Integer.parseInt(tempsDep[2])};
+    public void setTimeLeftEtDemarrer(int phase) {
+        faireDemandeTemps(phase);
+    }
 
-        long heuresEnSec = (current[0] - tempsDepart[0]) * 3600;
-        long minutesEnSec = (current[1] - tempsDepart[1]) * 60;
-        long secondesEnSec = (current[2] - tempsDepart[2]) * 1;
+    private void faireDemandeTemps(int phase) {
+        new DAORecupTemps(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "simple", phase + "");
+    }
+
+    public void postTimeLeft(int phase, String[] time) {
+        mTimeLeftInMillis = getTimeLeft(phase, time);
+        startTimer();
+    }
+
+    private long getTimeLeft(int phase, String[] time) {
+        tempsDepart[0] = Integer.parseInt(time[0]);
+        tempsDepart[1] = Integer.parseInt(time[1]);
+        tempsDepart[2] = Integer.parseInt(time[2]);
+
+        long heuresEnSec = tempsDepart[0] * 3600;
+        long minutesEnSec = tempsDepart[1] * 60;
+        long secondesEnSec = tempsDepart[2] * 1;
         return (getTimePhase(phase) - (heuresEnSec + minutesEnSec + secondesEnSec)) * 1000;
     }
 
     private long getTimePhase(int phase) {
-        switch (phase) {
-            case 0:
-                return tempsTotal;
-            default:
-                long val = 0L;
-                for (int i = 0; i < phase; i++) {
-                   val += tempsParPhase[i];
-                }
-                return val;
-        }
+        return tempsParPhase[phase];
     }
 
     public TextView getmTextViewCountDown() {
