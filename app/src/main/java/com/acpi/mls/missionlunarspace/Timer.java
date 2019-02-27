@@ -149,7 +149,7 @@ public class Timer {
                         break;
                     case 5:
                         //On se trouve dans le classement Groupe p4 et le timer finit: on va dans une attente
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).passageAttenteClasse(null);
+                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).passageAttenteClasse();
                         break;
                     case 6:
                         //On se trouve dans le classement Classe et le timer finit: on va dans une attente

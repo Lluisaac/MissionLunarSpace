@@ -324,7 +324,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     }
 
-    private void passageAttenteClasse() {
+    public void passageAttenteClasse() {
         setContentView(R.layout.content_groupe_attente);
         new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "2");;
     }

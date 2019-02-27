@@ -137,6 +137,7 @@
         android:layout_marginBottom="8dp"
         android:onClick="changementDePhase"
         android:text="Changement de phase"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonCapitaineDemande" />
