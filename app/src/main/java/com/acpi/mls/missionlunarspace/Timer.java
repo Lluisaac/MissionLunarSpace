@@ -20,7 +20,7 @@ public class Timer {
 
     private TextView mTextViewCountDown;
 
-    private CountDownTimer mCountDownTimer;
+    private static CountDownTimer mCountDownTimer;
 
     private boolean mTimerRunning;
 
