@@ -10,4 +10,7 @@
     <string name="button">Button</string>
     <string name="montrer">Montrer</string>
     <string name="role">Role</string>
+    <string name="classement_individuel">Classement individuel</string>
+    <string name="classement_lunar_space_9">Classement Lunar Space 9</string>
+    <string name="classement_de_division">Classement de division</string>
 </resources>

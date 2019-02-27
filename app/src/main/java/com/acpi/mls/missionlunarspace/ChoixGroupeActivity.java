@@ -75,7 +75,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     public void fairePageAttente() {
         setContentView(R.layout.activity_choix_groupe);
         TextView textView = findViewById(R.id.textView_AffichageGroupe);
-        textView.setText("VOUS ÊTES DANS LE GROUPE " + this.typeGroupe);
+        textView.setText("VOUS ÊTES DANS LA DIVISION " + this.typeGroupe);
 
         new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "1");
     }
