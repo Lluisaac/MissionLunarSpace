@@ -96,9 +96,9 @@ public class ChoixClasseActivity extends AppCompatActivity {
     }
 
     public void initClasssementGroupe(ArrayList<String> list) {
-        RecyclerView recyclerViewClassementPerso = (RecyclerView) findViewById(R.id.recyclerView_choixClasse_classementGroupe);
-        recyclerViewClassementPerso.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewClassementPerso.setAdapter(new MyAdapter(list));
+        RecyclerView recyclerViewClassementGroupe = (RecyclerView) findViewById(R.id.recyclerView_choixClasse_classementGroupe);
+        recyclerViewClassementGroupe.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewClassementGroupe.setAdapter(new MyAdapter(list));
     }
 
     public void saveClassement() {
