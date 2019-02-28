@@ -19,6 +19,7 @@ public class Timer {
     private static long[] tempsParPhase = {30, 30, 30, 30, 30, 30};
     private static long tempsTotal = 55 * 60;
     private long[] tempsDepart = new long[3];
+    private long[] tempsDecalage = new long[3];
 
     private TextView mTextViewCountDown;
 
@@ -33,12 +34,22 @@ public class Timer {
 
     public Timer(String tempsNonFormate) {
         formatTime(tempsNonFormate);
+        faireDecalage();
         this.phase = 0;
     }
 
     public static Timer createTimer(String tempsNonFormate) {
         Timer.timer = new Timer(tempsNonFormate);
         return timer;
+    }
+
+    private void faireDecalage() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String[] tempsDep = sdf.format(cal.getTime()).split(":");
+        tempsDecalage[0] = tempsDepart[0] - Long.parseLong(tempsDep[0]);
+        tempsDecalage[1] = tempsDepart[1] - Long.parseLong(tempsDep[1]);
+        tempsDecalage[2] = tempsDepart[2] - Long.parseLong(tempsDep[2]);
     }
 
     public static Timer getInstance() {
@@ -59,20 +70,18 @@ public class Timer {
 
     public void ajouterPhaseEtDemarrer() {
         this.phase++;
-        System.out.println(activity.getClass() + ": " + this.phase);
         setTimeLeftEtDemarrer(phase);
     }
 
     private long getTimeLeft(int phase) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         String[] tempsDep = sdf.format(cal.getTime()).split(":");
         int[] current = {Integer.parseInt(tempsDep[0]), Integer.parseInt(tempsDep[1]), Integer.parseInt(tempsDep[2])};
 
-        long heuresEnSec = (current[0] - tempsDepart[0]) * 3600;
-        long minutesEnSec = (current[1] - tempsDepart[1]) * 60;
-        long secondesEnSec = (current[2] - tempsDepart[2]) * 1;
+        long heuresEnSec = ((current[0] + tempsDecalage[0]) - tempsDepart[0]) * 3600;
+        long minutesEnSec = ((current[1] + tempsDecalage[1]) - tempsDepart[1]) * 60;
+        long secondesEnSec = ((current[2] + tempsDecalage[2]) - tempsDepart[2]) * 1;
         return (getTimePhase(phase) - (heuresEnSec + minutesEnSec + secondesEnSec)) * 1000;
     }
 
