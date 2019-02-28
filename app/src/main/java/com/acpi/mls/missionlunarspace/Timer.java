@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class Timer {
@@ -65,9 +66,9 @@ public class Timer {
     private long getTimeLeft(int phase) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         String[] tempsDep = sdf.format(cal.getTime()).split(":");
-        //TODO enlever le +1
-        int[] current = {Integer.parseInt(tempsDep[0]) + 1, Integer.parseInt(tempsDep[1]), Integer.parseInt(tempsDep[2])};
+        int[] current = {Integer.parseInt(tempsDep[0]), Integer.parseInt(tempsDep[1]), Integer.parseInt(tempsDep[2])};
 
         long heuresEnSec = (current[0] - tempsDepart[0]) * 3600;
         long minutesEnSec = (current[1] - tempsDepart[1]) * 60;
