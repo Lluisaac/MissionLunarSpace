@@ -55,7 +55,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView_objetPerso"
-        android:layout_width="127dp"
+        android:layout_width="233dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -66,7 +66,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewObjetVrac"
-        android:layout_width="126dp"
+        android:layout_width="233dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -81,7 +81,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewObjetGroupe"
-        android:layout_width="126dp"
+        android:layout_width="233dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"

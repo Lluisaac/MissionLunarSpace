@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOEnseignant;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOAugmenterEtapes;
+import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshNbEtudiantEnregistre;
 import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckEnqueteFinie;
 
 import org.w3c.dom.Text;
@@ -23,6 +24,7 @@ public class EnseignantActivity extends AppCompatActivity {
 
     private boolean isLogin = true;
     private int idClasse;
+    private int nbEtudiant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +134,7 @@ public class EnseignantActivity extends AppCompatActivity {
                         if (nomClasse.getText().toString().equals("") || annee.getText().toString().equals("") || nbPersonnes.getText().toString().equals("")) {
                             Toast.makeText(EnseignantActivity.this, "Veuillez rentrer tous les champs", Toast.LENGTH_SHORT).show();
                         } else if (nb < 5 || nb > 36) {
-                            Toast.makeText(EnseignantActivity.this, "Veuillez rentrer une quantité d'élèves valides (entre 5 et 36)", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EnseignantActivity.this, "Veuillez rentrer une quantité d'élèves valides (entre 5 et 32)", Toast.LENGTH_SHORT).show();
                         } else if (!isGroupeValide) {
                             Toast.makeText(EnseignantActivity.this, "Veuillez selectionner un groupe valide", Toast.LENGTH_SHORT).show();
                         } else {
@@ -147,6 +149,7 @@ public class EnseignantActivity extends AppCompatActivity {
     }
 
     public void creerClasse(String classe, String annee, String nbPersonnes, String nbGroupes) {
+        this.nbEtudiant = Integer.parseInt(nbPersonnes);
         new DAOEnseignant(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"createClasse", "", classe, annee, nbPersonnes, nbGroupes);
     }
 
@@ -172,6 +175,9 @@ public class EnseignantActivity extends AppCompatActivity {
 
     public void allerALancerPartie(String numClasse) {
         setContentView(R.layout.activity_demarrer_partie);
+        TextView textView = findViewById(R.id.nbEtudiantEnregistre);
+        textView.setText("Nombres d'éléves enregistré 0 sur "+this.nbEtudiant);
+        new DAORefreshNbEtudiantEnregistre(EnseignantActivity.this,this.nbEtudiant).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","");
         this.idClasse = Integer.parseInt(numClasse);
         faireElementsDemarrerPartie(numClasse);
     }
@@ -346,5 +352,10 @@ public class EnseignantActivity extends AppCompatActivity {
 
     private void augmenterEtapeScoreFinal() {
         new DAOAugmenterEtapes(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,idClasse + "", "1");
+    }
+
+    public void refreshNbEtudiantEnregistre(int nbEtudiant) {
+        TextView textView = findViewById(R.id.nbEtudiantEnregistre);
+        textView.setText("Nombres d'éléves enregistré "+nbEtudiant+ " sur "+this.nbEtudiant);
     }
 }
