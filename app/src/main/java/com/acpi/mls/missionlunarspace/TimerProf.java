@@ -14,6 +14,7 @@ public class TimerProf {
 
     public static TimerProf timer;
     private static long[] tempsParPhase = {10 * 2, 15 * 2, 10 * 2, 5 * 2, 5 * 2, 10 * 2};
+    //private static long[] tempsParPhase = {10 * 15, 15 * 15, 10 * 15, 5 * 15, 5 * 15, 10 * 15};
     private static long tempsTotal = 55 * 60;
     private long[] tempsDepart = new long[3];
     private long[] tempsDecalage = new long[3];
