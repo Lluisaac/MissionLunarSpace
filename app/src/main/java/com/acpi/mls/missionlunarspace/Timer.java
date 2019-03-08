@@ -1,10 +1,13 @@
 package com.acpi.mls.missionlunarspace;
 
 
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
+import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckEtape;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,8 +18,7 @@ import java.util.TimeZone;
 public class Timer {
 
     public static Timer timer;
-    //private static long[] tempsParPhase = {10 * 15, 15 * 15, 10 * 15, 5 * 15, 5 * 15, 10 * 15};
-    private static long[] tempsParPhase = {30, 30, 30, 30, 30, 30};
+    private static long[] tempsParPhase = {10 * 2, 15 * 2, 10 * 2, 5 * 2, 5 * 2, 10 * 2};
     private static long tempsTotal = 55 * 60;
     private long[] tempsDepart = new long[3];
     private long[] tempsDecalage = new long[3];
@@ -64,7 +66,7 @@ public class Timer {
     }
 
     public void setTimeLeftEtDemarrer(int phase) {
-        mTimeLeftInMillis = getTimeLeft(phase);
+        mTimeLeftInMillis = tempsParPhase[phase] * 1000;
         startTimer();
     }
 
@@ -144,30 +146,35 @@ public class Timer {
                 switch (Timer.getInstance().phase) {
                     case 1:
                         //On se trouve dans le classement Perso et le timer finit: on va dans une attente
-                        ((ChoixPersoActivity) Timer.getInstance().getActivity()).continuerChoixGroupe(null);
+                        ChoixPersoActivity act1 = ((ChoixPersoActivity) Timer.getInstance().getActivity());
+                        new DAOCheckEtape(act1).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, act1.getIdGroupe() + "", "1");
                         break;
                     case 2:
-                        //On se trouve dans le classement Groupe p1 et le timer finit: on passe a l'étape suivante
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
+                        //On se trouve dans le classement Groupe p1 et le timer finit: on passe a l'attente de l'étape suivante
+                        ChoixGroupeActivity act2 = ((ChoixGroupeActivity) Timer.getInstance().getActivity());
+                        new DAOCheckEtape(act2).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, act2.getIdGroupe() + "", "3");
                         break;
                     case 3:
-                        //On se trouve dans le classement Groupe p2 et le timer finit: on passe a l'étape suivante
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
+                        //On se trouve dans le classement Groupe p2 et le timer finit: on passe a l'attente de l'étape suivante
+                        ChoixGroupeActivity act3 = ((ChoixGroupeActivity) Timer.getInstance().getActivity());
+                        new DAOCheckEtape(act3).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, act3.getIdGroupe() + "", "5");
                         break;
                     case 4:
-                        //On se trouve dans le classement Groupe p3 et le timer finit: on passe a l'étape suivante
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
+                        //On se trouve dans le classement Groupe p3 et le timer finit: on passe a l'attente de l'étape suivante
+                        ChoixGroupeActivity act4 = ((ChoixGroupeActivity) Timer.getInstance().getActivity());
+                        new DAOCheckEtape(act4).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, act4.getIdGroupe() + "", "7");
                         break;
                     case 5:
-                        //On se trouve dans le classement Groupe p4 et le timer finit: on va dans une attente
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).passageAttenteClasse();
+                        //On se trouve dans le classement Groupe p4 et le timer finit: on va dans l'attente du classement de classe
+                        ChoixGroupeActivity act5 = ((ChoixGroupeActivity) Timer.getInstance().getActivity());
+                        new DAOCheckEtape(act5).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, act5.getIdGroupe() + "", "9");
                         break;
                     case 6:
-                        //On se trouve dans le classement Classe et le timer finit: on va dans une attente
-                        ((ChoixClasseActivity) Timer.getInstance().getActivity()).passageAttenteDenonciation(null);
+                        //On se trouve dans le classement Classe et le timer finit: on va dans l'attente de l'enquete
+                        ChoixClasseActivity act6 = ((ChoixClasseActivity) Timer.getInstance().getActivity());
+                        new DAOCheckEtape(act6).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, act6.getIdGroupe() + "", "11");
                         break;
                 }
-
             }
         }.start());
 
@@ -183,7 +190,7 @@ public class Timer {
         int minutes = (int) (getmTimeLeftInMillis() / 1000) / 60;
         int seconds = (int) (getmTimeLeftInMillis() / 1000) % 60;
 
-        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+        String timeLeftFormatted = String.format(Locale.getDefault(), "Temps: %02d:%02d", minutes, seconds);
         getmTextViewCountDown().setText(timeLeftFormatted);
     }
 

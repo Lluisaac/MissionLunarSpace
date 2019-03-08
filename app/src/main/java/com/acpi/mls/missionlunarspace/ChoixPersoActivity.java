@@ -30,6 +30,7 @@ public class ChoixPersoActivity extends AppCompatActivity {
     private String classe;
     private String annee;
     private String idEtudiant;
+    private int idGroupe;
 
     public static final String[] listObjets = {"1 boîte d’allumettes", "2 kg d’aliments concentrés", "50 mètres de corde en nylon", "1 parachute en soie", "1 appareil de chauffage fonctionnant à énergie solaire", "2 pistolets de calibre 45", "1 caisse de lait en poudre", "2 réservoirs de 50 kg d’oxygène chacun", "1 carte céleste des constellations lunaires", "1 canot de sauvetage auto-gonflable", "1 compas magnétique (boussole)", "25 litres d’eau", "1 trousse médicale et seringues hypodermiques", "1 ensemble de signaux lumineux fonctionnant à énergie solaire", "1 émetteur-récepteur fonctionnant à énergie solaire (fréquence moyenne)"};
 
@@ -51,8 +52,9 @@ public class ChoixPersoActivity extends AppCompatActivity {
 
     }
 
-    public void setIdEtudiant(String s) {
+    public void setIdEtudiant(String s, int idGroupe) {
         this.idEtudiant = s;
+        this.idGroupe = idGroupe;
         ajouterObjets();
         creerListeImmobile();
         creerListeMobile();
@@ -123,5 +125,9 @@ public class ChoixPersoActivity extends AppCompatActivity {
             i++;
         }
         return  ret;
+    }
+
+    public int getIdGroupe() {
+        return idGroupe;
     }
 }

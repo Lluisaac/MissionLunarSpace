@@ -17,8 +17,6 @@ import com.acpi.mls.missionlunarspace.DAO.activity.DAOEnseignant;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOAugmenterEtapes;
 import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckEnqueteFinie;
 
-import org.w3c.dom.Text;
-
 public class EnseignantActivity extends AppCompatActivity {
 
     private boolean isLogin = true;
@@ -194,27 +192,28 @@ public class EnseignantActivity extends AppCompatActivity {
         TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
     }
 
-    public void faireAttenteClassementGroupe() {
+    public void arreterClassementPerso() {
         final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
-        demarrer.setText("Passer au Classement de Groupe");
+        demarrer.setText("Arrêter le classement individuel");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
                 demarrer.setVisibility(View.INVISIBLE);
                 augmenterEtapeClasse();
 
                 TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Le Classement de Groupe est bien démarré");
+                texte.setText("Le classement individuel est bien arrêté");
+
+                lancerClassementGroupe(1);
             }
         });
     }
 
-    public void faireAttenteClassementClasse() {
+    public void lancerClassementGroupe(final int etape) {
         final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
-        demarrer.setText("Passer au Classement de Classe");
+        demarrer.setText("Passer au classement de groupe - étape " + etape);
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,7 +224,66 @@ public class EnseignantActivity extends AppCompatActivity {
                 augmenterEtapeClasse();
 
                 TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Le Classement de Classe est bien démarré");
+                texte.setText("Le classement de groupe - étape " + etape + " est bien démarré");
+            }
+        });
+    }
+
+    public void arreterClassementGroupe(final int etape) {
+        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        demarrer.setText("Arrêter le classement de groupe - étape " + etape);
+        demarrer.setVisibility(View.VISIBLE);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                demarrer.setVisibility(View.INVISIBLE);
+                augmenterEtapeClasse();
+
+                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                texte.setText("Le classement de groupe - étape " + etape + " est bien arrêté");
+
+                if (etape < 4) {
+                    lancerClassementGroupe(etape + 1);
+                } else {
+                    lancerClassementClasse();
+                }
+            }
+        });
+    }
+
+    public void lancerClassementClasse() {
+        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        demarrer.setText("Passer au classement de classe");
+        demarrer.setVisibility(View.VISIBLE);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
+                demarrer.setVisibility(View.INVISIBLE);
+                augmenterEtapeClasse();
+
+                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                texte.setText("Le classement de classe est bien démarré");
+            }
+        });
+    }
+
+    public void arreterClassementClasse() {
+        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        demarrer.setText("Arrêter le classement de classe");
+        demarrer.setVisibility(View.VISIBLE);
+        demarrer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                demarrer.setVisibility(View.INVISIBLE);
+                augmenterEtapeClasse();
+
+                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                texte.setText("Le classement de classe est bien arrêté");
+                faireAttenteEnquete();
             }
         });
     }

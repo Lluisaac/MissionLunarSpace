@@ -61,6 +61,10 @@ public class ChoixClasseActivity extends AppCompatActivity {
 
     }
 
+    public int getIdGroupe() {
+        return Integer.parseInt(this.idGroupe);
+    }
+
     private void initLayout() {
         initClassementPerso();
         if (this.roleEtudiant.equals("Capitaine") && this.typeGroupe.equals(1 + "")) {
@@ -130,7 +134,7 @@ public class ChoixClasseActivity extends AppCompatActivity {
 
     public void passageAttenteDenonciation(View view) {
         setContentView(R.layout.content_classe_attente);
-        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "3");
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "12");
     }
 
     public void afficherRole(View view) {

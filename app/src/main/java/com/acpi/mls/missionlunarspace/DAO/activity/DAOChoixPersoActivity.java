@@ -25,7 +25,9 @@ public class DAOChoixPersoActivity extends DAO {
                 saveClassementObjet(strings[2], strings[3], strings[4]);
                 break;
             case "getIdEtudiant":
-                tab[0] = getIdEtudiant(strings[2], strings[3], strings[4]);
+                String[] array = getIdEtudiant(strings[2], strings[3], strings[4]);
+                tab[0] = array[0];
+                tab[2] = array[1];
                 break;
         }
         return tab;
@@ -35,20 +37,21 @@ public class DAOChoixPersoActivity extends DAO {
     protected void onPostExecute(String[] result) {
         switch (result[1]) {
             case "getIdEtudiant":
-                monChoixPerso.setIdEtudiant(result[0]);
+                monChoixPerso.setIdEtudiant(result[0], Integer.parseInt(result[2]));
                 break;
         }
     }
 
-    private String getIdEtudiant(String nom, String classe, String annee) {
+    private String[] getIdEtudiant(String nom, String classe, String annee) {
         try {
-            PreparedStatement pst = cn.prepareStatement("SELECT E.idEtudiant FROM Groupes G JOIN Etudiants E ON E.groupe = G.idGroupe JOIN Classes C ON C.idClasse = G.classe WHERE E.nomEtudiant = ? AND C.nomClasse = ? AND C.anneeClasse = ?;");
+            PreparedStatement pst = cn.prepareStatement("SELECT E.idEtudiant, E.groupe FROM Groupes G JOIN Etudiants E ON E.groupe = G.idGroupe JOIN Classes C ON C.idClasse = G.classe WHERE E.nomEtudiant = ? AND C.nomClasse = ? AND C.anneeClasse = ?;");
             pst.setString(1, nom);
             pst.setString(2, classe);
             pst.setString(3, annee);
             ResultSet rs = pst.executeQuery();
             rs.next();
-            return rs.getString(1);
+            String[] tab = {rs.getString(1), rs.getString(2)};
+            return tab;
         } catch (
                 SQLException e) {
             deconnexion();

@@ -6,18 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 
 public class TimerProf {
 
     public static TimerProf timer;
-    //private static long[] tempsParPhase = {10 * 15, 15 * 15, 10 * 15, 5 * 15, 5 * 15, 10 * 15};
-    private static long[] tempsParPhase = {30, 30, 30, 30, 30, 30};
+    private static long[] tempsParPhase = {10 * 2, 15 * 2, 10 * 2, 5 * 2, 5 * 2, 10 * 2};
     private static long tempsTotal = 55 * 60;
     private long[] tempsDepart = new long[3];
     private long[] tempsDecalage = new long[3];
@@ -65,7 +61,7 @@ public class TimerProf {
     }
 
     public void setTimeLeftEtDemarrer(int phase) {
-        mTimeLeftInMillis = getTimeLeft(phase);
+        mTimeLeftInMillis = tempsParPhase[phase - 1] * 1000;
         startTimer();
     }
 
@@ -144,28 +140,28 @@ public class TimerProf {
                 setmTimerRunning(false);
                 switch (TimerProf.getInstance().phase) {
                     case 1:
-                        //On se trouve dans le classement Perso et le timer finit: on va dans une attente
-                        activity.faireAttenteClassementGroupe();
+                        //On se trouve dans le classement Perso et le timer finit: on propose d'arreter le classement perso
+                        activity.arreterClassementPerso();
                         break;
                     case 2:
-                        //On se trouve dans le classement Groupe p1 et le timer finit: on passe a l'étape suivante
-                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
+                        //On se trouve dans le classement Groupe p1 et le timer finit: on propose d'arreter le classement de groupe 1
+                        activity.arreterClassementGroupe(1);
                         break;
                     case 3:
-                        //On se trouve dans le classement Groupe p2 et le timer finit: on passe a l'étape suivante
-                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
+                        //On se trouve dans le classement Groupe p2 et le timer finit: on propose d'arreter le classement de groupe 2
+                        activity.arreterClassementGroupe(2);
                         break;
                     case 4:
-                        //On se trouve dans le classement Groupe p3 et le timer finit: on passe a l'étape suivante
-                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
+                        //On se trouve dans le classement Groupe p3 et le timer finit: on propose d'arreter le classement de groupe 3
+                        activity.arreterClassementGroupe(3);
                         break;
                     case 5:
-                        //On se trouve dans le classement Groupe p4 et le timer finit: on va dans une attente
-                        activity.faireAttenteClassementClasse();
+                        //On se trouve dans le classement Groupe p4 et le timer finit: on propose d'arreter le classement de groupe 4
+                        activity.arreterClassementGroupe(4);
                         break;
                     case 6:
-                        //On se trouve dans le classement Classe et le timer finit: on va dans une attente
-                        activity.faireAttenteEnquete();
+                        //On se trouve dans le classement Classe et le timer finit: on propose d'arreter le classement de classe
+                        activity.arreterClassementClasse();
                         break;
                 }
 
@@ -184,7 +180,7 @@ public class TimerProf {
         int minutes = (int) (getmTimeLeftInMillis() / 1000) / 60;
         int seconds = (int) (getmTimeLeftInMillis() / 1000) % 60;
 
-        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+        String timeLeftFormatted = String.format(Locale.getDefault(), "Temps: %02d:%02d", minutes, seconds);
         getmTextViewCountDown().setText(timeLeftFormatted);
     }
 
