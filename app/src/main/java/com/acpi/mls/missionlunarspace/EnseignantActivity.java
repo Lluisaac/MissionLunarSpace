@@ -215,6 +215,9 @@ public class EnseignantActivity extends AppCompatActivity {
                 lancerClassementGroupe(1);
             }
         });
+
+        TextView texteTimer = (TextView) findViewById(R.id.textTimer);
+        texteTimer.setText("");
     }
 
     public void lancerClassementGroupe(final int etape) {
@@ -233,11 +236,14 @@ public class EnseignantActivity extends AppCompatActivity {
                 texte.setText("Le classement de groupe - étape " + etape + " est bien démarré");
             }
         });
+
+        TextView texteTimer = (TextView) findViewById(R.id.textTimer);
+        texteTimer.setText("");
     }
 
-    public void arreterClassementGroupe(final int etape) {
+    public void arreterClassementGroupe() {
         final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
-        demarrer.setText("Arrêter le classement de groupe - étape " + etape);
+        demarrer.setText("Arrêter le classement de groupe - étape 4");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,15 +253,14 @@ public class EnseignantActivity extends AppCompatActivity {
                 augmenterEtapeClasse();
 
                 TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Le classement de groupe - étape " + etape + " est bien arrêté");
+                texte.setText("Le classement de groupe - étape 4 est bien arrêté");
 
-                if (etape < 4) {
-                    lancerClassementGroupe(etape + 1);
-                } else {
-                    lancerClassementClasse();
-                }
+                lancerClassementClasse();
             }
         });
+
+        TextView texteTimer = (TextView) findViewById(R.id.textTimer);
+        texteTimer.setText("");
     }
 
     public void lancerClassementClasse() {
@@ -292,6 +297,9 @@ public class EnseignantActivity extends AppCompatActivity {
                 faireAttenteEnquete();
             }
         });
+
+        TextView texteTimer = (TextView) findViewById(R.id.textTimer);
+        texteTimer.setText("");
     }
 
     public void faireAttenteEnquete() {

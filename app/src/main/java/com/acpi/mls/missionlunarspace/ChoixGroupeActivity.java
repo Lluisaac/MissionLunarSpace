@@ -127,9 +127,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             creerListeImmobile();
         }
 
-        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-        Timer.getInstance().setActivity(this);
-        Timer.getInstance().ajouterPhaseEtDemarrer();
+        TimerEtudiant.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+        TimerEtudiant.getInstance().setActivity(this);
+        TimerEtudiant.getInstance().ajouterPhaseEtDemarrer();
     }
 
     //Remplissage des listes des objets
@@ -301,9 +301,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         }
 
         if (this.phase <= 2 ) {
-            Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-            Timer.getInstance().setActivity(this);
-            Timer.getInstance().ajouterPhaseEtDemarrer();
+            TimerEtudiant.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+            TimerEtudiant.getInstance().setActivity(this);
+            TimerEtudiant.getInstance().ajouterPhaseEtDemarrer();
         }
 
         if (this.phase < 2) {

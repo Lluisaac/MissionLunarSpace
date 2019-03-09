@@ -138,6 +138,7 @@ public class DAOEnseignant extends DAO {
             String date = rs.getString(1);
 
             st = cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            //TODO Refactorer de façon a ce que heureDepart ne soit pas utilisée
             rs = st.executeQuery("SELECT idClasse, heureDepart FROM Classes WHERE idClasse = " + classe);
             rs.last();
             rs.updateString(2, date);

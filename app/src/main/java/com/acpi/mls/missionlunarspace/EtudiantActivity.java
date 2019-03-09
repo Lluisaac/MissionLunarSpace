@@ -107,7 +107,7 @@ public class EtudiantActivity extends AppCompatActivity {
     }
 
     public void faireTimer(String heure) {
-        Timer.createTimer(heure);
+        TimerEtudiant.createTimer(heure);
         onCLickTempo(null);
     }
 

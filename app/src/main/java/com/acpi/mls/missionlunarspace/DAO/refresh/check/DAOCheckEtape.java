@@ -53,46 +53,34 @@ public class DAOCheckEtape extends DAO {
                 activityGroupe.sortirPageRegroupement();
                 break;
             case "3":
-                //Sortie du CG1
-                activityGroupe.faireAttente(4);
-                break;
-            case "4":
                 //Sortie de l'attente, passage au CG2
                 activityGroupe.changementDePhase(null);
                 break;
-            case "5":
-                //Sortie du CG2
-                activityGroupe.faireAttente(6);
-                break;
-            case "6":
+            case "4":
                 //Sortie de l'attente, passage au CG3
                 activityGroupe.changementDePhase(null);
                 break;
-            case "7":
-                //Sortie du CG3
-                activityGroupe.faireAttente(8);
-                break;
-            case "8":
+            case "5":
                 //Sortie de l'attente, passage au CG4
                 activityGroupe.changementDePhase(null);
                 break;
-            case "9":
+            case "6":
                 //Sortie du CG4
                 activityGroupe.passageAttenteClasse();
                 break;
-            case "10":
+            case "7":
                 //Sortie de l'attente, passage au classement de classe
                 activityGroupe.passageChoixClasse();
                 break;
-            case "11":
+            case "8":
                 //Sortie du classement de classe
                 activityClasse.passageAttenteDenonciation(null);
                 break;
-            case "12":
+            case "9":
                 //Sortie de l'attente, passage a l'enquete
                 activityClasse.passageDenonciation();
                 break;
-            case "13":
+            case "10":
                 //Sortie de l'enquete, passage au formulaire de satisfaction
                 activityScoreFinal.passageFormSatisfaction(null);
                 break;

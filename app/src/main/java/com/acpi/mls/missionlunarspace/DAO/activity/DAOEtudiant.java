@@ -45,14 +45,18 @@ public class DAOEtudiant extends DAO {
 
     private String getIdClasse(String nomClasse, String anneeClasse) {
         try {
-            PreparedStatement pst = cn.prepareStatement("SELECT idClasse AS 'NbId' FROM Classes WHERE nomClasse = ? AND anneeClasse = ?;");
+            //TODO Refactorer de façon a ce que heureDepart ne soit pas utilisée
+            PreparedStatement pst = cn.prepareStatement("SELECT idClasse, heureDepart FROM Classes WHERE nomClasse = ? AND anneeClasse = ?;");
             pst.setString(1, nomClasse);
             pst.setString(2, anneeClasse);
             ResultSet rs = pst.executeQuery();
 
             String id = "";
             if (rs.next()) {
-                id = rs.getInt("NbId") + "";
+                rs.getString(2);
+                if (rs.wasNull()) {
+                    id = rs.getInt(1) + "";
+                }
             }
             return id;
 

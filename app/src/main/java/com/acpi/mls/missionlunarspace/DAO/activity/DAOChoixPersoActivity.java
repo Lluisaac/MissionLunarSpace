@@ -19,7 +19,7 @@ public class DAOChoixPersoActivity extends DAO {
     @Override
     protected String[] doInBackground(String... strings) {
         faireCN();
-        String[] tab = {"", strings[1]};
+        String[] tab = {"", strings[1], ""};
         switch (strings[0]) {
             case "saveClassementObjet":
                 saveClassementObjet(strings[2], strings[3], strings[4]);
