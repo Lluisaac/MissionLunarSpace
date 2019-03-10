@@ -1,12 +1,9 @@
 package com.acpi.mls.missionlunarspace.DAO.refresh.check;
 
-import android.view.View;
 import android.widget.Button;
 
 import com.acpi.mls.missionlunarspace.DAO.DAO;
-import com.acpi.mls.missionlunarspace.DAO.autre.DAORecupTemps;
 import com.acpi.mls.missionlunarspace.EtudiantActivity;
-import com.acpi.mls.missionlunarspace.Timer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +23,7 @@ public class DAOCheckPartieDemaree extends DAO {
 
     private boolean isPartieDemaree(int idClasse) {
         try {
+            //TODO Refactorer de façon a ce que heureDepart ne soit pas utilisée
             PreparedStatement pst = cn.prepareStatement("SELECT idClasse, heureDepart FROM Classes WHERE idClasse = ?");
             pst.setInt(1, idClasse);
             ResultSet rs = pst.executeQuery();

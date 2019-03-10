@@ -1,22 +1,22 @@
 package com.acpi.mls.missionlunarspace;
 
 
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.TextView;
+
+import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckEtape;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 
-public class Timer {
-
+public abstract class Timer {
     public static Timer timer;
+    private static long[] tempsParPhase = {10, 10, 10, 10, 10, 10};
     //private static long[] tempsParPhase = {10 * 15, 15 * 15, 10 * 15, 5 * 15, 5 * 15, 10 * 15};
-    private static long[] tempsParPhase = {120, 120, 120, 120, 120, 120};
     private static long tempsTotal = 55 * 60;
     private long[] tempsDepart = new long[3];
     private long[] tempsDecalage = new long[3];
@@ -36,11 +36,6 @@ public class Timer {
         formatTime(tempsNonFormate);
         faireDecalage();
         this.phase = 0;
-    }
-
-    public static Timer createTimer(String tempsNonFormate) {
-        Timer.timer = new Timer(tempsNonFormate);
-        return timer;
     }
 
     private void faireDecalage() {
@@ -64,7 +59,7 @@ public class Timer {
     }
 
     public void setTimeLeftEtDemarrer(int phase) {
-        mTimeLeftInMillis = getTimeLeft(phase);
+        mTimeLeftInMillis = tempsParPhase[phase - 1] * 1000;
         startTimer();
     }
 
@@ -72,6 +67,8 @@ public class Timer {
         this.phase++;
         setTimeLeftEtDemarrer(phase);
     }
+
+    public abstract void startTimer();
 
     private long getTimeLeft(int phase) {
         Calendar cal = Calendar.getInstance();
@@ -130,50 +127,6 @@ public class Timer {
         this.mTimeLeftInMillis = mTimeLeftInMillis;
     }
 
-    public void startTimer() {
-        setmCountDownTimer(new CountDownTimer(getmTimeLeftInMillis(), 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                setmTimeLeftInMillis(millisUntilFinished);
-                updateCountDownText();
-            }
-
-            @Override
-            public void onFinish() {
-                setmTimerRunning(false);
-                switch (Timer.getInstance().phase) {
-                    case 1:
-                        //On se trouve dans le classement Perso et le timer finit: on va dans une attente
-                        ((ChoixPersoActivity) Timer.getInstance().getActivity()).continuerChoixGroupe(null);
-                        break;
-                    case 2:
-                        //On se trouve dans le classement Groupe p1 et le timer finit: on passe a l'étape suivante
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
-                        break;
-                    case 3:
-                        //On se trouve dans le classement Groupe p2 et le timer finit: on passe a l'étape suivante
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
-                        break;
-                    case 4:
-                        //On se trouve dans le classement Groupe p3 et le timer finit: on passe a l'étape suivante
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).changementDePhase(null);
-                        break;
-                    case 5:
-                        //On se trouve dans le classement Groupe p4 et le timer finit: on va dans une attente
-                        ((ChoixGroupeActivity) Timer.getInstance().getActivity()).passageAttenteClasse();
-                        break;
-                    case 6:
-                        //On se trouve dans le classement Classe et le timer finit: on va dans une attente
-                        ((ChoixClasseActivity) Timer.getInstance().getActivity()).passageAttenteDenonciation(null);
-                        break;
-                }
-
-            }
-        }.start());
-
-        setmTimerRunning(true);
-    }
-
     public void pauseTimer() {
         getmCountDownTimer().cancel();
         setmTimerRunning(false);
@@ -183,15 +136,15 @@ public class Timer {
         int minutes = (int) (getmTimeLeftInMillis() / 1000) / 60;
         int seconds = (int) (getmTimeLeftInMillis() / 1000) % 60;
 
-        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+        String timeLeftFormatted = String.format(Locale.getDefault(), "Temps: %02d:%02d", minutes, seconds);
         getmTextViewCountDown().setText(timeLeftFormatted);
     }
 
-    public void setActivity(AppCompatActivity activity) {
-        this.activity = activity;
-    }
+    public abstract void setActivity(AppCompatActivity activity);
 
-    public AppCompatActivity getActivity() {
-        return activity;
+    public abstract AppCompatActivity getActivity();
+
+    public int getPhase() {
+        return this.phase;
     }
 }

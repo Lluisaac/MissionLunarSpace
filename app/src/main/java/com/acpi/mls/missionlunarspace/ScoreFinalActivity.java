@@ -127,7 +127,7 @@ public class ScoreFinalActivity extends AppCompatActivity {
         afficherInfoTab(pos, 4);
         afficherTitre(trouverTitre(getScore(perso)));
 
-        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "4");
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "13");
     }
 
     private int getScore(ArrayList<String> tab) {

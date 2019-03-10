@@ -77,7 +77,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView_AffichageGroupe);
         textView.setText("VOUS ÊTES DANS LA DIVISION " + this.typeGroupe);
 
-        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "1");
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "2");
     }
 
     public void sortirPageRegroupement() {
@@ -103,6 +103,10 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         new DAOChoixGroupeActivity(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getIdGroupeEtudiant", "getIdGroupeEtudiant", this.idEtudiant);
     }
 
+    public int getIdGroupe() {
+        return Integer.parseInt(this.idGroupe);
+    }
+
     public void setIdGroupe(String idGroupe) {
         this.idGroupe = idGroupe;
     }
@@ -123,9 +127,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             creerListeImmobile();
         }
 
-        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-        Timer.getInstance().setActivity(this);
-        Timer.getInstance().ajouterPhaseEtDemarrer();
+        TimerEtudiant.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+        TimerEtudiant.getInstance().setActivity(this);
+        TimerEtudiant.getInstance().ajouterPhaseEtDemarrer();
     }
 
     //Remplissage des listes des objets
@@ -297,9 +301,9 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         }
 
         if (this.phase <= 2 ) {
-            Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-            Timer.getInstance().setActivity(this);
-            Timer.getInstance().ajouterPhaseEtDemarrer();
+            TimerEtudiant.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+            TimerEtudiant.getInstance().setActivity(this);
+            TimerEtudiant.getInstance().ajouterPhaseEtDemarrer();
         }
 
         if (this.phase < 2) {
@@ -326,7 +330,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     public void passageAttenteClasse() {
         setContentView(R.layout.content_groupe_attente);
-        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "2");;
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "10");
     }
 
     public void passagePhaseQuatre(ArrayList<String> classementGroupe) {
@@ -470,6 +474,14 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             i++;
         }
         return ret;
+    }
+
+    public void faireAttente(int pourPhase) {
+        setContentView(R.layout.activity_attente_groupe);
+        TextView textView = findViewById(R.id.texte_attente);
+        textView.setText("Veuillez attendre que le professeur démarre l'étape " + (pourPhase / 2));
+
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe + "", pourPhase + "");
     }
 
     public int getPhase() {

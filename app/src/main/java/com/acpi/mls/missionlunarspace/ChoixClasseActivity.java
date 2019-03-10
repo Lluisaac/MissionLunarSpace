@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixClasseActivity;
-import com.acpi.mls.missionlunarspace.DAO.activity.DAOChoixPersoActivity;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshListeClasse;
 import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckEtape;
 import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
@@ -50,15 +49,19 @@ public class ChoixClasseActivity extends AppCompatActivity {
         initLayout();
         new DAOChoixClasseActivity(ChoixClasseActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getIdClasse", "getIdClasse", this.idGroupe);
 
-        Timer.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
-        Timer.getInstance().setActivity(this);
-        Timer.getInstance().ajouterPhaseEtDemarrer();
+        TimerEtudiant.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
+        TimerEtudiant.getInstance().setActivity(this);
+        TimerEtudiant.getInstance().ajouterPhaseEtDemarrer();
 
     }
 
     @Override
     public void onBackPressed() {
 
+    }
+
+    public int getIdGroupe() {
+        return Integer.parseInt(this.idGroupe);
     }
 
     private void initLayout() {
@@ -130,7 +133,7 @@ public class ChoixClasseActivity extends AppCompatActivity {
 
     public void passageAttenteDenonciation(View view) {
         setContentView(R.layout.content_classe_attente);
-        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "3");
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "12");
     }
 
     public void afficherRole(View view) {

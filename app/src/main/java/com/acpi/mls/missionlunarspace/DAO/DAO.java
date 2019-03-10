@@ -23,6 +23,7 @@ public abstract class DAO extends AsyncTask<String, String, String[]> {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				String url = "jdbc:mysql://162.38.222.147:3306/lluisi";
+				//String url = "jdbc:mysql://lirmalys.ovh:3306/lluisi";
 				String login = "lluisi";
 				String mdp = "123";
 

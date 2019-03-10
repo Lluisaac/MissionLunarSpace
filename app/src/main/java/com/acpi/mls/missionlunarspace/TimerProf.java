@@ -6,129 +6,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 
-public class TimerProf {
-
-    public static TimerProf timer;
-    //private static long[] tempsParPhase = {10 * 15, 15 * 15, 10 * 15, 5 * 15, 5 * 15, 10 * 15};
-    private static long[] tempsParPhase = {120, 120, 120, 120, 120, 120};
-    private static long tempsTotal = 55 * 60;
-    private long[] tempsDepart = new long[3];
-    private long[] tempsDecalage = new long[3];
-
-    private TextView mTextViewCountDown;
-
-    private static CountDownTimer mCountDownTimer;
-
-    private boolean mTimerRunning;
+public class TimerProf extends Timer{
 
     private EnseignantActivity activity;
 
-    private long mTimeLeftInMillis;
-    private int phase;
-
     public TimerProf(String tempsNonFormate) {
-        formatTime(tempsNonFormate);
-        faireDecalage();
-        this.phase = 0;
+        super(tempsNonFormate);
     }
 
     public static TimerProf createTimer(String tempsNonFormate) {
         TimerProf.timer = new TimerProf(tempsNonFormate);
-        return timer;
-    }
-
-    private void faireDecalage() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String[] tempsDep = sdf.format(cal.getTime()).split(":");
-        tempsDecalage[0] = tempsDepart[0] - Long.parseLong(tempsDep[0]);
-        tempsDecalage[1] = tempsDepart[1] - Long.parseLong(tempsDep[1]);
-        tempsDecalage[2] = tempsDepart[2] - Long.parseLong(tempsDep[2]);
-    }
-
-    public static TimerProf getInstance() {
-        return timer;
-    }
-
-    private void formatTime(String tempsNonFormate) {
-        String[] tempsDep = tempsNonFormate.split(" ")[1].split(":");
-        tempsDepart[0] = Integer.parseInt(tempsDep[0]);
-        tempsDepart[1] = Integer.parseInt(tempsDep[1]);
-        tempsDepart[2] = Integer.parseInt(tempsDep[2]);
-    }
-
-    public void setTimeLeftEtDemarrer(int phase) {
-        mTimeLeftInMillis = getTimeLeft(phase);
-        startTimer();
-    }
-
-    public void ajouterPhaseEtDemarrer() {
-        this.phase++;
-        setTimeLeftEtDemarrer(phase);
-    }
-
-    private long getTimeLeft(int phase) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String[] tempsDep = sdf.format(cal.getTime()).split(":");
-        int[] current = {Integer.parseInt(tempsDep[0]), Integer.parseInt(tempsDep[1]), Integer.parseInt(tempsDep[2])};
-
-        long heuresEnSec = ((current[0] + tempsDecalage[0]) - tempsDepart[0]) * 3600;
-        long minutesEnSec = ((current[1] + tempsDecalage[1]) - tempsDepart[1]) * 60;
-        long secondesEnSec = ((current[2] + tempsDecalage[2]) - tempsDepart[2]) * 1;
-        return (getTimePhase(phase) - (heuresEnSec + minutesEnSec + secondesEnSec)) * 1000;
-    }
-
-    private long getTimePhase(int phase) {
-        switch (phase) {
-            case 0:
-                return tempsTotal;
-            default:
-                long val = 0L;
-                for (int i = 0; i < phase; i++) {
-                   val += tempsParPhase[i];
-                }
-                return val;
-        }
-    }
-
-    public TextView getmTextViewCountDown() {
-        return mTextViewCountDown;
-    }
-
-    public void setTextView(TextView mTextViewCountDown) {
-        this.mTextViewCountDown = mTextViewCountDown;
-    }
-
-    public CountDownTimer getmCountDownTimer() {
-        return mCountDownTimer;
-    }
-
-    public void setmCountDownTimer(CountDownTimer mCountDownTimer) {
-        this.mCountDownTimer = mCountDownTimer;
-    }
-
-    public boolean ismTimerRunning() {
-        return mTimerRunning;
-    }
-
-    public void setmTimerRunning(boolean mTimerRunning) {
-        this.mTimerRunning = mTimerRunning;
-    }
-
-    public long getmTimeLeftInMillis() {
-        return mTimeLeftInMillis;
-    }
-
-    public void setmTimeLeftInMillis(long mTimeLeftInMillis) {
-        this.mTimeLeftInMillis = mTimeLeftInMillis;
+        return (TimerProf) timer;
     }
 
     public void startTimer() {
@@ -142,30 +34,30 @@ public class TimerProf {
             @Override
             public void onFinish() {
                 setmTimerRunning(false);
-                switch (TimerProf.getInstance().phase) {
+                switch (TimerProf.getInstance().getPhase()) {
                     case 1:
-                        //On se trouve dans le classement Perso et le timer finit: on va dans une attente
-                        activity.faireAttenteClassementGroupe();
+                        //On se trouve dans le classement Perso et le timer finit: on propose d'arreter le classement perso
+                        activity.arreterClassementPerso();
                         break;
                     case 2:
-                        //On se trouve dans le classement Groupe p1 et le timer finit: on passe a l'étape suivante
-                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
+                        //On se trouve dans le classement Groupe p1 et le timer finit: on propose d'arreter le classement de groupe 1
+                        activity.lancerClassementGroupe(2);
                         break;
                     case 3:
-                        //On se trouve dans le classement Groupe p2 et le timer finit: on passe a l'étape suivante
-                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
+                        //On se trouve dans le classement Groupe p2 et le timer finit: on propose d'arreter le classement de groupe 2
+                        activity.lancerClassementGroupe(3);
                         break;
                     case 4:
-                        //On se trouve dans le classement Groupe p3 et le timer finit: on passe a l'étape suivante
-                        TimerProf.getInstance().ajouterPhaseEtDemarrer();
+                        //On se trouve dans le classement Groupe p3 et le timer finit: on propose d'arreter le classement de groupe 3
+                        activity.lancerClassementGroupe(4);
                         break;
                     case 5:
-                        //On se trouve dans le classement Groupe p4 et le timer finit: on va dans une attente
-                        activity.faireAttenteClassementClasse();
+                        //On se trouve dans le classement Groupe p4 et le timer finit: on propose d'arreter le classement de groupe 4
+                        activity.arreterClassementGroupe();
                         break;
                     case 6:
-                        //On se trouve dans le classement Classe et le timer finit: on va dans une attente
-                        activity.faireAttenteEnquete();
+                        //On se trouve dans le classement Classe et le timer finit: on propose d'arreter le classement de classe
+                        activity.arreterClassementClasse();
                         break;
                 }
 
@@ -175,21 +67,8 @@ public class TimerProf {
         setmTimerRunning(true);
     }
 
-    public void pauseTimer() {
-        getmCountDownTimer().cancel();
-        setmTimerRunning(false);
-    }
-
-    public void updateCountDownText() {
-        int minutes = (int) (getmTimeLeftInMillis() / 1000) / 60;
-        int seconds = (int) (getmTimeLeftInMillis() / 1000) % 60;
-
-        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
-        getmTextViewCountDown().setText(timeLeftFormatted);
-    }
-
-    public void setActivity(EnseignantActivity activity) {
-        this.activity = activity;
+    public void setActivity(AppCompatActivity activity) {
+        this.activity = (EnseignantActivity) activity;
     }
 
     public AppCompatActivity getActivity() {
