@@ -133,7 +133,7 @@ public class ChoixClasseActivity extends AppCompatActivity {
 
     public void passageAttenteDenonciation(View view) {
         setContentView(R.layout.content_classe_attente);
-        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "12");
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "9");
     }
 
     public void afficherRole(View view) {

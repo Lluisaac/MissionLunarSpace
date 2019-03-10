@@ -330,7 +330,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     public void passageAttenteClasse() {
         setContentView(R.layout.content_groupe_attente);
-        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "10");
+        new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "7");
     }
 
     public void passagePhaseQuatre(ArrayList<String> classementGroupe) {
