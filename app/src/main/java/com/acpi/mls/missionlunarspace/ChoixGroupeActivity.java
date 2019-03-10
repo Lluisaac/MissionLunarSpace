@@ -309,6 +309,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         if (this.phase < 2) {
             this.phase++;
             if (this.role.equals("Capitaine")) {
+                //TODO enlever les bon objets parrapport a la DB et pas les 5 premier
                 this.classementCapitaine.remove(0);
                 this.classementCapitaine.remove(0);
                 this.classementCapitaine.remove(0);
