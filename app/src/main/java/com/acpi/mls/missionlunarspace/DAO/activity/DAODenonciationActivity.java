@@ -57,7 +57,7 @@ public class DAODenonciationActivity extends DAO {
 
     private void getNomEtudiantsGroupe(String idGroupe) {
         try {
-            PreparedStatement pst = cn.prepareStatement("SELECT nomEtudiant FROM Etudiants  WHERE groupe = ?  AND role > 2;");
+            PreparedStatement pst = cn.prepareStatement("SELECT nomEtudiant FROM Etudiants  WHERE groupe = ?  AND role > 2 ORDER BY nomEtudiant;");
             pst.setString(1, idGroupe);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
