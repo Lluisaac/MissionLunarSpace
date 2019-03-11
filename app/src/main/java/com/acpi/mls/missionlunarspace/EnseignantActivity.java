@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOEnseignant;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOAugmenterEtapes;
-import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshNbEtudiantEnregistre;
+import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAORefreshNbEtudiantEnregistre;
 import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckEnqueteFinie;
 
 public class EnseignantActivity extends AppCompatActivity {

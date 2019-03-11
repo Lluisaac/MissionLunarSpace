@@ -10,12 +10,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.acpi.mls.missionlunarspace.DAO.DAO;
 import com.acpi.mls.missionlunarspace.DAO.activity.DAODenonciationActivity;
-import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshEnquete;
-import com.acpi.mls.missionlunarspace.immobile.MyAdapter;
+import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAORefreshEnquete;
 
 import java.util.ArrayList;
 
