@@ -5,6 +5,7 @@ import com.acpi.mls.missionlunarspace.ChoixPersoActivity;
 import com.acpi.mls.missionlunarspace.DAO.DAO;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +30,30 @@ public class DAOClassementTemp extends DAO {
         String[] tab = {"", strings[1]};
         switch (strings[0]) {
             case "saveClassementTemp":
-                saveClassementTemp(strings[2]);
+                if (classementDispo(strings[2])) {
+                    saveClassementTemp(strings[2]);
+                }
                 break;
 
         }
 
         return tab;
+    }
+
+    private boolean classementDispo(String idGroupe) {
+        try {
+            PreparedStatement pst1 = cn.prepareStatement("SELECT COUNT(idObjet) FROM ClassementGroupeTemp WHERE idGroupe = ?");
+            pst1.setString(1, idGroupe);
+            ResultSet rs1 = pst1.executeQuery();
+            rs1.next();
+            return rs1.getInt(1) == 0;
+
+        } catch (
+                SQLException e) {
+            deconnexion();
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void saveClassementTemp(String idGroupe) {

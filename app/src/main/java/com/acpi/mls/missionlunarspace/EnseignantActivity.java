@@ -23,20 +23,25 @@ public class EnseignantActivity extends AppCompatActivity {
     private boolean isLogin = true;
     private int idClasse;
     private int nbEtudiant;
+    private long lastTime;
+    private static final int TEMPS_ATTENTE = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        lastTime = System.currentTimeMillis();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enseignant);
 
         Button buttonOk = (Button) findViewById(R.id.buttonConfirmationLoginProf);
         buttonOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                switch(view.getId())
-                {
-                    case R.id.buttonConfirmationLoginProf:
-                        new DAOEnseignant(EnseignantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getMdpProf", "EnseignantActivity.validerMDP");
-                        break;
+                if (attenteFaite()) {
+
+                    switch (view.getId()) {
+                        case R.id.buttonConfirmationLoginProf:
+                            new DAOEnseignant(EnseignantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getMdpProf", "EnseignantActivity.validerMDP");
+                            break;
+                    }
                 }
             }
         });
@@ -113,33 +118,36 @@ public class EnseignantActivity extends AppCompatActivity {
         faireOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText nomClasse = (EditText) findViewById(R.id.nomClasse);
-                EditText annee = (EditText) findViewById(R.id.annee);
-                EditText nbPersonnes = (EditText) findViewById(R.id.nbEleves);
-                RadioGroup groupe = (RadioGroup) findViewById(R.id.radioGroupSelectionGroupes);
+                if (attenteFaite()) {
 
-                int nb = Integer.parseInt(nbPersonnes.getText().toString());
+                    EditText nomClasse = (EditText) findViewById(R.id.nomClasse);
+                    EditText annee = (EditText) findViewById(R.id.annee);
+                    EditText nbPersonnes = (EditText) findViewById(R.id.nbEleves);
+                    RadioGroup groupe = (RadioGroup) findViewById(R.id.radioGroupSelectionGroupes);
 
-                boolean isGroupeValide = groupe.getCheckedRadioButtonId() != -1;
+                    int nb = Integer.parseInt(nbPersonnes.getText().toString());
 
-                if (isGroupeValide) {
-                    RadioButton temp = (RadioButton) findViewById(groupe.getCheckedRadioButtonId());
-                    isGroupeValide = temp.getVisibility() == View.VISIBLE;
-                }
+                    boolean isGroupeValide = groupe.getCheckedRadioButtonId() != -1;
 
-                switch (view.getId()) {
-                    case R.id.buttonCreationGroupe:
-                        if (nomClasse.getText().toString().equals("") || annee.getText().toString().equals("") || nbPersonnes.getText().toString().equals("")) {
-                            Toast.makeText(EnseignantActivity.this, "Veuillez rentrer tous les champs", Toast.LENGTH_SHORT).show();
-                        } else if (nb < 5 || nb > 36) {
-                            Toast.makeText(EnseignantActivity.this, "Veuillez rentrer une quantité d'élèves valides (entre 5 et 32)", Toast.LENGTH_SHORT).show();
-                        } else if (!isGroupeValide) {
-                            Toast.makeText(EnseignantActivity.this, "Veuillez selectionner un groupe valide", Toast.LENGTH_SHORT).show();
-                        } else {
-                            int num = Integer.parseInt(((RadioButton) findViewById(groupe.getCheckedRadioButtonId())).getText().toString());
-                            creerClasse(nomClasse.getText().toString(), annee.getText().toString(), nbPersonnes.getText().toString(), num + "");
-                        }
-                        break;
+                    if (isGroupeValide) {
+                        RadioButton temp = (RadioButton) findViewById(groupe.getCheckedRadioButtonId());
+                        isGroupeValide = temp.getVisibility() == View.VISIBLE;
+                    }
+
+                    switch (view.getId()) {
+                        case R.id.buttonCreationGroupe:
+                            if (nomClasse.getText().toString().equals("") || annee.getText().toString().equals("") || nbPersonnes.getText().toString().equals("")) {
+                                Toast.makeText(EnseignantActivity.this, "Veuillez rentrer tous les champs", Toast.LENGTH_SHORT).show();
+                            } else if (nb < 5 || nb > 36) {
+                                Toast.makeText(EnseignantActivity.this, "Veuillez rentrer une quantité d'élèves valides (entre 5 et 32)", Toast.LENGTH_SHORT).show();
+                            } else if (!isGroupeValide) {
+                                Toast.makeText(EnseignantActivity.this, "Veuillez selectionner un groupe valide", Toast.LENGTH_SHORT).show();
+                            } else {
+                                int num = Integer.parseInt(((RadioButton) findViewById(groupe.getCheckedRadioButtonId())).getText().toString());
+                                creerClasse(nomClasse.getText().toString(), annee.getText().toString(), nbPersonnes.getText().toString(), num + "");
+                            }
+                            break;
+                    }
                 }
             }
         });
@@ -148,7 +156,7 @@ public class EnseignantActivity extends AppCompatActivity {
 
     public void creerClasse(String classe, String annee, String nbPersonnes, String nbGroupes) {
         this.nbEtudiant = Integer.parseInt(nbPersonnes);
-        new DAOEnseignant(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"createClasse", "", classe, annee, nbPersonnes, nbGroupes);
+        new DAOEnseignant(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "createClasse", "", classe, annee, nbPersonnes, nbGroupes);
     }
 
     public void validerMDP(String mdp) {
@@ -174,8 +182,8 @@ public class EnseignantActivity extends AppCompatActivity {
     public void allerALancerPartie(String numClasse) {
         setContentView(R.layout.activity_demarrer_partie);
         TextView textView = findViewById(R.id.nbEtudiantEnregistre);
-        textView.setText("Nombres d'éléves enregistré 0 sur "+this.nbEtudiant);
-        new DAORefreshNbEtudiantEnregistre(EnseignantActivity.this,this.nbEtudiant).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","");
+        textView.setText("Nombres d'éléves enregistré 0 sur " + this.nbEtudiant);
+        new DAORefreshNbEtudiantEnregistre(EnseignantActivity.this, this.nbEtudiant).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "", "");
         this.idClasse = Integer.parseInt(numClasse);
         faireElementsDemarrerPartie(numClasse);
     }
@@ -186,7 +194,10 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DAOEnseignant(EnseignantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"DemarrerPartie", "indicationPartieDemarree", numClasse);
+                if (attenteFaite()) {
+
+                    new DAOEnseignant(EnseignantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "DemarrerPartie", "indicationPartieDemarree", numClasse);
+                }
             }
         });
     }
@@ -206,14 +217,17 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (attenteFaite()) {
 
-                demarrer.setVisibility(View.INVISIBLE);
-                augmenterEtapeClasse();
 
-                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Le classement individuel est bien arrêté");
+                    demarrer.setVisibility(View.INVISIBLE);
+                    augmenterEtapeClasse();
 
-                lancerClassementGroupe(1);
+                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    texte.setText("Le classement individuel est bien arrêté");
+
+                    lancerClassementGroupe(1);
+                }
             }
         });
 
@@ -228,13 +242,16 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (attenteFaite()) {
 
-                TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
-                demarrer.setVisibility(View.INVISIBLE);
-                augmenterEtapeClasse();
 
-                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Le classement de groupe - étape " + etape + " est bien démarré");
+                    TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
+                    demarrer.setVisibility(View.INVISIBLE);
+                    augmenterEtapeClasse();
+
+                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    texte.setText("Le classement de groupe - étape " + etape + " est bien démarré");
+                }
             }
         });
 
@@ -249,14 +266,17 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (attenteFaite()) {
 
-                demarrer.setVisibility(View.INVISIBLE);
-                augmenterEtapeClasse();
 
-                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Le classement de groupe - étape 4 est bien arrêté");
+                    demarrer.setVisibility(View.INVISIBLE);
+                    augmenterEtapeClasse();
 
-                lancerClassementClasse();
+                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    texte.setText("Le classement de groupe - étape 4 est bien arrêté");
+
+                    lancerClassementClasse();
+                }
             }
         });
 
@@ -271,13 +291,16 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (attenteFaite()) {
 
-                TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
-                demarrer.setVisibility(View.INVISIBLE);
-                augmenterEtapeClasse();
 
-                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Le classement de classe est bien démarré");
+                    TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
+                    demarrer.setVisibility(View.INVISIBLE);
+                    augmenterEtapeClasse();
+
+                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    texte.setText("Le classement de classe est bien démarré");
+                }
             }
         });
     }
@@ -289,13 +312,16 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (attenteFaite()) {
 
-                demarrer.setVisibility(View.INVISIBLE);
-                augmenterEtapeClasse();
 
-                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Le classement de classe est bien arrêté");
-                faireAttenteEnquete();
+                    demarrer.setVisibility(View.INVISIBLE);
+                    augmenterEtapeClasse();
+
+                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    texte.setText("Le classement de classe est bien arrêté");
+                    faireAttenteEnquete();
+                }
             }
         });
 
@@ -310,13 +336,16 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (attenteFaite()) {
 
-                demarrer.setVisibility(View.INVISIBLE);
-                augmenterEtapeClasse();
 
-                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("L'Enquête Spatiale est bien démarrée");
-                new DAOCheckEnqueteFinie(EnseignantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,idClasse + "");
+                    demarrer.setVisibility(View.INVISIBLE);
+                    augmenterEtapeClasse();
+
+                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    texte.setText("L'Enquête Spatiale est bien démarrée");
+                    new DAOCheckEnqueteFinie(EnseignantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idClasse + "");
+                }
             }
         });
     }
@@ -328,18 +357,21 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (attenteFaite()) {
 
-                demarrer.setVisibility(View.INVISIBLE);
-                augmenterEtapeClasse();
 
-                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Le Formulaire est bien démarré");
+                    demarrer.setVisibility(View.INVISIBLE);
+                    augmenterEtapeClasse();
+
+                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    texte.setText("Le Formulaire est bien démarré");
+                }
             }
         });
     }
 
     private void augmenterEtapeClasse() {
-        new DAOAugmenterEtapes(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,idClasse + "", "0");
+        new DAOAugmenterEtapes(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idClasse + "", "0");
     }
 
     public void faireAttenteSF1() {
@@ -349,13 +381,16 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (attenteFaite()) {
 
-                demarrer.setVisibility(View.INVISIBLE);
-                augmenterEtapeScoreFinal();
 
-                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Résultat Personnel");
-                faireAttenteSF2();
+                    demarrer.setVisibility(View.INVISIBLE);
+                    augmenterEtapeScoreFinal();
+
+                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    texte.setText("Résultat Personnel");
+                    faireAttenteSF2();
+                }
             }
         });
     }
@@ -367,16 +402,18 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (attenteFaite()) {
 
-                demarrer.setVisibility(View.INVISIBLE);
-                augmenterEtapeScoreFinal();
 
-                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Résultat de Groupe");
-                faireAttenteSF3();
+                    demarrer.setVisibility(View.INVISIBLE);
+                    augmenterEtapeScoreFinal();
+
+                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    texte.setText("Résultat de Groupe");
+                    faireAttenteSF3();
+                }
             }
         });
-
     }
 
     public void faireAttenteSF3() {
@@ -386,16 +423,18 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (attenteFaite()) {
 
-                demarrer.setVisibility(View.INVISIBLE);
-                augmenterEtapeScoreFinal();
 
-                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Résultat de Classe");
-                faireAttenteSF4();
+                    demarrer.setVisibility(View.INVISIBLE);
+                    augmenterEtapeScoreFinal();
+
+                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    texte.setText("Résultat de Classe");
+                    faireAttenteSF4();
+                }
             }
         });
-
     }
 
     public void faireAttenteSF4() {
@@ -405,20 +444,31 @@ public class EnseignantActivity extends AppCompatActivity {
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (attenteFaite()) {
 
-                demarrer.setVisibility(View.INVISIBLE);
-                augmenterEtapeScoreFinal();
 
-                TextView texte = (TextView) findViewById(R.id.textEtapeProf);
-                texte.setText("Résultat AGEST");
-                faireAttenteSatisfaction();
+                    demarrer.setVisibility(View.INVISIBLE);
+                    augmenterEtapeScoreFinal();
+
+                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    texte.setText("Résultat AGEST");
+                    faireAttenteSatisfaction();
+                }
             }
         });
+    }
 
+    private boolean attenteFaite() {
+        if (System.currentTimeMillis() - TEMPS_ATTENTE > lastTime) {
+            lastTime = System.currentTimeMillis();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void augmenterEtapeScoreFinal() {
-        new DAOAugmenterEtapes(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,idClasse + "", "1");
+        new DAOAugmenterEtapes(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idClasse + "", "1");
     }
 
     public void refreshNbEtudiantEnregistre(int nbEtudiant) {

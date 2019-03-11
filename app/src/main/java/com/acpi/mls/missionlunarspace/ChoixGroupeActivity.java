@@ -19,6 +19,7 @@ import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementGroupe;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementTemp;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOPopupTechnicien;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOPopupTechnicienPhase4;
+import com.acpi.mls.missionlunarspace.DAO.autre.DAOSauvegardeDefautGroupe;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAOPhase4Capitaine;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAOPhase4Technicien;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshListeGroupe;
@@ -31,6 +32,7 @@ import com.acpi.mls.missionlunarspace.listObjetMobile.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ChoixGroupeActivity extends AppCompatActivity {
 
@@ -303,17 +305,22 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             TimerEtudiant.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
             TimerEtudiant.getInstance().setActivity(this);
             TimerEtudiant.getInstance().ajouterPhaseEtDemarrer();
+
+            if (this.role.equals("Capitaine")) {
+
+                //TODO enlever les bon objets par rapport a la DB et pas les 5 premier
+
+                ArrayList<String> classementTempo = new ArrayList<>();
+                for (int i = 0; i < 5; i++) {
+                    classementTempo.add(classementCapitaine.get(i));
+                }
+                new DAOSauvegardeDefautGroupe(classementTempo, this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idGroupe, this.phase + "");
+            }
         }
 
         if (this.phase < 2) {
             this.phase++;
             if (this.role.equals("Capitaine")) {
-                //TODO enlever les bon objets par rapport a la DB et pas les 5 premier
-                this.classementCapitaine.remove(0);
-                this.classementCapitaine.remove(0);
-                this.classementCapitaine.remove(0);
-                this.classementCapitaine.remove(0);
-                this.classementCapitaine.remove(0);
                 this.updateListeCapitaine();
             }
             if (this.role.equals("Technicien")) {
@@ -485,6 +492,16 @@ public class ChoixGroupeActivity extends AppCompatActivity {
 
     public int getPhase() {
         return phase;
+    }
+
+    public void setClassementRestantCapitaine(List<String> classementTemp) {
+
+        for (String str : classementTemp) {
+            if (this.classementCapitaine.contains(str)) {
+                this.classementCapitaine.remove(str);
+            }
+        }
+        this.updateListeCapitaine();
     }
 /*
     public void goFormulaire(View view) {

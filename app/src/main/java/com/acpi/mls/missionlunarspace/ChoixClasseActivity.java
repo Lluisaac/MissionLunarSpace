@@ -120,6 +120,8 @@ public class ChoixClasseActivity extends AppCompatActivity {
             this.daoRefreshListeClasse = new DAORefreshListeClasse(ChoixClasseActivity.this);
             this.daoRefreshListeClasse.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idClasse);
         }
+
+        saveClassement();
     }
 
     public void refreshClassementClasse(ArrayList<String> liste) {

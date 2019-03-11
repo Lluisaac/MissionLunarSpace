@@ -19,6 +19,11 @@ public class DAOScoreFinal extends DAO {
 
     private int etape = 0;
 
+    private boolean sf0 = false;
+    private boolean sf1 = false;
+    private boolean sf2 = false;
+    private boolean sf3 = false;
+
     public DAOScoreFinal(ScoreFinalActivity activity) {
         this.activity = activity;
     }
@@ -54,25 +59,65 @@ public class DAOScoreFinal extends DAO {
     protected void onProgressUpdate(String... result) {
         switch (etape) {
             case 0:
-                ArrayList<String>[] tab = new ArrayList[3];
-                tab[0] = classementPerso;
-                tab[1] = classementGroupe;
-                tab[2] = classementClasse;
-                activity.mettreScores(tab);
+                faireSF0();
                 break;
             case 1:
-                activity.afficherPerso();
+                faireSF1();
                 break;
             case 2:
-                activity.afficherGroupe();
+                faireSF2();
                 break;
             case 3:
-                activity.afficherClasse();
+                faireSF3();
                 break;
             case 4:
-                activity.afficherAGEST();
+                faireSF4();
                 break;
         }
+    }
+
+    private void recupClassements() {
+        ArrayList<String>[] tab = new ArrayList[3];
+        tab[0] = classementPerso;
+        tab[1] = classementGroupe;
+        tab[2] = classementClasse;
+        activity.mettreScores(tab);
+    }
+
+    private void faireSF0() {
+        recupClassements();
+        sf0 = true;
+    }
+
+    private void faireSF1() {
+        if (!sf0) {
+            faireSF0();
+        }
+        activity.afficherPerso();
+        sf1 = true;
+    }
+
+    private void faireSF2() {
+        if (!sf1) {
+            faireSF1();
+        }
+        activity.afficherGroupe();
+        sf2 = true;
+    }
+
+    private void faireSF3() {
+        if (!sf2) {
+            faireSF2();
+        }
+        activity.afficherClasse();
+        sf3 = true;
+    }
+
+    private void faireSF4() {
+        if (!sf3) {
+            faireSF3();
+        }
+        activity.afficherAGEST();
     }
 
     private int getEtape(int idClasse) {

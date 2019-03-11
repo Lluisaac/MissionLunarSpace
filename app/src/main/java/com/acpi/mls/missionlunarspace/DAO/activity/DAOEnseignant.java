@@ -165,6 +165,8 @@ public class DAOEnseignant extends DAO {
                     i++;
                 }
             }
+            PreparedStatement st2 = cn.prepareStatement("DELETE FROM Etudiants WHERE groupe IS NULL");
+            st2.execute();
         } catch (SQLException e) {
 
             deconnexion();
