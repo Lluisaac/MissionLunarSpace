@@ -32,7 +32,7 @@ public class DAORefreshListeGroupe extends DAO {
             setClassementGroupe(Integer.parseInt(strings[0]));
             publishProgress(strings[0]);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
         }

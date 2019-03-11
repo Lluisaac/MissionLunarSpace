@@ -21,7 +21,7 @@ public abstract class Timer {
     private long[] tempsDepart = new long[3];
     private long[] tempsDecalage = new long[3];
 
-    private TextView mTextViewCountDown;
+    protected TextView mTextViewCountDown;
 
     private static CountDownTimer mCountDownTimer;
 

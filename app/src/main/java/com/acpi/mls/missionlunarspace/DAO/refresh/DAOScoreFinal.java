@@ -47,7 +47,7 @@ public class DAOScoreFinal extends DAO {
             }
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
         }

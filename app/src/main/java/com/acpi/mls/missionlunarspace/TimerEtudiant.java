@@ -40,6 +40,7 @@ public class TimerEtudiant extends Timer{
             @Override
             public void onFinish() {
                 setmTimerRunning(false);
+                TimerEtudiant.this.mTextViewCountDown.setText("Temps fini");
                 switch (TimerEtudiant.getInstance().getPhase()) {
                     case 1:
                         //On se trouve dans le classement Perso et le timer finit: on va dans une attente

@@ -26,7 +26,7 @@ public class DAORefreshNbEtudiantEnregistre extends DAO {
             countNbEtudiantPret();
             publishProgress(strings[0]);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
         }
