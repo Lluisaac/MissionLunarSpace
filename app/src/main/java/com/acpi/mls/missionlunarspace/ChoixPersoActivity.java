@@ -26,9 +26,9 @@ public class ChoixPersoActivity extends AppCompatActivity {
     private ArrayList<String> objectImmobile = new ArrayList<>();
     private ArrayList<String> objectMobile = new ArrayList<>();
 
-    private String nom; //TODO inutil
-    private String classe;//TODO inutil
-    private String annee;//TODO inutil
+    private String nom; //TODO inutile
+    private String classe;//TODO inutile
+    private String annee;//TODO inutile
     private String idEtudiant;
     private int idGroupe;
 
@@ -41,7 +41,7 @@ public class ChoixPersoActivity extends AppCompatActivity {
         this.nom = (String) getIntent().getSerializableExtra("NomEtu");
         this.classe = (String) getIntent().getSerializableExtra("ClasseEtu");
         this.annee = (String) getIntent().getSerializableExtra("AnneeEtu");
-       //TODO DAO inutil
+       //TODO DAO inutile, il devrait récupérer uniquement l'idGroup et non pas l'idEtudiant qui est inutile.
         new DAOChoixPersoActivity(ChoixPersoActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"getIdEtudiant", "getIdEtudiant", this.nom, this.classe, this.annee);
         TimerEtudiant.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
         TimerEtudiant.getInstance().setActivity(this);
@@ -98,7 +98,6 @@ public class ChoixPersoActivity extends AppCompatActivity {
 
 
     public void continuerChoixGroupe(View view) {
-        //TODO enlever le commentaire pour enregistrer les classement dans la BD
         saveClassement();
         passageGroupe();
     }

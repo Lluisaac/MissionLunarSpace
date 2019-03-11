@@ -182,6 +182,7 @@ public class EnseignantActivity extends AppCompatActivity {
 
     private void faireElementsDemarrerPartie(final String numClasse) {
         Button demarrer = (Button) findViewById(R.id.buttonDemarrerPartie);
+        demarrer.setVisibility(View.INVISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -422,6 +423,10 @@ public class EnseignantActivity extends AppCompatActivity {
 
     public void refreshNbEtudiantEnregistre(int nbEtudiant) {
         TextView textView = findViewById(R.id.nbEtudiantEnregistre);
-        textView.setText("Nombres d'éléves enregistré "+nbEtudiant+ " sur "+this.nbEtudiant);
+        textView.setText("Nombres d'éléves enregistré " + nbEtudiant + " sur " + this.nbEtudiant);
+        if (nbEtudiant >= this.nbEtudiant) {
+            Button demarrer = (Button) findViewById(R.id.buttonDemarrerPartie);
+            demarrer.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -294,7 +294,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
         new DAOClassementGroupe(ChoixGroupeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "getClassementGroupe", "getClassementGroupe", this.idGroupe, this.phase + "");
     }
 
-    //TODO BUG Affichage refreshClassementGRoupe pour le changement de phase.
     public void changementDePhase(View view) {
         if (phase < 4) {
             Toast.makeText(this, "Vous êtes dans la Phase " + (phase + 2), Toast.LENGTH_SHORT).show();
@@ -457,7 +456,6 @@ public class ChoixGroupeActivity extends AppCompatActivity {
                 classementTempo.add(classementCapitaine.get(i));
             }
 
-            //TODO enlever le commentaire pour sauvegarde le classement tempo
             new DAOClassementTemp(ChoixGroupeActivity.this, classementTempo, this.phase).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "saveClassementTemp", "", this.idGroupe);
         } else
             Toast.makeText(this, "Pas de changement dans le classement", Toast.LENGTH_SHORT).show();

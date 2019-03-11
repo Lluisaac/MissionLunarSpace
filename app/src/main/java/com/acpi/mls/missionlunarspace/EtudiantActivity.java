@@ -75,9 +75,7 @@ public class EtudiantActivity extends AppCompatActivity {
 
     public void existeClasse(String id) {
         if (!id.equals("")) {
-            //TODO Enlever la ligne pour recommencer l'ajout d'étudiant et enlever l'appel du set qui sera fait automatiquement dans le DAO
             new DAOEtudiant(EtudiantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"createEtudiant", "setIdEtu", this.nomEtu);
-            //setIdEtudiant("1");
             this.idClasse = id;
         } else
             Toast.makeText(this, "La classe n'existe pas.", Toast.LENGTH_SHORT).show();
@@ -96,7 +94,6 @@ public class EtudiantActivity extends AppCompatActivity {
         isAttente = true;
         setContentView(R.layout.content_etudiant_attente);
         Button boutonSuiveAttente = (Button) findViewById(R.id.buttonAttente);
-        //TODO changer par boutonSuiveAttente.setVisibility(View.INVISIBLE);
         boutonSuiveAttente.setVisibility(View.INVISIBLE);
         new DAOCheckPartieDemaree(boutonSuiveAttente, Integer.parseInt(idClasse), this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
