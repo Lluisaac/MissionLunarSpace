@@ -115,13 +115,13 @@ public class ChoixClasseActivity extends AppCompatActivity {
 
     public void setIdClasse(String s) {
         this.idClasse = s;
-        if(!this.roleEtudiant.equals("Capitaine") && this.typeGroupe.equals(1 + ""))
+        if(!this.roleEtudiant.equals("Capitaine") || !this.typeGroupe.equals(1 + ""))
         {
             this.daoRefreshListeClasse = new DAORefreshListeClasse(ChoixClasseActivity.this);
             this.daoRefreshListeClasse.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idClasse);
         }
 
-        if (this.roleEtudiant.equals("Capitaine")) {
+        if (this.roleEtudiant.equals("Capitaine") && this.typeGroupe.equals(1 + "")) {
             saveClassement();
         }
     }
