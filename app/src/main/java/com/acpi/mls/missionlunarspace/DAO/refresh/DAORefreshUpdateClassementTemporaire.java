@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class DAORefreshUpdateClassementTemporaire extends DAO {
 
-    private String precedent;
+    private static String precedent;
     private boolean continuer = true;
     private ChoixGroupeActivity choixGroupeActivity;
     private int phase;
@@ -45,6 +45,10 @@ public class DAORefreshUpdateClassementTemporaire extends DAO {
     @Override
     protected void onProgressUpdate(String... result) {
             choixGroupeActivity.afficherPopupTechnicien(result[0]);
+    }
+
+    public static void resetPrecedent() {
+        precedent = "";
     }
 
     public void arreter() {
