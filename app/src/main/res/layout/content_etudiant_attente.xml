@@ -17,13 +17,15 @@
 
     <TextView
         android:id="@+id/texteAttente"
-        android:layout_width="715dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="EN ATTENTE DE DEBUT DE PARTIE"
         android:textAlignment="center"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,15 +35,30 @@
         android:id="@+id/buttonAttente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="321dp"
-        android:layout_marginTop="99dp"
-        android:layout_marginEnd="322dp"
-        android:layout_marginBottom="33dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:onClick="onCLickTempo"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:lineSpacingExtra="14sp"
+        android:text="MESSAGE D’ALERTE :
+        On s’est crashé sur la Lune ! Je crois que la fusée Aurelion Sol Engine V3 a rencontré un problème technique majeur et nous avons dû nous poser en catastrophe sur la Lune. D’après les premières observations, personne n’est blessé mais la fusée a subi des dommages majeurs. En plus, 90% de l’équipement que nous devions acheminer pour Pan Luna a été détruit lors de l’impact, il nous reste seulement quelques objets. D’après nos estimations, nous nous sommes crashés à plusieurs dizaines voire centaines de kilomètres de Pan Luna sur la face éclairée de la Lune, là où se trouve la base également. Nous devons absolument rejoindre Pan Luna avec le peu de matériel restant, leur survie en dépend et peut-être que la nôtre aussi..."
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewClasseEtu" />
+        app:layout_constraintTop_toBottomOf="@+id/texteAttente" />
 
 </android.support.constraint.ConstraintLayout>
