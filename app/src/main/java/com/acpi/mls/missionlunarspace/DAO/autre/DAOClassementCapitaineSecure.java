@@ -28,9 +28,9 @@ public class DAOClassementCapitaineSecure extends DAO {
         int phase = Integer.parseInt(strings[1]);
 
         //TODO A enlever, pour les tests uniquement
-        if (classementDefaultNecessaire(idGroupe, phase)) {
+        /*if (classementDefaultNecessaire(idGroupe, phase)) {
             mettreClassementDefault(idGroupe, phase);
-        }
+        }*/
         //FIN TODO
 
         classementTemp = getAllClassementGroupe(idGroupe, phase);
