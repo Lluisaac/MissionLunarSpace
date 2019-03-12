@@ -94,11 +94,7 @@ public class DAOCheckEtape extends DAO {
             ResultSet rs = pst.executeQuery();
 
             rs.next();
-            if (rs.getInt(1) < etape) {
-                return false;
-            } else {
-                return true;
-            }
+            return rs.getInt(1) >= etape;
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();

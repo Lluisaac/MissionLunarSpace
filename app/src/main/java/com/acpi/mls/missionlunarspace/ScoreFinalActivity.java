@@ -142,7 +142,7 @@ public class ScoreFinalActivity extends AppCompatActivity {
     }
 
     private void initTableau() {
-        this.containerTable = (TableLayout) findViewById(R.id.containerTable);
+        this.containerTable = findViewById(R.id.containerTable);
 
         TableRow tableRow = new TableRow(this);
         containerTable.addView(tableRow, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));

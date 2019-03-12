@@ -30,11 +30,7 @@ public class DAOCheckPartieDemaree extends DAO {
 
             rs.next();
             rs.getString(2);
-            if (rs.wasNull()) {
-                return false;
-            } else {
-                return true;
-            }
+            return !rs.wasNull();
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();

@@ -32,7 +32,7 @@ public class EnseignantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enseignant);
 
-        Button buttonOk = (Button) findViewById(R.id.buttonConfirmationLoginProf);
+        Button buttonOk = findViewById(R.id.buttonConfirmationLoginProf);
         buttonOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 if (attenteFaite()) {
@@ -56,16 +56,16 @@ public class EnseignantActivity extends AppCompatActivity {
 
     protected void faireElementsCreationGroupe() {
 
-        RadioButton r1 = (RadioButton) findViewById(R.id.radioGroupe1);
-        RadioButton r2 = (RadioButton) findViewById(R.id.radioGroupe2);
-        RadioButton r3 = (RadioButton) findViewById(R.id.radioGroupe3);
-        RadioButton r4 = (RadioButton) findViewById(R.id.radioGroupe4);
+        RadioButton r1 = findViewById(R.id.radioGroupe1);
+        RadioButton r2 = findViewById(R.id.radioGroupe2);
+        RadioButton r3 = findViewById(R.id.radioGroupe3);
+        RadioButton r4 = findViewById(R.id.radioGroupe4);
         r1.setVisibility(View.INVISIBLE);
         r2.setVisibility(View.INVISIBLE);
         r3.setVisibility(View.INVISIBLE);
         r4.setVisibility(View.INVISIBLE);
 
-        EditText nbPersonnes = (EditText) findViewById(R.id.nbEleves);
+        EditText nbPersonnes = findViewById(R.id.nbEleves);
         nbPersonnes.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -87,10 +87,10 @@ public class EnseignantActivity extends AppCompatActivity {
                 }
 
 
-                RadioButton r1 = (RadioButton) findViewById(R.id.radioGroupe1);
-                RadioButton r2 = (RadioButton) findViewById(R.id.radioGroupe2);
-                RadioButton r3 = (RadioButton) findViewById(R.id.radioGroupe3);
-                RadioButton r4 = (RadioButton) findViewById(R.id.radioGroupe4);
+                RadioButton r1 = findViewById(R.id.radioGroupe1);
+                RadioButton r2 = findViewById(R.id.radioGroupe2);
+                RadioButton r3 = findViewById(R.id.radioGroupe3);
+                RadioButton r4 = findViewById(R.id.radioGroupe4);
                 r1.setVisibility(View.INVISIBLE);
                 r2.setVisibility(View.INVISIBLE);
                 r3.setVisibility(View.INVISIBLE);
@@ -111,26 +111,26 @@ public class EnseignantActivity extends AppCompatActivity {
             }
         });
 
-        EditText nomClasse = (EditText) findViewById(R.id.nomClasse);
-        EditText annee = (EditText) findViewById(R.id.annee);
+        EditText nomClasse = findViewById(R.id.nomClasse);
+        EditText annee = findViewById(R.id.annee);
 
-        Button faireOk = (Button) findViewById(R.id.buttonCreationGroupe);
+        Button faireOk = findViewById(R.id.buttonCreationGroupe);
         faireOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (attenteFaite()) {
 
-                    EditText nomClasse = (EditText) findViewById(R.id.nomClasse);
-                    EditText annee = (EditText) findViewById(R.id.annee);
-                    EditText nbPersonnes = (EditText) findViewById(R.id.nbEleves);
-                    RadioGroup groupe = (RadioGroup) findViewById(R.id.radioGroupSelectionGroupes);
+                    EditText nomClasse = findViewById(R.id.nomClasse);
+                    EditText annee = findViewById(R.id.annee);
+                    EditText nbPersonnes = findViewById(R.id.nbEleves);
+                    RadioGroup groupe = findViewById(R.id.radioGroupSelectionGroupes);
 
                     int nb = Integer.parseInt(nbPersonnes.getText().toString());
 
                     boolean isGroupeValide = groupe.getCheckedRadioButtonId() != -1;
 
                     if (isGroupeValide) {
-                        RadioButton temp = (RadioButton) findViewById(groupe.getCheckedRadioButtonId());
+                        RadioButton temp = findViewById(groupe.getCheckedRadioButtonId());
                         isGroupeValide = temp.getVisibility() == View.VISIBLE;
                     }
 
@@ -160,7 +160,7 @@ public class EnseignantActivity extends AppCompatActivity {
     }
 
     public void validerMDP(String mdp) {
-        EditText edit = (EditText) findViewById(R.id.mdpProf);
+        EditText edit = findViewById(R.id.mdpProf);
         if (edit != null) {
             String entre = edit.getText().toString();
             entre = entre == null ? "" : entre;
@@ -189,7 +189,7 @@ public class EnseignantActivity extends AppCompatActivity {
     }
 
     private void faireElementsDemarrerPartie(final String numClasse) {
-        Button demarrer = (Button) findViewById(R.id.buttonDemarrerPartie);
+        Button demarrer = findViewById(R.id.buttonDemarrerPartie);
         demarrer.setVisibility(View.INVISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,11 +207,11 @@ public class EnseignantActivity extends AppCompatActivity {
         TimerProf.createTimer(heure);
         TimerProf.getInstance().setTextView((TextView) findViewById(R.id.textTimer));
         TimerProf.getInstance().setActivity(this);
-        TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
+        Timer.getInstance().ajouterPhaseEtDemarrer();
     }
 
     public void arreterClassementPerso() {
-        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        final Button demarrer = findViewById(R.id.boutonEtapeProf);
         demarrer.setText("Arrêter le classement individuel");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
@@ -223,7 +223,7 @@ public class EnseignantActivity extends AppCompatActivity {
                     demarrer.setVisibility(View.INVISIBLE);
                     augmenterEtapeClasse();
 
-                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    TextView texte = findViewById(R.id.textEtapeProf);
                     texte.setText("Le classement individuel est bien arrêté");
 
                     lancerClassementGroupe(1);
@@ -231,12 +231,12 @@ public class EnseignantActivity extends AppCompatActivity {
             }
         });
 
-        TextView texteTimer = (TextView) findViewById(R.id.textTimer);
+        TextView texteTimer = findViewById(R.id.textTimer);
         texteTimer.setText("");
     }
 
     public void lancerClassementGroupe(final int etape) {
-        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        final Button demarrer = findViewById(R.id.boutonEtapeProf);
         demarrer.setText("Passer au classement de groupe - étape " + etape);
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
@@ -245,22 +245,22 @@ public class EnseignantActivity extends AppCompatActivity {
                 if (attenteFaite()) {
 
 
-                    TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
+                    Timer.getInstance().ajouterPhaseEtDemarrer();
                     demarrer.setVisibility(View.INVISIBLE);
                     augmenterEtapeClasse();
 
-                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    TextView texte = findViewById(R.id.textEtapeProf);
                     texte.setText("Le classement de groupe - étape " + etape + " est bien démarré");
                 }
             }
         });
 
-        TextView texteTimer = (TextView) findViewById(R.id.textTimer);
+        TextView texteTimer = findViewById(R.id.textTimer);
         texteTimer.setText("");
     }
 
     public void arreterClassementGroupe() {
-        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        final Button demarrer = findViewById(R.id.boutonEtapeProf);
         demarrer.setText("Arrêter le classement de groupe - étape 4");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
@@ -272,7 +272,7 @@ public class EnseignantActivity extends AppCompatActivity {
                     demarrer.setVisibility(View.INVISIBLE);
                     augmenterEtapeClasse();
 
-                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    TextView texte = findViewById(R.id.textEtapeProf);
                     texte.setText("Le classement de groupe - étape 4 est bien arrêté");
 
                     lancerClassementClasse();
@@ -280,12 +280,12 @@ public class EnseignantActivity extends AppCompatActivity {
             }
         });
 
-        TextView texteTimer = (TextView) findViewById(R.id.textTimer);
+        TextView texteTimer = findViewById(R.id.textTimer);
         texteTimer.setText("");
     }
 
     public void lancerClassementClasse() {
-        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        final Button demarrer = findViewById(R.id.boutonEtapeProf);
         demarrer.setText("Passer au classement de classe");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
@@ -294,11 +294,11 @@ public class EnseignantActivity extends AppCompatActivity {
                 if (attenteFaite()) {
 
 
-                    TimerProf.getInstance().getInstance().ajouterPhaseEtDemarrer();
+                    Timer.getInstance().ajouterPhaseEtDemarrer();
                     demarrer.setVisibility(View.INVISIBLE);
                     augmenterEtapeClasse();
 
-                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    TextView texte = findViewById(R.id.textEtapeProf);
                     texte.setText("Le classement de classe est bien démarré");
                 }
             }
@@ -306,7 +306,7 @@ public class EnseignantActivity extends AppCompatActivity {
     }
 
     public void arreterClassementClasse() {
-        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        final Button demarrer = findViewById(R.id.boutonEtapeProf);
         demarrer.setText("Arrêter le classement de classe");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
@@ -318,19 +318,19 @@ public class EnseignantActivity extends AppCompatActivity {
                     demarrer.setVisibility(View.INVISIBLE);
                     augmenterEtapeClasse();
 
-                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    TextView texte = findViewById(R.id.textEtapeProf);
                     texte.setText("Le classement de classe est bien arrêté");
                     faireAttenteEnquete();
                 }
             }
         });
 
-        TextView texteTimer = (TextView) findViewById(R.id.textTimer);
+        TextView texteTimer = findViewById(R.id.textTimer);
         texteTimer.setText("");
     }
 
     public void faireAttenteEnquete() {
-        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        final Button demarrer = findViewById(R.id.boutonEtapeProf);
         demarrer.setText("Passer à l'Enquête Spatiale");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
@@ -342,7 +342,7 @@ public class EnseignantActivity extends AppCompatActivity {
                     demarrer.setVisibility(View.INVISIBLE);
                     augmenterEtapeClasse();
 
-                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    TextView texte = findViewById(R.id.textEtapeProf);
                     texte.setText("L'Enquête Spatiale est bien démarrée");
                     new DAOCheckEnqueteFinie(EnseignantActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idClasse + "");
                 }
@@ -351,7 +351,7 @@ public class EnseignantActivity extends AppCompatActivity {
     }
 
     public void faireAttenteSatisfaction() {
-        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        final Button demarrer = findViewById(R.id.boutonEtapeProf);
         demarrer.setText("Passer au Formulaire de satisfaction");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
@@ -363,7 +363,7 @@ public class EnseignantActivity extends AppCompatActivity {
                     demarrer.setVisibility(View.INVISIBLE);
                     augmenterEtapeClasse();
 
-                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    TextView texte = findViewById(R.id.textEtapeProf);
                     texte.setText("Le Formulaire est bien démarré");
                 }
             }
@@ -375,7 +375,7 @@ public class EnseignantActivity extends AppCompatActivity {
     }
 
     public void faireAttenteSF1() {
-        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        final Button demarrer = findViewById(R.id.boutonEtapeProf);
         demarrer.setText("Passer au Résultat Personnel");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
@@ -387,7 +387,7 @@ public class EnseignantActivity extends AppCompatActivity {
                     demarrer.setVisibility(View.INVISIBLE);
                     augmenterEtapeScoreFinal();
 
-                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    TextView texte = findViewById(R.id.textEtapeProf);
                     texte.setText("Résultat Personnel");
                     faireAttenteSF2();
                 }
@@ -396,7 +396,7 @@ public class EnseignantActivity extends AppCompatActivity {
     }
 
     public void faireAttenteSF2() {
-        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        final Button demarrer = findViewById(R.id.boutonEtapeProf);
         demarrer.setText("Passer au Résultat de Groupe");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
@@ -408,7 +408,7 @@ public class EnseignantActivity extends AppCompatActivity {
                     demarrer.setVisibility(View.INVISIBLE);
                     augmenterEtapeScoreFinal();
 
-                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    TextView texte = findViewById(R.id.textEtapeProf);
                     texte.setText("Résultat de Groupe");
                     faireAttenteSF3();
                 }
@@ -417,7 +417,7 @@ public class EnseignantActivity extends AppCompatActivity {
     }
 
     public void faireAttenteSF3() {
-        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        final Button demarrer = findViewById(R.id.boutonEtapeProf);
         demarrer.setText("Passer au Résultat de Classe");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
@@ -429,7 +429,7 @@ public class EnseignantActivity extends AppCompatActivity {
                     demarrer.setVisibility(View.INVISIBLE);
                     augmenterEtapeScoreFinal();
 
-                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    TextView texte = findViewById(R.id.textEtapeProf);
                     texte.setText("Résultat de Classe");
                     faireAttenteSF4();
                 }
@@ -438,7 +438,7 @@ public class EnseignantActivity extends AppCompatActivity {
     }
 
     public void faireAttenteSF4() {
-        final Button demarrer = (Button) findViewById(R.id.boutonEtapeProf);
+        final Button demarrer = findViewById(R.id.boutonEtapeProf);
         demarrer.setText("Passer au Résultat AGEST");
         demarrer.setVisibility(View.VISIBLE);
         demarrer.setOnClickListener(new View.OnClickListener() {
@@ -450,7 +450,7 @@ public class EnseignantActivity extends AppCompatActivity {
                     demarrer.setVisibility(View.INVISIBLE);
                     augmenterEtapeScoreFinal();
 
-                    TextView texte = (TextView) findViewById(R.id.textEtapeProf);
+                    TextView texte = findViewById(R.id.textEtapeProf);
                     texte.setText("Résultat AGEST");
                     faireAttenteSatisfaction();
                 }
@@ -475,7 +475,7 @@ public class EnseignantActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.nbEtudiantEnregistre);
         textView.setText("Nombres d'éléves enregistré " + nbEtudiant + " sur " + this.nbEtudiant);
         if (nbEtudiant >= this.nbEtudiant) {
-            Button demarrer = (Button) findViewById(R.id.buttonDemarrerPartie);
+            Button demarrer = findViewById(R.id.buttonDemarrerPartie);
             demarrer.setVisibility(View.VISIBLE);
         }
     }

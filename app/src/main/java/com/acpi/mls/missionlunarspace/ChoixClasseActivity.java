@@ -75,7 +75,7 @@ public class ChoixClasseActivity extends AppCompatActivity {
     }
 
     private void initClassementPerso() {
-        RecyclerView recyclerViewClassementPerso = (RecyclerView) findViewById(R.id.recyclerView_choixClasse_classementPerso);
+        RecyclerView recyclerViewClassementPerso = findViewById(R.id.recyclerView_choixClasse_classementPerso);
         recyclerViewClassementPerso.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewClassementPerso.setAdapter(new MyAdapter(this.classementPerso));
     }
@@ -93,13 +93,13 @@ public class ChoixClasseActivity extends AppCompatActivity {
     }
 
     private void initClassementClasse() {
-        this.classementClasseRecycler = (RecyclerView) findViewById(R.id.recyclerView_choixClasse_classementClasse);
+        this.classementClasseRecycler = findViewById(R.id.recyclerView_choixClasse_classementClasse);
         classementClasseRecycler.setLayoutManager(new LinearLayoutManager(this));
         classementClasseRecycler.setAdapter(new MyAdapter(this.classementClasse));
     }
 
     public void initClasssementGroupe(ArrayList<String> list) {
-        RecyclerView recyclerViewClassementGroupe = (RecyclerView) findViewById(R.id.recyclerView_choixClasse_classementGroupe);
+        RecyclerView recyclerViewClassementGroupe = findViewById(R.id.recyclerView_choixClasse_classementGroupe);
         recyclerViewClassementGroupe.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewClassementGroupe.setAdapter(new MyAdapter(list));
     }

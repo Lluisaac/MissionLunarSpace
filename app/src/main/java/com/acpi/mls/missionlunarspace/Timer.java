@@ -108,7 +108,7 @@ public abstract class Timer {
     }
 
     public void setmCountDownTimer(CountDownTimer mCountDownTimer) {
-        this.mCountDownTimer = mCountDownTimer;
+        Timer.mCountDownTimer = mCountDownTimer;
     }
 
     public boolean ismTimerRunning() {

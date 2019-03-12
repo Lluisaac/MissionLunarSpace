@@ -169,20 +169,20 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
 
     private void crerListeClassementPerso() {
-        RecyclerView recyclerViewClassmentPerso = (RecyclerView) findViewById(R.id.recyclerView_objetPerso);
+        RecyclerView recyclerViewClassmentPerso = findViewById(R.id.recyclerView_objetPerso);
         recyclerViewClassmentPerso.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewClassmentPerso.setAdapter(new MyAdapter(classementPerso));
     }
 
     private void creerListeChoixGroupe() {
-        recyclerViewGroupe = (RecyclerView) findViewById(R.id.recyclerViewObjetGroupe);
+        recyclerViewGroupe = findViewById(R.id.recyclerViewObjetGroupe);
         recyclerViewGroupe.setLayoutManager(new MyLinearLayoutManager(this));
         recyclerViewGroupe.setAdapter(new MyAdapter(classementGroupe));
     }
 
     private void creerListCentre(ArrayList<String> list) {
 
-        RecyclerView recyclerViewVrac = (RecyclerView) findViewById(R.id.recyclerViewObjetVrac);
+        RecyclerView recyclerViewVrac = findViewById(R.id.recyclerViewObjetVrac);
         recyclerViewVrac.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewVrac.setAdapter(new MyAdapter(list));
 
@@ -276,7 +276,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     }
 
     private void appartitionBoutonReset(boolean b) {
-        Button but = (Button) findViewById(R.id.boutonReset);
+        Button but = findViewById(R.id.boutonReset);
         but.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
     }
 
@@ -497,9 +497,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
     public void setClassementRestantCapitaine(List<String> classementTemp) {
 
         for (String str : classementTemp) {
-            if (this.classementCapitaine.contains(str)) {
-                this.classementCapitaine.remove(str);
-            }
+            this.classementCapitaine.remove(str);
         }
         this.updateListeCapitaine();
     }

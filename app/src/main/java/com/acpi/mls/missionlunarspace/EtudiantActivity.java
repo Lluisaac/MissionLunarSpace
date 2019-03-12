@@ -37,7 +37,7 @@ public class EtudiantActivity extends AppCompatActivity {
         }
     }
 
-    public void onClikButtonContinuer(View view) throws InterruptedException {
+    public void onClikButtonContinuer(View view) {
         EditText etuNom = findViewById(R.id.textViewNomEtu);
         String nom = etuNom.getText().toString();
 
@@ -93,7 +93,7 @@ public class EtudiantActivity extends AppCompatActivity {
     private void changerPageVersAttente() {
         isAttente = true;
         setContentView(R.layout.content_etudiant_attente);
-        Button boutonSuiveAttente = (Button) findViewById(R.id.buttonAttente);
+        Button boutonSuiveAttente = findViewById(R.id.buttonAttente);
         boutonSuiveAttente.setVisibility(View.INVISIBLE);
         new DAOCheckPartieDemaree(boutonSuiveAttente, Integer.parseInt(idClasse), this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
