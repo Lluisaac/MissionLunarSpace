@@ -87,7 +87,7 @@ public class DAOChoixClasseActivity extends DAO {
         try {
             PreparedStatement preparedStatement = cn.prepareStatement("DELETE FROM ClassementClasse WHERE idClasse = ? ");
             preparedStatement.setString(1, idClasse);
-            preparedStatement.executeUpdate();
+            preparedStatement.execute();
         } catch (SQLException e) {
             deconnexion();
             e.printStackTrace();

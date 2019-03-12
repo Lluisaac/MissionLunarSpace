@@ -87,7 +87,8 @@ public class ScoreFinalActivity extends AppCompatActivity {
         String[] pos = new String[15];
 
         for (int i = 0; i < 15; i++) {
-            pos[i] = (perso.indexOf(ChoixPersoActivity.listObjets[i]) + 1) + "";
+            int val = getScoreUneValeur(perso, perso.indexOf(ChoixPersoActivity.listObjets[i]));
+            pos[i] = (perso.indexOf(ChoixPersoActivity.listObjets[i]) + 1) + " (" + val + ")";
         }
 
         afficherInfoTab(pos, 1);
@@ -98,7 +99,8 @@ public class ScoreFinalActivity extends AppCompatActivity {
         String[] pos = new String[15];
 
         for (int i = 0; i < 15; i++) {
-            pos[i] = (groupe.indexOf(ChoixPersoActivity.listObjets[i]) + 1) + "";
+            int val = getScoreUneValeur(groupe, groupe.indexOf(ChoixPersoActivity.listObjets[i]));
+            pos[i] = (groupe.indexOf(ChoixPersoActivity.listObjets[i]) + 1) + " (" + val + ")";
         }
 
         afficherInfoTab(pos, 2);
@@ -109,7 +111,8 @@ public class ScoreFinalActivity extends AppCompatActivity {
         String[] pos = new String[15];
 
         for (int i = 0; i < 15; i++) {
-            pos[i] = (classe.indexOf(ChoixPersoActivity.listObjets[i]) + 1) + "";
+            int val = getScoreUneValeur(classe, classe.indexOf(ChoixPersoActivity.listObjets[i]));
+            pos[i] = (classe.indexOf(ChoixPersoActivity.listObjets[i]) + 1) + " (" + val + ")";
         }
 
         afficherInfoTab(pos, 3);
@@ -130,12 +133,21 @@ public class ScoreFinalActivity extends AppCompatActivity {
         new DAOCheckEtape(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idGroupe, "10");
     }
 
+    private int getScoreUneValeur(ArrayList<String> tab, int pos) {
+        int val = 0;
+        for (int i = 0; i < agest.length; i++) {
+            if (agest[i].equals(tab.get(pos))) {
+                val = Math.abs(pos - i);
+            }
+        }
+        return val;
+    }
+
     private int getScore(ArrayList<String> tab) {
         int somme = 0;
 
         for (int i = 0; i < 15; i++) {
-            int val = tab.indexOf(agest[i]) - i;
-            somme += Math.abs(val);
+            somme += getScoreUneValeur(tab, i);
         }
 
         return somme;
@@ -176,7 +188,7 @@ public class ScoreFinalActivity extends AppCompatActivity {
         tableRow.addView(text5, 4);
 
 
-        for(int i = 0 ; i < 16 ; i++){
+        for (int i = 0; i < 16; i++) {
             this.tabTableRow[i] = new TableRow(this);
             containerTable.addView(this.tabTableRow[i], new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         }
@@ -210,7 +222,7 @@ public class ScoreFinalActivity extends AppCompatActivity {
         text6.setGravity(Gravity.LEFT);
     }
 
-    private void afficherInfoTab(String[] pos, int index ){
+    private void afficherInfoTab(String[] pos, int index) {
         for (int j = 0; j < 15; j++) {
             TextView text6 = (TextView) this.tabTableRow[j].getChildAt(index);
             text6.setText(pos[j]);
@@ -224,14 +236,14 @@ public class ScoreFinalActivity extends AppCompatActivity {
         text6.setGravity(Gravity.LEFT);
     }
 
-    private void afficherTitre(String titre){
+    private void afficherTitre(String titre) {
         TextView textView = findViewById(R.id.textView_titre);
         textView.setText("Vous êtes un " + titre);
         textView.setVisibility(View.VISIBLE);
     }
 
 
-    public void passageFormSatisfaction(View view){
+    public void passageFormSatisfaction(View view) {
         Intent intent = new Intent(this, FormulaireSatisfactionActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("idEtudiant", Integer.parseInt(this.idEtudiant));
