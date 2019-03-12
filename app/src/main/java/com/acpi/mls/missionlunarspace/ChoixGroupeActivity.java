@@ -333,6 +333,8 @@ public class ChoixGroupeActivity extends AppCompatActivity {
             passageAttenteClasse();
         }
 
+        TextView textePhase = findViewById(R.id.textePhase);
+        textePhase.setText("Etape " + (this.phase + 1));
     }
 
     public void passageAttenteClasse() {
