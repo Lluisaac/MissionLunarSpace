@@ -9,13 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DAOCheckPartieDemaree extends DAO {
+public class DAOCheckPartieDemarre extends DAO {
 
     private final EtudiantActivity etudiantActivity;
     private Button bouton;
     private int idClasse;
 
-    public DAOCheckPartieDemaree(Button bouton, int idClasse, EtudiantActivity etudiantActivity) {
+    public DAOCheckPartieDemarre(Button bouton, int idClasse, EtudiantActivity etudiantActivity) {
         this.etudiantActivity = etudiantActivity;
         this.bouton = bouton;
         this.idClasse = idClasse;

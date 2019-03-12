@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.acpi.mls.missionlunarspace.DAO.autre.DAORecupTemps;
-import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckPartieDemaree;
+import com.acpi.mls.missionlunarspace.DAO.refresh.check.DAOCheckPartieDemarre;
 import com.acpi.mls.missionlunarspace.DAO.activity.DAOEtudiant;
 
 public class EtudiantActivity extends AppCompatActivity {
@@ -95,7 +95,7 @@ public class EtudiantActivity extends AppCompatActivity {
         setContentView(R.layout.content_etudiant_attente);
         Button boutonSuiveAttente = findViewById(R.id.buttonAttente);
         boutonSuiveAttente.setVisibility(View.INVISIBLE);
-        new DAOCheckPartieDemaree(boutonSuiveAttente, Integer.parseInt(idClasse), this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new DAOCheckPartieDemarre(boutonSuiveAttente, Integer.parseInt(idClasse), this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 
