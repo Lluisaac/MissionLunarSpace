@@ -52,7 +52,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:lineSpacingExtra="14sp"
+        android:lineSpacingExtra="12sp"
         android:text="MESSAGE D’ALERTE :
         On s’est crashé sur la Lune ! Je crois que la fusée Aurelion Sol Engine V3 a rencontré un problème technique majeur et nous avons dû nous poser en catastrophe sur la Lune. D’après les premières observations, personne n’est blessé mais la fusée a subi des dommages majeurs. En plus, 90% de l’équipement que nous devions acheminer pour Pan Luna a été détruit lors de l’impact, il nous reste seulement quelques objets. D’après nos estimations, nous nous sommes crashés à plusieurs dizaines voire centaines de kilomètres de Pan Luna sur la face éclairée de la Lune, là où se trouve la base également. Nous devons absolument rejoindre Pan Luna avec le peu de matériel restant, leur survie en dépend et peut-être que la nôtre aussi..."
         android:textSize="30sp"
