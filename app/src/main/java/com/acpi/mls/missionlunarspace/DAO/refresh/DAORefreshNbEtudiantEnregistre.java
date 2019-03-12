@@ -1,4 +1,4 @@
-package com.acpi.mls.missionlunarspace.DAO.refresh.check;
+package com.acpi.mls.missionlunarspace.DAO.refresh;
 
 import com.acpi.mls.missionlunarspace.DAO.DAO;
 import com.acpi.mls.missionlunarspace.EnseignantActivity;
