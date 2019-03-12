@@ -19,7 +19,7 @@ import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementGroupe;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassementTemp;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOPopupTechnicien;
 import com.acpi.mls.missionlunarspace.DAO.autre.DAOPopupTechnicienPhase4;
-import com.acpi.mls.missionlunarspace.DAO.autre.DAOSauvegardeDefautGroupe;
+import com.acpi.mls.missionlunarspace.DAO.autre.DAOClassemenCapitaineSecure;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAOPhase4Capitaine;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAOPhase4Technicien;
 import com.acpi.mls.missionlunarspace.DAO.refresh.DAORefreshListeGroupe;
@@ -314,7 +314,7 @@ public class ChoixGroupeActivity extends AppCompatActivity {
                 for (int i = 0; i < 5; i++) {
                     classementTempo.add(classementCapitaine.get(i));
                 }
-                new DAOSauvegardeDefautGroupe(classementTempo, this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idGroupe, this.phase + "");
+                new DAOClassemenCapitaineSecure(classementTempo, this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, this.idGroupe, this.phase + "");
             }
         }
 
