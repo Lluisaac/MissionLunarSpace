@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public void credits(View view) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle("Credits");
-        dialogBuilder.setMessage("Application faite par:\nFlorian Bouffard-Vercelli\nSafaa Jaroudi\nIsaac Lluís\nEmma Macqueron\nJordan Tremoulet");
+        dialogBuilder.setMessage("Application faite par:\nIsaac Lluís\nEmma Macqueron");
 
         dialogBuilder.setCancelable(false).setNegativeButton("Retour", null);
         dialogBuilder.create().show();
